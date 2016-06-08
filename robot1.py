@@ -3,6 +3,7 @@ import time, os, sys
 import uuid
 import random
 import pickle
+from pymsgbox import alert
 from FSM import FSM, StackFSM
 
 """
@@ -1640,6 +1641,7 @@ class Sorgho(Nourriture): pass
 class Poisson(Nourriture): pass
 class Viande(Nourriture): pass
 
+alert(text = "Ready?", title="Bienvenue", button = "Ok")
 robot = Robot()
 # Robot(secondes=1)
 robot.run()
