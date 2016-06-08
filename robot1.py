@@ -16,9 +16,6 @@ from FSM import FSM, StackFSM
 
     sam:
     implémenter la classe d'anchois (et virer tout le bazar dans la mer)
-    réimplémenter la monoculture 
-    mutations des gisements
-
 
 
 """
@@ -289,12 +286,16 @@ class Robot(object):
             Robot.items.append(Mer(name="Mer1"))
             Robot.items.append(Chimie(name="Chimie"))
             Robot.items.append(Bestiau(name="Vache"))
-            Robot.items.append(MineUranium(name="MineU1"))
+            Robot.items.append(GisementUranium(name="MineU1"))
             Robot.items.append(Foret(name="Foret1"))
             Robot.items.append(Foret(name="Foret2"))
             Robot.items.append(Travailleur(name="Travailleur1"))
             Robot.items.append(Travailleur(name="Travailleur2"))
             Robot.items.append(Travailleur(name="Travailleur3"))
+            Robot.items.append(Acier(name="Acier1"))
+            Robot.items.append(Acier(name="Acier2"))
+            Robot.items.append(Acier(name="Acier3"))
+            Robot.items.append(Acier(name="Acier4"))
             Robot.items.append(Cereale(name="miam"))
             Robot.items.append(Cereale(name="miam2"))
             Robot.items.append(Cereale(name="miam3"))
@@ -979,7 +980,9 @@ class IndustrieChimique(Entite):
         if self.nbIngenieur >= 4 and self.nbPetrole >= 1:
             self.brain.setState(self.production)
     def production(self):
-        self.spawn(self.produit)
+        for z in range(3):
+            self.spawn(self.produit)
+
         if self.nbIngenieur < 4 or self.nbPetrole < 1:
             self.brain.setState(self.idle)
 
@@ -1163,89 +1166,141 @@ class Megalopole(Entite):
         self.brain.update()
 
 
-class MineMetauxPrecieux(Entite):
+class GisementMetauxPrecieux(Entite):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self.nbTravailleur = 0
-        self.produit = MetauxPrecieux
+        self.nbAcier = 0
+
     def idle(self):
-        if  self.nbTravailleur >= 3 :
+        if  self.nbTravailleur >= 3 and self.nbAcier >= 2:
             self.brain.setState(self.production)
-    def production(self):
-        self.spawn(self.produit*2)
-        if self.nbTravailleur < 3 :
-            self.brain.setState(self.idle)
 
-    def update(self):
-        self.nbTravailleur = self.countByType(Travailleur)
-        self.brain.update()
-
-class MineMetaux(Entite):
-    def __init__(self, **kwargs):
-        super().__init__(**kwargs)
-        self.nbTravailleur = 0
-        self.produit = Metaux
-    def idle(self):
+    def unmanned(self):
         if self.nbTravailleur >= 3 :
             self.brain.setState(self.production)
+
     def production(self):
-        self.spawn(self.produit*2)
+        for z in range(2):
+            self.spawn(MetauxPrecieux)
+
         if self.nbTravailleur < 3 :
-            self.brain.setState(self.idle)
+            self.brain.setState(self.unmanned)
 
     def update(self):
         self.nbTravailleur = self.countByType(Travailleur)
+        self.nbAcier = self.countByType(Acier)
         self.brain.update()
 
-class MineCharbon(Entite):
+class GisementMetaux(Entite):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self.nbTravailleur = 0
-        self.produit = Charbon
+        self.nbAcier = 0
+
     def idle(self):
-        if  self.nbTravailleur >= 3 :
+        if  self.nbTravailleur >= 3 and self.nbAcier >= 2 :
             self.brain.setState(self.production)
+
+    def unmanned(self):
+        if self.nbTravailleur >= 3 :
+            self.brain.setState(self.production)
+
     def production(self):
-        self.spawn(self.produit*2)
+        for z in range(3):
+            self.spawn(Metaux)
+
         if self.nbTravailleur < 3 :
-            self.brain.setState(self.idle)
+            self.brain.setState(self.unmanned)
 
     def update(self):
         self.nbTravailleur = self.countByType(Travailleur)
+        self.nbAcier = self.countByType(Acier)
         self.brain.update()
 
-class PuitsPetrole(Entite):
+class GisementCharbon(Entite):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self.nbTravailleur = 0
-        self.produit = Petrole
+        self.nbAcier = 0
+
     def idle(self):
-        if  self.nbTravailleur >= 3 :
+        if  self.nbTravailleur >= 3 and self.nbAcier >= 2 :
             self.brain.setState(self.production)
+
+    def unmanned(self):
+        if self.nbTravailleur >= 3 :
+            self.brain.setState(self.production)
+
     def production(self):
-        self.spawn(self.produit*2)
+        for z in range(3):
+            self.spawn(Charbon)
+
         if self.nbTravailleur < 3 :
-            self.brain.setState(self.idle)
+            self.brain.setState(self.unmanned)
 
     def update(self):
         self.nbTravailleur = self.countByType(Travailleur)
+        self.nbAcier = self.countByType(Acier)
         self.brain.update()
 
-class MineUranium(Entite):
+class GisementPetrole(Entite):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self.nbTravailleur = 0
-        self.produit = Uranium
+        self.nbAcier = 0
+
     def idle(self):
-        if  self.nbTravailleur >= 3 :
+        if  self.nbTravailleur >= 3 and self.nbAcier >= 2 :
             self.brain.setState(self.production)
+
+    def unmanned(self):
+        if self.nbTravailleur >= 3 :
+            self.brain.setState(self.production)
+
     def production(self):
-        self.spawn(self.produit*2)
+        for z in range(3):
+            self.spawn(Petrole)
+
         if self.nbTravailleur < 3 :
-            self.brain.setState(self.idle)
+            self.brain.setState(self.unmanned)
 
     def update(self):
         self.nbTravailleur = self.countByType(Travailleur)
+        self.nbAcier = self.countByType(Acier)
+        self.brain.update()
+
+class GisementUranium(Entite):
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        self.nbTravailleur = 0
+        self.nbAcier = 0
+        self.energy = 3
+
+    def idle(self):
+        if  self.nbTravailleur >= 3 and self.nbAcier >= 2 and self.energy >= 1 :
+            self.brain.setState(self.production)
+
+    def unmanned(self):
+        if self.nbTravailleur >= 3 :
+            self.brain.setState(self.production)
+
+    def production(self):
+        for z in range(2):
+            self.spawn(Uranium)
+
+        if self.nbTravailleur < 3 :
+            self.brain.setState(self.unmanned)
+
+        if self.energy < 1 :
+            self.brain.setState(self.idle)
+
+        self.energy =- 1
+
+
+    def update(self):
+        self.nbTravailleur = self.countByType(Travailleur)
+        self.nbAcier = self.countByType(Acier)
         self.brain.update()
 
 class Mer(Entite):
