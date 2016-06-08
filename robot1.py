@@ -94,6 +94,14 @@ class Base(object):
     def save(self):
         pickle.dump(self, open(self.id, "wb"))
 
+    def update_file(self):
+        self.save()
+        for e in Robot.items:
+            if e.id == self.id:
+                Robot.items.remove(e)
+                Robot.items.append(self)
+
+
     def remove(self):
         for e in Robot.items:
             if e.id == self.id:
@@ -1574,7 +1582,7 @@ class Vivant(Base):
 
     """
     def init(self):
-        self.energy = 5
+        self.energy = 100
 
 
 class Travailleur(Vivant):
@@ -1583,7 +1591,12 @@ class Travailleur(Vivant):
         self.energy -= 1
         if self.energy < 1:
             self.remove()
+        o = self.findOneElement(Nourriture)
+        o.energy -= 1
+        print("Energie de ", o, o.energy)
+        print("Energie de ", self, self.energy)
 
+        o.update_file()
 
         super(Travailleur, self).update()
 class Ingenieur(Vivant): pass
@@ -1604,7 +1617,8 @@ class Nourriture(Base):
             - Viande
 
     """
-    pass
+    def init(self):
+        self.energy = 5000
 class Ble(Nourriture): pass
 class Mais(Nourriture): pass
 class Millet(Nourriture): pass
