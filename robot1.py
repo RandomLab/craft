@@ -104,7 +104,7 @@ class Base(object):
 
     #@classmethod
     def findOneElement(self, klass):
-        for root_path, folders, filenames in os.walk(self.path):
+        for root_path, folders, filenames in os.walk(base_path):
             for t in filenames:
                 try:
                      tmp = pickle.load(open(os.path.join(self.path, t), "rb"))
