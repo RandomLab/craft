@@ -219,7 +219,7 @@ class Entite(Base):
         pickle.dump(self, open(os.path.join(self.path, self.name, ".config"), "wb"))
 
     def remove(self, klass):
-        o = self.findOneElement(klass)
+        o = self.findOneElement(klass, local = True)
         if o: o.remove()
 
     def __str__(self):
