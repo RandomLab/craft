@@ -1397,7 +1397,7 @@ class Foret(Entite):
             self.brain.setState(self.production)
 
     def production(self):
-        if self.nbArbres < 2 or self.nbTravailleur < 1:
+        if  self.nbTravailleur < 1:
             self.brain.setState(self.idle)
         else:
             self.spawn(Bois)
@@ -1407,6 +1407,8 @@ class Foret(Entite):
         self.nbTravailleur = self.countByType(Travailleur)
         self.nbArbres = self.countByType(Arbre)
         self.brain.update()
+        if self.nbArbres < 2
+            self.mutate(Champ)
 
 class Bio(Base):
     """
