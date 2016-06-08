@@ -1642,7 +1642,7 @@ class Sorgho(Nourriture): pass
 class Poisson(Nourriture): pass
 class Viande(Nourriture): pass
 
-alert(text = "Ready?", title="Bienvenue", button = "Ok")
+alert(text = "Ready?", title="Fuck a duck and try to fly", button = "Ok")
 robot = Robot()
 # Robot(secondes=1)
 robot.run()
