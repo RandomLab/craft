@@ -1249,13 +1249,13 @@ class Mer(Entite):
     def recrutement(self):
 
         for z in range(self.nbLarveAnchois):
-            self.remove(LarveAnchois, self.id)
+            self.remove(LarveAnchois)
             self.spawn(AnchoisJeune, self.id)
         for y in range(self.nbAnchoisJeune):
-            self.remove(AnchoisJeune, self.id)
+            self.remove(AnchoisJeune)
             self.spawn(AnchoisUnAn, self.id)
         for u in range(self.nbAnchoisUnAn):
-            self.remove(AnchoisUnAn, self.id)
+            self.remove(AnchoisUnAn)
             self.spawn(AnchoisVieux, self.id)
 
         newlarves = random.randint(0,2)*self.nbAnchois
