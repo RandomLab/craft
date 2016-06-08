@@ -30,8 +30,8 @@ from FSM import FSM, StackFSM
     Ceci es ma modif !
 """
 
-base_path = "/Users/samuel/Desktop"
-# base_path = "/home/jdpillon/Bureau/samuel"
+#base_path = "/Users/samuel/Desktop"
+base_path = "/home/jdpillon/Bureau/samuel"
 
 class FileIO(object):
     @staticmethod
@@ -82,6 +82,8 @@ class Base(object):
         self.id = os.path.join(self.path, self.name)
         self.brain = StackFSM(self.idle)
         self.icon = icon
+        self.init()
+    def init(self): pass
     def checkPath(self, new_path, new_filename):
         if new_filename != ".config":
             self.path = new_path
@@ -1571,8 +1573,19 @@ class Vivant(Base):
         Représentation sous forme de fichier
 
     """
-    pass
-class Travailleur(Vivant): pass
+    def init(self):
+        self.energy = 5
+
+
+class Travailleur(Vivant):
+    def update(self):
+        # ce que tu veux
+        self.energy -= 1
+        if self.energy < 1:
+            self.remove()
+
+
+        super(Travailleur, self).update()
 class Ingenieur(Vivant): pass
 class Soldat(Vivant): pass
 
