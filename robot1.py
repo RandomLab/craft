@@ -11,6 +11,8 @@ from FSM import FSM, StackFSM
     Mutation X --> il faut que Jackda m'expliquasse
     Partagé
 
+    salut salut
+
     PRODUCTION UN TOUR SUR DEUX = modulo voir forêt X
     PLUSIEURS PRODUITS = self 1 et self 2 X
     PRODUITS * x = boucle for X
