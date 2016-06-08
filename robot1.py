@@ -333,6 +333,13 @@ class Robot(object):
 
             self.save()
 
+    def countByType(self, klass):
+        n = 0
+        for o in Robot.items:
+            if klass == type(o) or klass in tmp.__class__.__bases__:
+                n += 1
+        return n
+
     def loadFromFS(self):
         Robot.items = []
 
@@ -368,6 +375,10 @@ class Robot(object):
             time.sleep(self.secondes)
 
     def update(self):
+        # Conditions de victoire...
+        #if self.countByType(Ble):
+        #    alert("Whouaou")
+
         self.loadFromFS()
         for item in Robot.items:
             item.update()
