@@ -8,17 +8,15 @@ from FSM import FSM, StackFSM
 
 """
     # TODO :
+
     Icon
-    Mutation X --> il faut que Jackda m'expliquasse
     Dossier Partagé
 
     travailleurs qui peuvent manger partout
 
-    forêt qui remove le bois
-
     sam:
     implémenter la classe d'anchois (et virer tout le bazar dans la mer)
-    virer le bazar dans la class champ et utiliser culture/monoculture avec des if qui cherchent 
+    virer le bazar dans le champ et utiliser culture/monoculture avec des if qui cherchent 
         le type de céréale et qui spawne en fonction.
     mutations des gisements
 
@@ -298,9 +296,9 @@ class Robot(object):
             Robot.items.append(Travailleur(name="Travailleur1"))
             Robot.items.append(Travailleur(name="Travailleur2"))
             Robot.items.append(Travailleur(name="Travailleur3"))
-            Robot.items.append(Ble(name="miam"))
-            Robot.items.append(Ble(name="miam2"))
-            Robot.items.append(Ble(name="miam3"))
+            Robot.items.append(Cereale(name="miam"))
+            Robot.items.append(Cereale(name="miam2"))
+            Robot.items.append(Cereale(name="miam3"))
 
 
             """
@@ -1319,32 +1317,17 @@ class Champ(Entite):
         self.nbTracteur = 0
         self.nbTravailleur = 0
         self.nbChimie = 0
-        self.nbBle = 0
-        self.nbCoton = 0
-        self.nbLin = 0
-        self.nbMais = 0
-        self.nbMillet = 0
-        self.nbPatate = 0
-        self.nbRiz = 0
-        self.nbSeigle = 0
-        self.nbSoja = 0
-        self.nbSorgho = 0
-        self.nbSucre = 0
-        self.nbVin = 0
+        self.nbCereale = 0
 
     def idle(self):
 
+        if self.nbCereale < 1:
+            self.spawn(Cereale, self.id)
         if Robot.cycles%6 == 0 : self.spawn(Pollinisateur)
 
-        condition_ble = self.nbBle >= 1 and self.nbTravailleur >= 2 and self.nbPollinisateur >= 2 or self.nbTravailleur >= 3
+    def prod(self):
 
-#il execute les if de manière séquentielle le mec
-#c'est le dernier IF VRAI qui a raison
-        if condition_ble : self.brain.setState(self.ble)
-
-    def ble(self):
-        self.spawn(Ble)
-        if self.nbTravailleur < 3 or self.nbBle < 1 or self.nbTravailleur < 2 and self.nbPollinisateur < 2 :
+        if self.nbTravailleur < 3 or self.nbCereale < 1 or self.nbTravailleur < 2 and self.nbPollinisateur < 2 :
             self.brain.setState(self.idle)
         self.idle()
 
@@ -1353,17 +1336,7 @@ class Champ(Entite):
         self.nbTravailleur = self.countByType(Travailleur)
         self.nbTracteur = self.countByType(Tracteur)
         self.nbChimie = self.countByType(Chimie)
-        self.nbBle = self.countByType(Ble)
-        self.nbCoton = self.countByType(Coton)
-        self.nbLin = self.countByType(Lin)
-        self.nbMais = self.countByType(Mais)
-        self.nbMillet = self.countByType(Millet)
-        self.nbPatate = self.countByType(Patate)
-        self.nbSeigle = self.countByType(Seigle)
-        self.nbSoja = self.countByType(Soja)
-        self.nbSorgho = self.countByType(Sorgho)
-        self.nbSucre = self.countByType(Sucre)
-        self.nbVin = self.countByType(Vin)
+        self.nbCereale = self.countByType(Cereale)
         self.brain.update()
 
 class Foret(Entite):
@@ -1581,7 +1554,7 @@ class Vivant(Base):
 
     """
     def init(self):
-        self.energy = 2
+        self.energy = 3
 
 
 class Travailleur(Vivant):
@@ -1605,28 +1578,21 @@ class Soldat(Vivant): pass
 class Nourriture(Base):
     """
         Nourritures
-            - Ble
-            - Mais
-            - Millet
-            - Patate
-            - Riz
-            - Seigle
-            - Soja
-            - Sorgho
+            - Cereale
             - Poisson
             - Viande
 
     """
     def init(self):
-        self.energy = 1
-class Ble(Nourriture): pass
-class Mais(Nourriture): pass
-class Millet(Nourriture): pass
-class Patate(Nourriture): pass
-class Riz(Nourriture): pass
-class Seigle(Nourriture): pass
-class Soja(Nourriture): pass
-class Sorgho(Nourriture): pass
+        self.energy = 10
+
+    def update(self):
+        super(Nourriture, self).update()
+        if self.energy < 1:
+            self.remove()        
+
+
+class Cereale(Nourriture): pass
 class Poisson(Nourriture): pass
 class Viande(Nourriture): pass
 
