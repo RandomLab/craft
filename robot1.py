@@ -30,17 +30,14 @@ from FSM import FSM, StackFSM
     Ceci es ma modif !
 """
 
-base_path = "/Users/samuel/Desktop"
-# base_path = "/home/jdpillon/Bureau/samuel"
+#base_path = "/Users/samuel/Desktop"
+base_path = "/home/jdpillon/Bureau/samuel"
 
 class FileIO(object):
     @staticmethod
     def loadStegano(f):
-        print("load filename: ", f)
         im = Image.open(f)
         o = stepic.decode(im)
-        print("load string:", o)
-        print(type(o))
         o = bytes(o, 'UTF-8')
         return pickle.loads(o)
 
@@ -64,13 +61,12 @@ class FileIO(object):
         FileIO.saveBinaryFile(o)
     @staticmethod
     def load(f):
-        print("Load", f)
         return FileIO.loadBinaryFile(f)
 
 class Base(object):
     """
         Permet de charger et de sauvegarder un object
-        sur le système de fichier de l'utilisateur
+        sur le système de fichier de l'utilisateur sous forme de fichier
     """
     data = []
     def __init__(self, name = None, path = base_path, icon = "default.png"):
@@ -82,6 +78,8 @@ class Base(object):
         self.id = os.path.join(self.path, self.name)
         self.brain = StackFSM(self.idle)
         self.icon = icon
+        self.init()
+    def init(self): pass
     def checkPath(self, new_path, new_filename):
         if new_filename != ".config":
             self.path = new_path
@@ -91,6 +89,14 @@ class Base(object):
         self.brain.update()
     def save(self):
         pickle.dump(self, open(self.id, "wb"))
+
+    def update_file(self):
+        self.save()
+        for e in Robot.items:
+            if e.id == self.id:
+                Robot.items.remove(e)
+                Robot.items.append(self)
+
 
     def remove(self):
         for e in Robot.items:
@@ -102,14 +108,14 @@ class Base(object):
 
     #@classmethod
     def findOneElement(self, klass):
-        for root_path, folders, filenames in os.walk(self.id):
-         for t in filenames:
-            try:
-                 tmp = pickle.load(open(os.path.join(self.id, t), "rb"))
-                 if klass == type(tmp) or klass in tmp.__class__.__bases__:
-                     return tmp
-            except:
-                pass
+        for root_path, folders, filenames in os.walk(self.path):
+            for t in filenames:
+                try:
+                     tmp = pickle.load(open(os.path.join(self.path, t), "rb"))
+                     if klass == type(tmp) or klass in tmp.__class__.__bases__:
+                         return tmp
+                except:
+                    pass
         return None
 
     def spawn(self, klass = None, path = None):
@@ -191,6 +197,21 @@ class Entite(Base):
         self.__class__ = klass
         self.__init__(name = self.name)
         self.save()
+    # Peut etre fusionnée avec celle de Base. !?
+    def findOneElement(self, klass, local = False):
+        if local:
+            p = self.id
+        else:
+            p = self.path
+        for root_path, folders, filenames in os.walk(p):
+            for t in filenames:
+                try:
+                     tmp = pickle.load(open(os.path.join(p, t), "rb"))
+                     if klass == type(tmp) or klass in tmp.__class__.__bases__:
+                         return tmp
+                except:
+                    pass
+        return None
 
 
     def save(self):
@@ -322,7 +343,6 @@ class Robot(object):
             for f in filenames:
                 current_file = os.path.join(root_path, f)
                 if f != ".config":
-                    print(current_file)
                     o = FileIO.load(current_file)
                     o.checkPath(root_path, f)
                     Robot.items.append(o)
@@ -1247,13 +1267,13 @@ class Mer(Entite):
     def recrutement(self):
 
         for z in range(self.nbLarveAnchois):
-            self.remove(LarveAnchois, self.id)
+            self.remove(LarveAnchois)
             self.spawn(AnchoisJeune, self.id)
         for y in range(self.nbAnchoisJeune):
-            self.remove(AnchoisJeune, self.id)
+            self.remove(AnchoisJeune)
             self.spawn(AnchoisUnAn, self.id)
         for u in range(self.nbAnchoisUnAn):
-            self.remove(AnchoisUnAn, self.id)
+            self.remove(AnchoisUnAn)
             self.spawn(AnchoisVieux, self.id)
 
         newlarves = random.randint(0,2)*self.nbAnchois
@@ -1571,8 +1591,24 @@ class Vivant(Base):
         Représentation sous forme de fichier
 
     """
-    pass
-class Travailleur(Vivant): pass
+    def init(self):
+        self.energy = 100
+
+
+class Travailleur(Vivant):
+    def update(self):
+        # ce que tu veux
+        self.energy -= 1
+        o = self.findOneElement(Nourriture)
+        if o:
+            self.energy += 1
+            o.energy -= 1
+            o.update_file()
+        super(Travailleur, self).update()
+        if self.energy < 1:
+            self.remove()
+
+
 class Ingenieur(Vivant): pass
 class Soldat(Vivant): pass
 
@@ -1591,7 +1627,8 @@ class Nourriture(Base):
             - Viande
 
     """
-    pass
+    def init(self):
+        self.energy = 5000
 class Ble(Nourriture): pass
 class Mais(Nourriture): pass
 class Millet(Nourriture): pass
