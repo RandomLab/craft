@@ -8,15 +8,21 @@ from FSM import FSM, StackFSM
 """
     # TODO :
     Icon
-    Mutation X
+    Mutation X --> il faut que Jackda m'expliquasse
     Partagé
 
-    PRODUCTION UN TOUR SUR DEUX = modulo voir forêt
-    PLUSIEURS PRODUITS = self 1 et self 2
-    PRODUITS * x = boucle for
+    PRODUCTION UN TOUR SUR DEUX = modulo voir forêt X
+    PLUSIEURS PRODUITS = self 1 et self 2 X
+    PRODUITS * x = boucle for X
 
-    casse DANS LE TABLEAU à la fin? (le tableau sert à tirer les ressources de début au hasard)
+    ré-implémenter la monoculture
+    faire crafter un fichier de plante aléatoire dans l'init du champ
 
+    vérifier que la mer marche bien
+
+    class d'anchois qui vieillit
+    implémenter le remove qui prend des argumetns
+    la personne qui mange
 
 
 
@@ -122,7 +128,7 @@ class Base(object):
         print("find", self.name)
     """
     def __str__(self):
-        #return self.name + " : " + str(self.nbOuvriers) + " " + str(self.tracteur) + " " + str(self. ouvrier) + " " + str(self.pesticide)
+        #return self.name + " : " + str(self.nbtravailleur) + " " + str(self.tracteur) + " " + str(self. travailleur) + " " + str(self.chimie)
         return self.name + " " + self.getCurrentState()
 
 class Entite(Base):
@@ -233,39 +239,74 @@ class Robot(object):
             print("Create new game")
 
 # patrimoine de départ ici
+            """
+#mato grosso
 
-            Robot.items.append(Ville())
-            Robot.items.append(Ble(icon="Ble.png"))
-            Robot.items.append(BTP())
-            Robot.items.append(Champ())
-            Robot.items.append(Bois(name="bois1"))
-            Robot.items.append(Bois(name="bois2"))
-            Robot.items.append(Bois(name="bois3"))
-            Robot.items.append(Bois(name="bois4"))
-            Robot.items.append(Bois(name="bois5"))
-            Robot.items.append(Bois(name="bois6"))
-            Robot.items.append(Bois(name="bois7"))
-            Robot.items.append(Bois(name="bois8"))
-            Robot.items.append(Acier(name="Acier1"))
-            Robot.items.append(Acier(name="Acier2"))
-            Robot.items.append(Acier(name="Acier3"))
-            Robot.items.append(Acier(name="Acier4"))
-            Robot.items.append(Charbon())
-            Robot.items.append(Petrole(name="Petrole1"))
-            Robot.items.append(Petrole(name="Petrole2"))
-            Robot.items.append(Uranium())
-            Robot.items.append(Tracteur())
-            Robot.items.append(Metaux())
+            Robot.items.append(Ville(name="Sao Polo"))
+            Robot.items.append(Champ(name="Champ1"))
+            Robot.items.append(Champ(name="Champ2"))
+            Robot.items.append(Champ(name="Champ3")) 
+            Robot.items.append(Foret(name="Foret1"))
+            Robot.items.append(Foret(name="Foret2"))
+            Robot.items.append(Foret(name="Foret3"))
+            Robot.items.append(Foret(name="Foret4"))
+            Robot.items.append(Foret(name="Foret5"))
+            Robot.items.append(Foret(name="Foret6"))
+            Robot.items.append(Foret(name="Foret7"))
+            Robot.items.append(Foret(name="Foret8"))
+            Robot.items.append(Foret(name="Foret9"))
+            Robot.items.append(Foret(name="Foret10"))
+            Robot.items.append(PuitsPetrole(name="Petrole"))
+            Robot.items.append(MineCharbon(name="Charbon"))
+            Robot.items.append(Mer(name="mer1"))
+            Robot.items.append(Mer(name="mer2"))
             Robot.items.append(Travailleur(name="Travailleur1"))
             Robot.items.append(Travailleur(name="Travailleur2"))
-            Robot.items.append(Travailleur(name="Travailleur3"))
-            Robot.items.append(Travailleur(name="Travailleur4"))
-            Robot.items.append(Travailleur(name="Travailleur5"))
-            Robot.items.append(Travailleur(name="Travailleur6"))
-            Robot.items.append(Foret())
-            Robot.items.append(GenieMecanique())
-            Robot.items.append(Ingenieur(name="Ingenieur1"))
-            Robot.items.append(Ingenieur(name="Ingenieur2"))
+
+            """
+
+#texas-picardie
+
+            Robot.items.append(Ville(name="Austin"))
+            Robot.items.append(Champ(name="Champ1"))
+            Robot.items.append(Champ(name="Champ2"))
+            Robot.items.append(Mer(name="Mer1"))
+            Robot.items.append(PuitsPetrole(name="Puits1"))
+            Robot.items.append(PuitsPetrole(name="Puits2"))
+            Robot.items.append(PuitsPetrole(name="Puits3"))
+            Robot.items.append(PuitsPetrole(name="Puits4"))
+            Robot.items.append(PuitsPetrole(name="Puits5"))
+            Robot.items.append(PuitsPetrole(name="Puits6"))
+            Robot.items.append(MineMetauxPrecieux(name="MineP1"))
+            Robot.items.append(MineUranium(name="MineU1"))
+            Robot.items.append(Foret(name="Foret1"))
+            Robot.items.append(Foret(name="Foret2"))
+            Robot.items.append(Travailleur(name="Travailleur1"))
+            Robot.items.append(Travailleur(name="Travailleur2"))
+
+            """
+
+#Nord-pas-de-calais Groningen
+
+            Robot.items.append(Ville(name="Groningen"))
+            Robot.items.append(Champ(name="Champ1"))
+            Robot.items.append(Champ(name="Champ2"))
+            Robot.items.append(Champ(name="Champ3"))
+            Robot.items.append(Foret(name="Foret1"))
+            Robot.items.append(Foret(name="Foret2"))
+            Robot.items.append(Foret(name="Foret3"))
+            Robot.items.append(Mer(name="mer1"))
+            Robot.items.append(Mer(name="mer2"))
+            Robot.items.append(Mer(name="mer3"))
+            Robot.items.append(Mer(name="mer4"))
+            Robot.items.append(Mer(name="mer5"))
+            Robot.items.append(Mer(name="mer6"))
+            Robot.items.append(Travailleur(name="Travailleur1"))
+            Robot.items.append(Travailleur(name="Travailleur2"))
+
+            """
+
+
             self.save()
 
     def loadFromFS(self):
@@ -970,6 +1011,7 @@ class Electronique(Entite):
     def idle(self):
         if self.nbIngenieur >= 2 and self.nbMetauxPrecieux >= 2:
             self.brain.setState(self.production)
+
     def production(self):
         self.spawn(self.produit)
         if self.nbIngenieur < 2 or self.nbMetauxPrecieux < 2:
@@ -1146,7 +1188,7 @@ class MineCharbon(Entite):
         self.nbTravailleur = self.countByType(Travailleur)
         self.brain.update()
 
-class MinePetrole(Entite):
+class PuitsPetrole(Entite):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self.nbTravailleur = 0
@@ -1180,46 +1222,143 @@ class MineUranium(Entite):
         self.nbTravailleur = self.countByType(Travailleur)
         self.brain.update()
 
+class Mer(Entite):
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        self.nbTravailleur = 0
+        self.nbBateauUsine = 0
+        self.nbAnchois = 0
+        self.nbLarveAnchois = 0
+        self.nbAnchoisJeune = 0
+        self.nbAnchoisUnAn = 0
+        self.nbAnchoisVieux = 0
+
+    def idle(self):
+
+        self.spawn(AnchoisJeune, self.id)
+        self.spawn(AnchoisJeune, self.id)
+        self.spawn(AnchoisJeune, self.id)
+
+        if self.nbAnchois >= 2 : 
+            self.brain.setState(self.recrutement)
+
+    def recrutement(self):
+
+        for z in range(self.nbLarveAnchois):
+            self.remove(LarveAnchois, self.id)
+            self.spawn(AnchoisJeune, self.id)
+        for y in range(self.nbAnchoisJeune):
+            self.remove(AnchoisJeune, self.id)
+            self.spawn(AnchoisUnAn, self.id)
+        for u in range(self.nbAnchoisUnAn):
+            self.remove(AnchoisUnAn, self.id)
+            self.spawn(AnchoisVieux, self.id)
+
+        newlarves = random.randint(0,2)*self.nbAnchois
+        print("newlarves est égal à ", newlarves)
+        
+        for i in range(newlarves):
+            self.spawn(LarveAnchois)
+
+        if self.nbTravailleur >= 2 :
+            self.brain.setState(self.peche)
+
+    def peche(self):
+        for i in range(5):
+            self.spawn(Poisson)
+            self.remove(Anchois)
+
+        if self.nbAnchois >= 2 : 
+            self.brain.setState(self.recrutement)
+        else :
+            self.brain.setState(self.idle)
+
+
+    def update(self):
+        self.nbAnchois = self.countByType(Anchois)
+        self.nbLarveAnchois = self.countByType(LarveAnchois)
+        self.nbAnchoisJeune = self.countByType(AnchoisJeune)
+        self.nbAnchoisUnAn = self.countByType(AnchoisUnAn)
+        self.nbAnchoisVieux = self.countByType(AnchoisVieux)
+        self.brain.update()
+
+
 class Champ(Entite):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        self.tracteur = False
-        self.ouvrier = False
-        self.pesticide = False
-        self.nbOuvriers = self.countByType(Travailleur)
-        self.aliment = random.choice([Ble, Mais])
-        self.rendement = 0
+        self.nbPollinisateur = 0
+        self.nbTracteur = 0
+        self.nbTravailleur = 0
+        self.nbChimie = 0
+        self.nbBle = 0
+        self.nbCoton = 0
+        self.nbLin = 0
+        self.nbMais = 0
+        self.nbMillet = 0
+        self.nbPatate = 0
+        self.nbRiz = 0
+        self.nbSeigle = 0
+        self.nbSoja = 0
+        self.nbSorgho = 0
+        self.nbSucre = 0
+        self.nbVin = 0
+
+        self.spawn(Ble)
+
     def idle(self):
-        if self.nbOuvriers >= 5:
-            self.brain.setState(self.production)
-        if self.tracteur and self.ouvrier and self.pesticide:
-            self.brain.setState(self.monoculture)
-    def production(self):
-        self.rendement += 1
-        self.spawn(self.aliment)
-        if self.nbOuvriers < 5:
+
+        if Robot.cycles%3 == 0 : self.spawn(Pollinisateur)
+
+        condition_ble = self.nbBle >= 1 and self.nbTravailleur >= 2 and self.nbPollinisateur >= 2 or self.nbTravailleur >= 3
+        condition_coton = self.nbCoton >= 1 and self.nbTravailleur >= 2 and self.nbPollinisateur >= 2 or self.nbTravailleur >= 3
+        condition_lin = self.nbLin >= 1 and self.nbTravailleur >= 2 and self.nbPollinisateur >= 2 or self.nbTravailleur >= 3
+        condition_mais = self.nbMais >= 1 and self.nbTravailleur >= 2 and self.nbPollinisateur >= 2 or self.nbTravailleur >= 3 
+        condition_millet = self.nbMillet >= 1 and self.nbTravailleur >= 2 and self.nbPollinisateur >= 2 or self.nbTravailleur >= 3
+        condition_patate = self.nbPatate >= 1 and self.nbTravailleur >= 2 and self.nbPollinisateur >= 2 or self.nbTravailleur >= 3
+        condition_riz = self.nbRiz >= 1 and self.nbTravailleur >= 2 and self.nbPollinisateur >= 2 or self.nbTravailleur >= 3
+        condition_seigle = self.nbSeigle >= 1 and self.nbTravailleur >= 2 and self.nbPollinisateur >= 2 or self.nbTravailleur >= 3
+        condition_soja = self.nbSoja >= 1 and self.nbTravailleur >= 2 and self.nbPollinisateur >= 2 or self.nbTravailleur >= 3
+        condition_sorgho = self.nbSorgho >= 1 and self.nbTravailleur >= 2 and self.nbPollinisateur >= 2 or self.nbTravailleur >= 3
+        condition_sucre = self.nbSucre >= 1 and self.nbTravailleur >= 2 and self.nbPollinisateur >= 2 or self.nbTravailleur >= 3
+        condition_vin = self.nbVin >= 1 and self.nbTravailleur >= 2 and self.nbPollinisateur >= 2 or self.nbTravailleur >= 3
+
+#il execute les if de manière séquentielle le mec
+#c'est le dernier IF VRAI qui a raison
+        if condition_ble : self.brain.setState(self.ble)
+        if condition_coton : self.brain.setState(self.coton)
+        if condition_lin : self.brain.setState(self.lin)
+        if condition_mais : self.brain.setState(self.mais)
+        if condition_millet : self.brain.setState(self.millet)
+        if condition_patate : self.brain.setState(self.patate)
+        if condition_riz : self.brain.setState(self.riz)
+        if condition_seigle : self.brain.setState(self.seigle)
+        if condition_soja : self.brain.setState(self.soja)
+        if condition_sorgho : self.brain.setState(self.sorgho)
+        if condition_sucre : self.brain.setState(self.sucre)
+        if condition_vin : self.brain.setState(self.vin)
+    
+    def ble(self):
+        self.spawn(self.Ble)
+        if self.nbTravailleur < 3 or self.nbBle < 1 or self.nbTravailleur < 2 and self.nbPollinisateur < 2 :
             self.brain.setState(self.idle)
-        if self.tracteur and self.ouvrier and self.pesticide:
-            self.brain.pushState(self.monoculture)
-
-    def monoculture(self):
-        for k in range(5):
-            self.rendement += 1
-            self.spawn(self.aliment)
-
-        if not (self.tracteur and self.ouvrier and self.pesticide):
-            self.brain.popState()
+        self.idle()
 
     def update(self):
-        # update champ here
-        self.nbOuvriers = self.countByType(Travailleur)
-        self.tracteur = self.ouvrier = self.pesticide = False
-        if self.countByType(Tracteur) >= 1:
-            self.tracteur = True
-        if self.countByType(Chimie) >= 1:
-            self.pesticide = True
-        if self.countByType(Travailleur) >= 1:
-            self.ouvrier = True
+        self.nbPollinisateur = self.countByType(Pollinisateur)
+        self.nbTravailleur = self.countByType(Travailleur)
+        self.nbTracteur = self.countByType(Tracteur)
+        self.nbChimie = self.countByType(Chimie)
+        self.nbBle = self.countByType(Ble)
+        self.nbCoton = self.countByType(Coton)
+        self.nbLin = self.countByType(Lin)
+        self.nbMais = self.countByType(Mais)
+        self.nbMillet = self.countByType(Millet)
+        self.nbPatate = self.countByType(Patate)
+        self.nbSeigle = self.countByType(Seigle)
+        self.nbSoja = self.countByType(Soja)
+        self.nbSorgho = self.countByType(Sorgho)
+        self.nbSucre = self.countByType(Sucre)
+        self.nbVin = self.countByType(Vin)
         self.brain.update()
 
 class Foret(Entite):
@@ -1287,18 +1426,68 @@ class Mouton(Bio): pass
 class Boeuf(Bio): pass
 class Volaille(Bio): pass
 class Porc(Bio): pass
-class Anchois(Bio): pass
-class Anguille(Bio): pass
-class Baleine(Bio): pass
-class Carpe(Bio): pass
-class Colin(Bio): pass
-class Hareng(Bio): pass
-class Maquereau(Bio): pass
-class Morue(Bio): pass
-class Sardine(Bio): pass
-class Saumon(Bio): pass
-class Thon(Bio): pass
-class Truite(Bio): pass
+class Poisson(Bio) : 
+    """
+        Poissons
+            - Anchois
+            - Anguille
+            - Baleine
+            - Carpe
+            - Colin
+            - Hareng
+            - Maquereau
+            - Morue
+            - Sardine
+            - Saumon
+            - Thon
+            - Truite
+
+            - LarveAnchois
+
+
+        """
+pass
+
+class Anchois(Poisson):
+        """
+            Anchois
+                - AnchoisJeune
+                - AnchoisUnAn
+                - AnchoisVieux
+        """
+pass
+
+class LarveAnchois(Poisson): pass
+
+class AnchoisJeune(Anchois): pass
+class AnchoisUnAn(Anchois): pass
+class AnchoisVieux(Anchois): pass
+
+class Anguille(Poisson): pass
+class Baleine(Poisson): pass
+class Carpe(Poisson): pass
+class Colin(Poisson): pass
+class Hareng(Poisson): pass
+class Maquereau(Poisson): pass
+class Morue(Poisson): pass
+class Sardine(Poisson): pass
+class Saumon(Poisson): pass
+class Thon(Poisson): pass
+class Truite(Poisson): pass
+
+class Pollinisateur(Bio) :
+    """
+    Pollinisateurs
+        - Papillon
+        - Abeille
+
+    """
+    pass
+
+class Papillon(Pollinisateur) : pass
+class Abeille(Pollinisateur) : pass
+class Coccinelle(Pollinisateur) : pass
+
 
 class Produit(Base):
     """
