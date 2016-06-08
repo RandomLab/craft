@@ -1321,15 +1321,27 @@ class Champ(Entite):
 
     def idle(self):
 
+        if self.nbCereale < 1 and self.nbPollinisateur < 1:
+            self.spawn(Pollinisateur, self.id)
         if self.nbCereale < 1:
             self.spawn(Cereale, self.id)
-        if Robot.cycles%6 == 0 : self.spawn(Pollinisateur)
 
-    def prod(self):
+        if Robot.cycles%6 == 0 : self.spawn(Pollinisateur, self.id)
 
-        if self.nbTravailleur < 3 or self.nbCereale < 1 or self.nbTravailleur < 2 and self.nbPollinisateur < 2 :
+        if self.nbTravailleur >= 2 and self.nbPollinisateur >= 1 or self.nbTravailleur >= 3:
+            self.brain.setState(self.production)
+
+    def production(self):
+
+        if self.nbTravailleur < 3 or self.nbTravailleur < 2 and self.nbPollinisateur < 1 :
             self.brain.setState(self.idle)
         self.idle()
+
+        if Robot.cycles%12 == 0 : self.spawn(Pollinisateur, self.id)
+
+        for i in range(4):
+            self.spawn(Cereale)
+
 
     def update(self):
         self.nbPollinisateur = self.countByType(Pollinisateur)
