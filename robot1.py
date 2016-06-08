@@ -12,13 +12,17 @@ from FSM import FSM, StackFSM
     Mutation X --> il faut que Jackda m'expliquasse
     Dossier Partagé
 
-    ré-implémenter la monoculture
-    faire crafter un fichier de plante aléatoire dans l'init du champ
+    travailleurs qui peuvent manger partout
 
-    vérifier que la mer marche bien
+    forêt qui remove le bois
 
-    class d'anchois qui vieillit
-    implémenter le remove qui prend des arguments
+    sam:
+    implémenter la classe d'anchois (et virer tout le bazar dans la mer)
+    virer le bazar dans la class champ et utiliser culture/monoculture avec des if qui cherchent 
+        le type de céréale et qui spawne en fonction.
+    mutations des gisements
+
+
 
 """
 
@@ -286,11 +290,6 @@ class Robot(object):
             Robot.items.append(Champ(name="Champ1"))
             Robot.items.append(Champ(name="Champ2"))
             Robot.items.append(Mer(name="Mer1"))
-            Robot.items.append(PuitsPetrole(name="Puits1"))
-            Robot.items.append(PuitsPetrole(name="Puits2"))
-            Robot.items.append(PuitsPetrole(name="Puits3"))
-            Robot.items.append(PuitsPetrole(name="Puits4"))
-            Robot.items.append(PuitsPetrole(name="Puits5"))
             Robot.items.append(PuitsPetrole(name="Puits6"))
             Robot.items.append(MineMetauxPrecieux(name="MineP1"))
             Robot.items.append(MineUranium(name="MineU1"))
@@ -298,6 +297,11 @@ class Robot(object):
             Robot.items.append(Foret(name="Foret2"))
             Robot.items.append(Travailleur(name="Travailleur1"))
             Robot.items.append(Travailleur(name="Travailleur2"))
+            Robot.items.append(Travailleur(name="Travailleur3"))
+            Robot.items.append(Ble(name="miam"))
+            Robot.items.append(Ble(name="miam2"))
+            Robot.items.append(Ble(name="miam3"))
+
 
             """
 
@@ -1282,8 +1286,8 @@ class Mer(Entite):
         newlarves = random.randint(0,2)*self.nbAnchois
         print("newlarves est égal à ", newlarves)
 
-        for i in range(newlarves):
-            self.spawn(LarveAnchois)
+        #for i in range(newlarves):
+        #    self.spawn(LarveAnchois)
 
         if self.nbTravailleur >= 2 :
             self.brain.setState(self.peche)
@@ -1328,42 +1332,18 @@ class Champ(Entite):
         self.nbSucre = 0
         self.nbVin = 0
 
-        self.spawn(Ble)
-
     def idle(self):
 
-        if Robot.cycles%3 == 0 : self.spawn(Pollinisateur)
+        if Robot.cycles%6 == 0 : self.spawn(Pollinisateur)
 
         condition_ble = self.nbBle >= 1 and self.nbTravailleur >= 2 and self.nbPollinisateur >= 2 or self.nbTravailleur >= 3
-        condition_coton = self.nbCoton >= 1 and self.nbTravailleur >= 2 and self.nbPollinisateur >= 2 or self.nbTravailleur >= 3
-        condition_lin = self.nbLin >= 1 and self.nbTravailleur >= 2 and self.nbPollinisateur >= 2 or self.nbTravailleur >= 3
-        condition_mais = self.nbMais >= 1 and self.nbTravailleur >= 2 and self.nbPollinisateur >= 2 or self.nbTravailleur >= 3
-        condition_millet = self.nbMillet >= 1 and self.nbTravailleur >= 2 and self.nbPollinisateur >= 2 or self.nbTravailleur >= 3
-        condition_patate = self.nbPatate >= 1 and self.nbTravailleur >= 2 and self.nbPollinisateur >= 2 or self.nbTravailleur >= 3
-        condition_riz = self.nbRiz >= 1 and self.nbTravailleur >= 2 and self.nbPollinisateur >= 2 or self.nbTravailleur >= 3
-        condition_seigle = self.nbSeigle >= 1 and self.nbTravailleur >= 2 and self.nbPollinisateur >= 2 or self.nbTravailleur >= 3
-        condition_soja = self.nbSoja >= 1 and self.nbTravailleur >= 2 and self.nbPollinisateur >= 2 or self.nbTravailleur >= 3
-        condition_sorgho = self.nbSorgho >= 1 and self.nbTravailleur >= 2 and self.nbPollinisateur >= 2 or self.nbTravailleur >= 3
-        condition_sucre = self.nbSucre >= 1 and self.nbTravailleur >= 2 and self.nbPollinisateur >= 2 or self.nbTravailleur >= 3
-        condition_vin = self.nbVin >= 1 and self.nbTravailleur >= 2 and self.nbPollinisateur >= 2 or self.nbTravailleur >= 3
 
 #il execute les if de manière séquentielle le mec
 #c'est le dernier IF VRAI qui a raison
         if condition_ble : self.brain.setState(self.ble)
-        if condition_coton : self.brain.setState(self.coton)
-        if condition_lin : self.brain.setState(self.lin)
-        if condition_mais : self.brain.setState(self.mais)
-        if condition_millet : self.brain.setState(self.millet)
-        if condition_patate : self.brain.setState(self.patate)
-        if condition_riz : self.brain.setState(self.riz)
-        if condition_seigle : self.brain.setState(self.seigle)
-        if condition_soja : self.brain.setState(self.soja)
-        if condition_sorgho : self.brain.setState(self.sorgho)
-        if condition_sucre : self.brain.setState(self.sucre)
-        if condition_vin : self.brain.setState(self.vin)
 
     def ble(self):
-        self.spawn(self.Ble)
+        self.spawn(Ble)
         if self.nbTravailleur < 3 or self.nbBle < 1 or self.nbTravailleur < 2 and self.nbPollinisateur < 2 :
             self.brain.setState(self.idle)
         self.idle()
@@ -1391,24 +1371,28 @@ class Foret(Entite):
         super().__init__(**kwargs)
         self.nbArbres = 0
         self.nbTravailleur = 0
+
     def idle(self):
+        self.spawn(Arbre, self.id)
         if Robot.cycles%3 == 0: self.spawn(Arbre, self.id)
-        if self.nbTravailleur >= 2 and self.nbArbres > 2:
+        if self.nbTravailleur >= 2:
             self.brain.setState(self.production)
 
     def production(self):
-        if  self.nbTravailleur < 1:
+        if  self.nbTravailleur < 2:
             self.brain.setState(self.idle)
         else:
             self.spawn(Bois)
             self.remove(Arbre)
+            #le remove ne marche plus
+        if self.nbArbres < 1:
+            self.mutate(Champ)
 
     def update(self):
         self.nbTravailleur = self.countByType(Travailleur)
         self.nbArbres = self.countByType(Arbre)
         self.brain.update()
-        if self.nbArbres < 2
-            self.mutate(Champ)
+
 
 class Bio(Base):
     """
@@ -1611,6 +1595,8 @@ class Travailleur(Vivant):
         super(Travailleur, self).update()
         if self.energy < 1:
             self.remove()
+
+#il faut que la nourriture soit dans le même folder que le travailleur (ça va pas)
 
 
 class Ingenieur(Vivant): pass
