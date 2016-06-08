@@ -27,7 +27,7 @@ from FSM import FSM, StackFSM
     la personne qui mange
 
 
-
+    Ceci es ma modif !
 """
 
 base_path = "/Users/samuel/Desktop"
@@ -247,7 +247,7 @@ class Robot(object):
             Robot.items.append(Ville(name="Sao Polo"))
             Robot.items.append(Champ(name="Champ1"))
             Robot.items.append(Champ(name="Champ2"))
-            Robot.items.append(Champ(name="Champ3")) 
+            Robot.items.append(Champ(name="Champ3"))
             Robot.items.append(Foret(name="Foret1"))
             Robot.items.append(Foret(name="Foret2"))
             Robot.items.append(Foret(name="Foret3"))
@@ -368,7 +368,7 @@ vivants = [Travailleur, Ingenieur, Soldat]
 ########################################################################################################################
 ########################################################################################################################
 ########################################################################################################################
-########################################################################################################################        
+########################################################################################################################
 
 class Ville(Entite):
     def __init__(self, **kwargs):
@@ -399,10 +399,10 @@ class Ville(Entite):
 #c'est le dernier IF VRAI qui a raison
         if condition_pop : self.brain.setState(self.pop)
         if condition_newBTP : self.brain.setState(self.newBTP)
-        if condition_newAcierie : self.brain.setState(self.newAcierie)    
-        if condition_newTissage : self.brain.setState(self.newTissage)    
-        if condition_newGenieMecanique : self.brain.setState(self.newGenieMecanique)    
-        if condition_newcentraleThermique: self.brain.setState(self.newCentraleThermique)    
+        if condition_newAcierie : self.brain.setState(self.newAcierie)
+        if condition_newTissage : self.brain.setState(self.newTissage)
+        if condition_newGenieMecanique : self.brain.setState(self.newGenieMecanique)
+        if condition_newcentraleThermique: self.brain.setState(self.newCentraleThermique)
 
     def pop(self):
         self.spawn(self.produit)
@@ -414,7 +414,7 @@ class Ville(Entite):
 #le client veut fabriquer un truc dans sa ville.
 
     def newBTP(self):
-        newbtp = self.spawn(BTP) 
+        newbtp = self.spawn(BTP)
         for i in range(5):
             self.remove(Bois)
         for u in range(4):
@@ -424,12 +424,12 @@ class Ville(Entite):
         if self.nbBois < 5 or self.nbTravailleur < 4:
             self.brain.setState(self.idle)
             self.save()
-        
+
         self.idle()
 
 
     def newAcierie(self):
-        newacierie = self.spawn(Acierie) 
+        newacierie = self.spawn(Acierie)
         for i in range(8):
             self.remove(Bois)
         for u in range(4):
@@ -443,7 +443,7 @@ class Ville(Entite):
         self.idle()
 
     def newTissage(self):
-        newtissage = self.spawn(Tissage) 
+        newtissage = self.spawn(Tissage)
         for i in range(5):
             self.remove(Bois)
         for u in range(2):
@@ -461,7 +461,7 @@ class Ville(Entite):
         self.idle()
 
     def newGenieMecanique(self):
-        newgeniemecanique = self.spawn(GenieMecanique) 
+        newgeniemecanique = self.spawn(GenieMecanique)
         for i in range(5):
             self.remove(Bois)
         for u in range(4):
@@ -477,7 +477,7 @@ class Ville(Entite):
         self.idle()
 
     def newCentraleThermique(self):
-        newcentralethermique= self.spawn(CentraleThermique) 
+        newcentralethermique= self.spawn(CentraleThermique)
         for i in range(5):
             self.remove(Bois)
         for u in range(2):
@@ -513,7 +513,7 @@ class Ville(Entite):
         self.brain.update()
 
 class BTP(Entite):
-    def __init__(self, **kwargs): 
+    def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self.nbTravailleur = 0
         self.produit = Beton
@@ -609,8 +609,8 @@ class GenieMecanique(Entite):
         if condition_VTH : self.brain.setState(self.newVTH)
         if condition_VTE : self.brain.setState(self.newVTE)
         if condition_Tracteur : self.brain.setState(self.newTracteur)
-        if condition_BateauUsine : self.brain.setState(self.newBateauUsine)        
-        
+        if condition_BateauUsine : self.brain.setState(self.newBateauUsine)
+
 
     def newVTH(self):
         self.spawn(VehiculeThermique)
@@ -683,13 +683,13 @@ class Megapole(Entite):
 #c'est le dernier IF VRAI qui a raison
         if condition_pop : self.brain.setState(self.pop)
         if condition_newIndustrieChimique : self.brain.setState(self.newIndustrieChimique)
-        if condition_newArsenal : self.brain.setState(self.newArsenal)    
-        if condition_newHopital : self.brain.setState(self.newHopital)    
-        if condition_newUniversite : self.brain.setState(self.newUniversite)    
-        if condition_newAeronautique : self.brain.setState(self.newAeronautique)    
-        if condition_newCentraleAtom : self.brain.setState(self.newCentraleAtom)    
-        if condition_newCentraleSol : self.brain.setState(self.newCentraleSol)    
-        if condition_newCaserne : self.brain.setState(self.newCaserne)    
+        if condition_newArsenal : self.brain.setState(self.newArsenal)
+        if condition_newHopital : self.brain.setState(self.newHopital)
+        if condition_newUniversite : self.brain.setState(self.newUniversite)
+        if condition_newAeronautique : self.brain.setState(self.newAeronautique)
+        if condition_newCentraleAtom : self.brain.setState(self.newCentraleAtom)
+        if condition_newCentraleSol : self.brain.setState(self.newCentraleSol)
+        if condition_newCaserne : self.brain.setState(self.newCaserne)
 
     def pop(self):
         self.spawn(self.produit)
@@ -701,7 +701,7 @@ class Megapole(Entite):
 #le client veut fabriquer un truc dans sa ville.
 
     def newIndustrieChimique(self):
-        newindustriechimique = self.spawn(IndustrieChimique) 
+        newindustriechimique = self.spawn(IndustrieChimique)
         for i in range(5):
             self.remove(Beton)
         for z in range(3):
@@ -713,12 +713,12 @@ class Megapole(Entite):
         if self.nbBeton < 5 or self.nbTravailleur < 4 or self.nbAcier < 3 :
             self.brain.setState(self.idle)
             self.save()
-        
+
         self.idle()
 
 
     def newArsenal(self):
-        newarsenal = self.spawn(Arsenal) 
+        newarsenal = self.spawn(Arsenal)
         for i in range(5):
             self.remove(Beton)
         for z in range(3):
@@ -734,7 +734,7 @@ class Megapole(Entite):
         self.idle()
 
     def newHopital(self):
-        newhopital = self.spawn(Hopital) 
+        newhopital = self.spawn(Hopital)
         for i in range(5):
             self.remove(Beton)
         for u in range(4):
@@ -748,7 +748,7 @@ class Megapole(Entite):
         self.idle()
 
     def newUniversite(self):
-        newuniversite = self.spawn(Universite) 
+        newuniversite = self.spawn(Universite)
         for i in range(5):
             self.remove(Beton)
         for u in range(3):
@@ -764,7 +764,7 @@ class Megapole(Entite):
         self.idle()
 
     def newAeronautique(self):
-        newaeronautique = self.spawn(Aeronautique) 
+        newaeronautique = self.spawn(Aeronautique)
         for i in range(5):
             self.remove(Beton)
         for z in range(3):
@@ -780,7 +780,7 @@ class Megapole(Entite):
         self.idle()
 
     def newCentraleAtom(self):
-        newcentraleatom = self.spawn(CentraleAtom) 
+        newcentraleatom = self.spawn(CentraleAtom)
         for i in range(5):
             self.remove(Beton)
         self.remove(Uranium)
@@ -794,7 +794,7 @@ class Megapole(Entite):
         self.idle()
 
     def newCentraleSol(self):
-        newcentralesol = self.spawn(CentraleSol) 
+        newcentralesol = self.spawn(CentraleSol)
         for i in range(5):
             self.remove(Beton)
         self.remove(MetauxPrecieux)
@@ -808,7 +808,7 @@ class Megapole(Entite):
         self.idle()
 
     def newCaserne(self):
-        newcaserne = self.spawn(Caserne) 
+        newcaserne = self.spawn(Caserne)
         for i in range(5):
             self.remove(Beton)
         for u in range(2):
@@ -859,8 +859,8 @@ class Arsenal(Entite):
         if condition_Fusil : self.brain.setState(self.newFusil)
         if condition_Tank : self.brain.setState(self.newTank)
         if condition_Bombardier : self.brain.setState(self.newBombardier)
-        if condition_Missile : self.brain.setState(self.newMissile)        
-        
+        if condition_Missile : self.brain.setState(self.newMissile)
+
     def newTank(self):
         self.spawn(Arme)
         self.remove(Acier)
@@ -1066,8 +1066,8 @@ class Megalopole(Entite):
 #c'est le dernier IF VRAI qui a raison
         if condition_pop : self.brain.setState(self.pop)
         if condition_newElectronique : self.brain.setState(self.newElectronique)
-        if condition_newBanque : self.brain.setState(self.newBanque)    
-        if condition_newAssurance : self.brain.setState(self.newAssurance)    
+        if condition_newBanque : self.brain.setState(self.newBanque)
+        if condition_newAssurance : self.brain.setState(self.newAssurance)
 
     def pop(self):
         self.spawn(self.produit)
@@ -1079,7 +1079,7 @@ class Megalopole(Entite):
 #le client veut fabriquer un truc dans sa ville.
 
     def newElectronique(self):
-        newelectronique = self.spawn(Electronique) 
+        newelectronique = self.spawn(Electronique)
         for i in range(5):
             self.remove(Beton)
         for z in range(2):
@@ -1091,11 +1091,11 @@ class Megalopole(Entite):
         if self.nbBeton < 5 or self.nbMetauxPrecieux < 2 or self.nbIngenieur < 2 :
             self.brain.setState(self.idle)
             self.save()
-        
+
         self.idle()
 
     def newBanque(self):
-        newbanque = self.spawn(Banque) 
+        newbanque = self.spawn(Banque)
         for i in range(5):
             self.remove(Beton)
         for z in range(5):
@@ -1107,11 +1107,11 @@ class Megalopole(Entite):
         if self.nbBeton < 5 or self.nbMetauxPrecieux < 2 or self.nbIngenieur < 2 :
             self.brain.setState(self.idle)
             self.save()
-        
+
         self.idle()
 
     def newElectronique(self):
-        newelectronique = self.spawn(Electronique) 
+        newelectronique = self.spawn(Electronique)
         for i in range(5):
             self.remove(Beton)
         for z in range(2):
@@ -1123,7 +1123,7 @@ class Megalopole(Entite):
         if self.nbBeton < 5 or self.nbMetauxPrecieux < 2 or self.nbIngenieur < 2 :
             self.brain.setState(self.idle)
             self.save()
-        
+
         self.idle()
 
     def update(self):
@@ -1241,7 +1241,7 @@ class Mer(Entite):
         self.spawn(AnchoisJeune, self.id)
         self.spawn(AnchoisJeune, self.id)
 
-        if self.nbAnchois >= 2 : 
+        if self.nbAnchois >= 2 :
             self.brain.setState(self.recrutement)
 
     def recrutement(self):
@@ -1258,7 +1258,7 @@ class Mer(Entite):
 
         newlarves = random.randint(0,2)*self.nbAnchois
         print("newlarves est égal à ", newlarves)
-        
+
         for i in range(newlarves):
             self.spawn(LarveAnchois)
 
@@ -1270,7 +1270,7 @@ class Mer(Entite):
             self.spawn(Poisson)
             self.remove(Anchois)
 
-        if self.nbAnchois >= 2 : 
+        if self.nbAnchois >= 2 :
             self.brain.setState(self.recrutement)
         else :
             self.brain.setState(self.idle)
@@ -1314,7 +1314,7 @@ class Champ(Entite):
         condition_ble = self.nbBle >= 1 and self.nbTravailleur >= 2 and self.nbPollinisateur >= 2 or self.nbTravailleur >= 3
         condition_coton = self.nbCoton >= 1 and self.nbTravailleur >= 2 and self.nbPollinisateur >= 2 or self.nbTravailleur >= 3
         condition_lin = self.nbLin >= 1 and self.nbTravailleur >= 2 and self.nbPollinisateur >= 2 or self.nbTravailleur >= 3
-        condition_mais = self.nbMais >= 1 and self.nbTravailleur >= 2 and self.nbPollinisateur >= 2 or self.nbTravailleur >= 3 
+        condition_mais = self.nbMais >= 1 and self.nbTravailleur >= 2 and self.nbPollinisateur >= 2 or self.nbTravailleur >= 3
         condition_millet = self.nbMillet >= 1 and self.nbTravailleur >= 2 and self.nbPollinisateur >= 2 or self.nbTravailleur >= 3
         condition_patate = self.nbPatate >= 1 and self.nbTravailleur >= 2 and self.nbPollinisateur >= 2 or self.nbTravailleur >= 3
         condition_riz = self.nbRiz >= 1 and self.nbTravailleur >= 2 and self.nbPollinisateur >= 2 or self.nbTravailleur >= 3
@@ -1338,7 +1338,7 @@ class Champ(Entite):
         if condition_sorgho : self.brain.setState(self.sorgho)
         if condition_sucre : self.brain.setState(self.sucre)
         if condition_vin : self.brain.setState(self.vin)
-    
+
     def ble(self):
         self.spawn(self.Ble)
         if self.nbTravailleur < 3 or self.nbBle < 1 or self.nbTravailleur < 2 and self.nbPollinisateur < 2 :
@@ -1395,22 +1395,22 @@ class Bio(Base):
             - Sucre
             - Vin
             - Pollinisateur (§)
-            - Mouton 
-            - Boeuf 
-            - Volaille 
+            - Mouton
+            - Boeuf
+            - Volaille
             - Porc
             - Anchois  (§)
-            - Anguille 
-            - Baleine 
-            - Carpe 
-            - Colin 
-            - Hareng 
-            - Maquereau 
+            - Anguille
+            - Baleine
+            - Carpe
+            - Colin
+            - Hareng
+            - Maquereau
             - Morue (§)
-            - Sardine 
-            - Saumon 
-            - Thon 
-            - Truite 
+            - Sardine
+            - Saumon
+            - Thon
+            - Truite
 
             Représentation sous forme de fichier
 
@@ -1428,7 +1428,7 @@ class Mouton(Bio): pass
 class Boeuf(Bio): pass
 class Volaille(Bio): pass
 class Porc(Bio): pass
-class Poisson(Bio) : 
+class Poisson(Bio) :
     """
         Poissons
             - Anchois
@@ -1528,7 +1528,7 @@ class Ordinateur(Produit): pass
 class Tracteur(Produit): pass
 class Sante(Produit): pass
 
-class Vehicule(Produit): 
+class Vehicule(Produit):
     """
         Vehicules
             -VehiculeThermique
@@ -1576,7 +1576,7 @@ class Travailleur(Vivant): pass
 class Ingenieur(Vivant): pass
 class Soldat(Vivant): pass
 
-class Nourriture(Base): 
+class Nourriture(Base):
     """
         Nourritures
             - Ble
