@@ -10,13 +10,7 @@ from FSM import FSM, StackFSM
     # TODO :
     Icon
     Mutation X --> il faut que Jackda m'expliquasse
-    Partagé
-
-    salut salut
-
-    PRODUCTION UN TOUR SUR DEUX = modulo voir forêt X
-    PLUSIEURS PRODUITS = self 1 et self 2 X
-    PRODUITS * x = boucle for X
+    Dossier Partagé
 
     ré-implémenter la monoculture
     faire crafter un fichier de plante aléatoire dans l'init du champ
@@ -24,15 +18,12 @@ from FSM import FSM, StackFSM
     vérifier que la mer marche bien
 
     class d'anchois qui vieillit
-    implémenter le remove qui prend des argumetns
-    la personne qui mange
+    implémenter le remove qui prend des arguments
 
-
-    Ceci es ma modif !
 """
 
-#base_path = "/Users/samuel/Desktop"
-base_path = "/home/jdpillon/Bureau/samuel"
+base_path = "/Users/samuel/Desktop"
+#base_path = "/home/jdpillon/Bureau/samuel"
 
 class FileIO(object):
     @staticmethod
