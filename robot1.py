@@ -1584,12 +1584,11 @@ class Vivant(Base):
 
     """
     def init(self):
-        self.energy = 100
+        self.energy = 2
 
 
 class Travailleur(Vivant):
     def update(self):
-        # ce que tu veux
         self.energy -= 1
         o = self.findOneElement(Nourriture)
         if o:
@@ -1620,7 +1619,7 @@ class Nourriture(Base):
 
     """
     def init(self):
-        self.energy = 5000
+        self.energy = 1
 class Ble(Nourriture): pass
 class Mais(Nourriture): pass
 class Millet(Nourriture): pass
