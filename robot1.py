@@ -36,11 +36,8 @@ base_path = "/home/jdpillon/Bureau/samuel"
 class FileIO(object):
     @staticmethod
     def loadStegano(f):
-        print("load filename: ", f)
         im = Image.open(f)
         o = stepic.decode(im)
-        print("load string:", o)
-        print(type(o))
         o = bytes(o, 'UTF-8')
         return pickle.loads(o)
 
@@ -64,13 +61,12 @@ class FileIO(object):
         FileIO.saveBinaryFile(o)
     @staticmethod
     def load(f):
-        print("Load", f)
         return FileIO.loadBinaryFile(f)
 
 class Base(object):
     """
         Permet de charger et de sauvegarder un object
-        sur le système de fichier de l'utilisateur
+        sur le système de fichier de l'utilisateur sous forme de fichier
     """
     data = []
     def __init__(self, name = None, path = base_path, icon = "default.png"):
@@ -112,14 +108,14 @@ class Base(object):
 
     #@classmethod
     def findOneElement(self, klass):
-        for root_path, folders, filenames in os.walk(self.id):
-         for t in filenames:
-            try:
-                 tmp = pickle.load(open(os.path.join(self.id, t), "rb"))
-                 if klass == type(tmp) or klass in tmp.__class__.__bases__:
-                     return tmp
-            except:
-                pass
+        for root_path, folders, filenames in os.walk(self.path):
+            for t in filenames:
+                try:
+                     tmp = pickle.load(open(os.path.join(self.path, t), "rb"))
+                     if klass == type(tmp) or klass in tmp.__class__.__bases__:
+                         return tmp
+                except:
+                    pass
         return None
 
     def spawn(self, klass = None, path = None):
@@ -201,6 +197,21 @@ class Entite(Base):
         self.__class__ = klass
         self.__init__(name = self.name)
         self.save()
+    # Peut etre fusionnée avec celle de Base. !?
+    def findOneElement(self, klass, local = False):
+        if local:
+            p = self.id
+        else:
+            p = self.path
+        for root_path, folders, filenames in os.walk(p):
+            for t in filenames:
+                try:
+                     tmp = pickle.load(open(os.path.join(p, t), "rb"))
+                     if klass == type(tmp) or klass in tmp.__class__.__bases__:
+                         return tmp
+                except:
+                    pass
+        return None
 
 
     def save(self):
@@ -332,7 +343,6 @@ class Robot(object):
             for f in filenames:
                 current_file = os.path.join(root_path, f)
                 if f != ".config":
-                    print(current_file)
                     o = FileIO.load(current_file)
                     o.checkPath(root_path, f)
                     Robot.items.append(o)
@@ -1589,16 +1599,16 @@ class Travailleur(Vivant):
     def update(self):
         # ce que tu veux
         self.energy -= 1
+        o = self.findOneElement(Nourriture)
+        if o:
+            self.energy += 1
+            o.energy -= 1
+            o.update_file()
+        super(Travailleur, self).update()
         if self.energy < 1:
             self.remove()
-        o = self.findOneElement(Nourriture)
-        o.energy -= 1
-        print("Energie de ", o, o.energy)
-        print("Energie de ", self, self.energy)
 
-        o.update_file()
 
-        super(Travailleur, self).update()
 class Ingenieur(Vivant): pass
 class Soldat(Vivant): pass
 
