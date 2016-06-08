@@ -16,8 +16,7 @@ from FSM import FSM, StackFSM
 
     sam:
     implémenter la classe d'anchois (et virer tout le bazar dans la mer)
-    virer le bazar dans le champ et utiliser culture/monoculture avec des if qui cherchent 
-        le type de céréale et qui spawne en fonction.
+    réimplémenter la monoculture 
     mutations des gisements
 
 
@@ -288,8 +287,8 @@ class Robot(object):
             Robot.items.append(Champ(name="Champ1"))
             Robot.items.append(Champ(name="Champ2"))
             Robot.items.append(Mer(name="Mer1"))
-            Robot.items.append(PuitsPetrole(name="Puits6"))
-            Robot.items.append(MineMetauxPrecieux(name="MineP1"))
+            Robot.items.append(Chimie(name="Chimie"))
+            Robot.items.append(Bestiau(name="Vache"))
             Robot.items.append(MineUranium(name="MineU1"))
             Robot.items.append(Foret(name="Foret1"))
             Robot.items.append(Foret(name="Foret2"))
@@ -1318,6 +1317,8 @@ class Champ(Entite):
         self.nbTravailleur = 0
         self.nbChimie = 0
         self.nbCereale = 0
+        self.nbBestiau = 0
+        self.nbLait = 0
 
     def idle(self):
 
@@ -1329,9 +1330,18 @@ class Champ(Entite):
         if Robot.cycles%6 == 0 : self.spawn(Pollinisateur, self.id)
 
         if self.nbTravailleur >= 2 and self.nbPollinisateur >= 1 or self.nbTravailleur >= 3:
-            self.brain.setState(self.production)
+            self.brain.setState(self.culture)
 
-    def production(self):
+        if self.nbTravailleur >= 1 and self.nbTracteur >= 1 and self.nbChimie >= 1:
+            self.brain.setState(self.monoculture)
+
+        if self.nbTravailleur >= 1 and self.nbBestiau >= 1 :
+            self.brain.setState(self.elevage)
+
+        if self.nbTravailleur >= 1 and self.nbBestiau >= 1 and self.nbChimie >= 1 and self.nbCereale >= 10:
+            self.brain.setState(self.elevageIntensif)
+
+    def culture(self):
 
         if self.nbTravailleur < 3 or self.nbTravailleur < 2 and self.nbPollinisateur < 1 :
             self.brain.setState(self.idle)
@@ -1342,6 +1352,43 @@ class Champ(Entite):
         for i in range(4):
             self.spawn(Cereale)
 
+    def monoculture(self):
+
+        if self.nbTravailleur < 1 or self.nbTracteur < 1 or self.nbChimie < 1 or self.nbPollinisateur < 1:
+            self.brain.setState(self.idle)
+
+        for i in range(8):
+            self.spawn(Cereale)
+
+        self.remove(Pollinisateur, self.id)
+        self.remove(Chimie, self.id)
+
+    def elevage(self):
+
+        if self.nbTravailleur < 1 or self.nbBestiau < 1 :
+            self.brain.setState(self.idle)
+
+        for i in range(2):
+            self.spawn(Lait)
+ 
+        if Robot.cycles%12 == 0 : self.spawn(Pollinisateur, self.id)
+
+    def elevageIntensif(self):
+
+        self.remove(Chimie)
+        for z in range(10) : self.remove(Cereale)
+        # a priori ce remove marche
+        for y in range(9) : self.spawn(Bestiau, self.id)
+
+        if self.nbTravailleur < 1 or self.nbBestiau < 1 or self.nbCereale < 1 :
+            self.brain.setState(self.idle)
+
+        for i in range(3):
+            self.spawn(Viande)
+
+        self.remove(Bestiau)
+        # mais celui-ci non.
+        self.remove(Cereale)
 
     def update(self):
         self.nbPollinisateur = self.countByType(Pollinisateur)
@@ -1349,7 +1396,10 @@ class Champ(Entite):
         self.nbTracteur = self.countByType(Tracteur)
         self.nbChimie = self.countByType(Chimie)
         self.nbCereale = self.countByType(Cereale)
+        self.nbBestiau = self.countByType(Bestiau)
+        self.nbLait = self.countByType(Lait)
         self.brain.update()
+
 
 class Foret(Entite):
     def __init__(self, **kwargs):
@@ -1418,10 +1468,9 @@ class Lin(Bio): pass
 class Sucre(Bio): pass
 class Vin(Bio): pass
 class Pollinisateur(Bio): pass
-class Mouton(Bio): pass
-class Boeuf(Bio): pass
-class Volaille(Bio): pass
-class Porc(Bio): pass
+
+class Bestiau(Bio): pass
+
 class Poisson(Bio) :
     """
         Poissons
@@ -1607,6 +1656,7 @@ class Nourriture(Base):
 class Cereale(Nourriture): pass
 class Poisson(Nourriture): pass
 class Viande(Nourriture): pass
+class Lait(Nourriture): pass
 
 alert(text = "Ready?", title="Fuck a duck and try to fly", button = "Ok")
 robot = Robot()
