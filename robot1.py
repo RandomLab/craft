@@ -442,18 +442,20 @@ class Ville(Entite):
 #le client veut fabriquer un truc dans sa ville.
 
     def newBTP(self):
+
         newbtp = self.spawn(BTP)
+
         for i in range(5):
             self.remove(Bois)
+            self.nbBois -= 1
         for u in range(4):
             self.remove(Travailleur)
+            self.nbTravailleur -= 1
             self.spawn(Travailleur, newbtp.id)
 
         if self.nbBois < 5 or self.nbTravailleur < 4:
             self.brain.setState(self.idle)
             self.save()
-
-        self.idle()
 
 
     def newAcierie(self):
@@ -1316,7 +1318,7 @@ class Champ(Entite):
 
         if Robot.cycles%6 == 0 : self.spawn(Pollinisateur, self.id)
 
-        if self.nbTravailleur >= 2 and self.nbPollinisateur >= 1 or self.nbTravailleur >= 3:
+        if (self.nbTravailleur >= 2 and self.nbPollinisateur >= 1) or self.nbTravailleur >= 3:
             self.brain.setState(self.culture)
 
         if self.nbTravailleur >= 1 and self.nbTracteur >= 1 and self.nbChimie >= 1:
