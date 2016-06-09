@@ -26,8 +26,8 @@ from FSM import FSM, StackFSM
 """
 
 #base_path = "/Users/samuel/Desktop"
-base_path = "/home/jdpillon/Bureau/samuel"
-
+#base_path = "/home/jdpillon/Bureau/samuel"
+base_path = "/Users/jdpillon/Desktop/samuel/Desktop"
 class FileIO(object):
     @staticmethod
     def loadStegano(f):
@@ -97,6 +97,10 @@ class Base(object):
             if e.id == self.id:
                 Robot.items.remove(e)
                 os.remove(self.id)
+        for e in Robot.root_items:
+            if e.id == self.id:
+                Robot.root_items.remove(e)
+
 
     def idle(self): pass
 
@@ -329,6 +333,8 @@ class Robot(object):
             self.addItem(Cereale(name="Cereale1"))
             self.addItem(Cereale(name="Cereale2"))
             self.addItem(Cereale(name="Cereale3"))
+            for i in range(250):
+                self.addItem(Cereale(name="Cereale"+str(i)))
 
 
             """
