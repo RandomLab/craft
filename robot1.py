@@ -172,7 +172,7 @@ class Entite(Base):
             Représentation sous forme de répertoire
 
     """
-    
+
     def countByType(self, klass):
         n = 0
         for root_path, folders, filenames in os.walk(self.id):
@@ -1398,7 +1398,7 @@ class Champ(Entite):
 class Foret(Entite):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        self.nbArbres = 0
+        self.nbArbre = 0
         self.nbTravailleur = 0
 
     def idle(self):
@@ -1411,15 +1411,20 @@ class Foret(Entite):
         if  self.nbTravailleur < 2:
             self.brain.setState(self.idle)
         else:
-            self.spawn(Bois)
-            self.remove(Arbre)
-            #le remove ne marche plus
-        if self.nbArbres < 1:
+            if self.nbArbre >= self.nbTravailleur :
+                for z in range(self.nbTravailleur):
+                    self.spawn(Bois)
+                    self.remove(Arbre)
+            else:
+                for u in range(self.nbArbre):
+                    self.remove(Arbre)
+                    self.spawn(Bois)
+        if self.nbArbre < 1:
             self.mutate(Champ)
 
     def update(self):
         self.nbTravailleur = self.countByType(Travailleur)
-        self.nbArbres = self.countByType(Arbre)
+        self.nbArbre = self.countByType(Arbre)
         self.brain.update()
 
 
