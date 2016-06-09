@@ -144,7 +144,6 @@ class Entite(Base):
             - CentraleSol
             - Caserne
             - BTP
-            - Tissage
             - Acierie
             - GenieMecanique
             - Arsenal
@@ -387,7 +386,7 @@ class Robot(object):
 
 """
 #ce tableau tu peux t'en servir pour piocher des ressources au hasard
-entites = [Champ, Monoculture, Elevage, ElevageIntensif, Tissage, BTP, Hopital, Universite, CentraleSol, CentraleAtom, CentraleThermique, GenieMecanique, Arsenal, IndustrieChimique, Acierie, Aeronautique, Electronique, Banque, Assurance, GisementPetrole, GisementCharbon, GisementMetaux, GisementMetauxPrecieux, GisementUranium, MineCharbon, PuitsPetrole, MineUranium, MineMetaux, MineMetauxPrecieux, Ville, Megapole, Megalopole, Foret, Mer, DechargeAtomique, Frontiere]
+entites = [Champ, Monoculture, Elevage, ElevageIntensif, BTP, Hopital, Universite, CentraleSol, CentraleAtom, CentraleThermique, GenieMecanique, Arsenal, IndustrieChimique, Acierie, Aeronautique, Electronique, Banque, Assurance, GisementPetrole, GisementCharbon, GisementMetaux, GisementMetauxPrecieux, GisementUranium, MineCharbon, PuitsPetrole, MineUranium, MineMetaux, MineMetauxPrecieux, Ville, Megapole, Megalopole, Foret, Mer, DechargeAtomique, Frontiere]
 bio = [Pollinisateur, Mouton, Boeuf, Volaille, Porc, Anchois, Anguille, Baleine, Carpe, Colin, Hareng, Maquereau, Morue, Sardine, Saumon, Thon, Truite, Coton, Lin]
 nourriture = [Mouton, Boeuf, Volaille, Porc, Poisson, Mais, Millet, Patate, Riz, Seigle, Soja, Sorgho, Ble]
 fossile = [Bois, Charbon, Petrole, Uranium, Metaux, MetauxPrecieux]
@@ -412,8 +411,6 @@ class Ville(Entite):
         self.nbBois = 0
         self.nbBeton = 0
         self.nbVehicule = 0
-        self.nbCoton = 0
-        self.nbLin = 0
         self.nbAcier = 0
         self.nbCharbon = 0
         self.nbPetrole = 0
@@ -423,7 +420,6 @@ class Ville(Entite):
         condition_pop = self.nbNourriture >= 1 and self.nbVivant >= 1
         condition_newBTP = self.nbBois >= 5 and self.nbTravailleur >= 4
         condition_newAcierie = self.nbBois >= 8 and self.nbTravailleur >= 4
-        condition_newTissage = self.nbBois >= 5 and self.nbTravailleur >= 2 and self.nbCoton >= 1 or self.nbLin >= 1
         condition_newGenieMecanique = self.nbBois >= 5 and self.nbTravailleur >= 4 and self.nbAcier >= 1
         condition_newcentraleThermique= self.nbBois >= 5 and self.nbTravailleur >= 2 and self.nbCharbon >= 1 or self.nbPetrole >= 1
         condition_newMegapole = self.nbBeton >= 10 and self.nbVehicule >= 10
@@ -433,7 +429,6 @@ class Ville(Entite):
         if condition_pop : self.brain.setState(self.pop)
         if condition_newBTP : self.brain.setState(self.newBTP)
         if condition_newAcierie : self.brain.setState(self.newAcierie)
-        if condition_newTissage : self.brain.setState(self.newTissage)
         if condition_newGenieMecanique : self.brain.setState(self.newGenieMecanique)
         if condition_newcentraleThermique: self.brain.setState(self.newCentraleThermique)
 
@@ -470,24 +465,6 @@ class Ville(Entite):
             self.spawn(Travailleur, newacierie.id)
 
         if self.nbBois < 8 or self.nbTravailleur < 4:
-            self.brain.setState(self.idle)
-            self.save()
-
-        self.idle()
-
-    def newTissage(self):
-        newtissage = self.spawn(Tissage)
-        for i in range(5):
-            self.remove(Bois)
-        for u in range(2):
-            self.remove(Travailleur)
-            self.spawn(Travailleur, newtissage.id)
-        if self.nbCoton >= 1 :
-            self.remove(Coton)
-        else :
-            self.remove(Lin)
-
-        if self.nbBois < 5 or self.nbTravailleur < 2 or self.nbCoton < 1 and self.nbLin < 1 :
             self.brain.setState(self.idle)
             self.save()
 
@@ -601,27 +578,6 @@ class Acierie(Entite):
         self.nbTravailleur = self.countByType(Travailleur)
         self.nbCharbon = self.countByType(Charbon)
         self.nbMetaux = self.countByType(Metaux)
-        self.brain.update()
-
-class Tissage(Entite):
-    def __init__(self, **kwargs):
-        super().__init__(**kwargs)
-        self.nbTravailleur = 0
-        self.nbLin = 0
-        self.nbCoton = 0
-        self.produit = Textile
-    def idle(self):
-        if self.nbTravailleur >= 2 and self.nbLin >= 1 or self.nbCoton >= 1 :
-            self.brain.setState(self.production)
-    def production(self):
-        self.spawn(self.produit)
-        if self.nbTravailleur < 2 or self.nbLin < 1 and self.nbCoton < 1 :
-            self.brain.setState(self.idle)
-
-    def update(self):
-        self.nbTravailleur = self.countByType(Travailleur)
-        self.nbCoton = self.countByType(Coton)
-        self.nbLin = self.countByType(Lin)
         self.brain.update()
 
 class GenieMecanique(Entite):
