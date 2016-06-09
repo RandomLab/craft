@@ -105,10 +105,10 @@ class Base(object):
     def findOneElement(self, klass):
         for root_path, folders, filenames in os.walk(base_path):
             for t in filenames:
-                try:
-                     tmp = pickle.load(open(os.path.join(self.path, t), "rb"))
-                     if klass == type(tmp) or klass in tmp.__class__.__bases__:
-                         return tmp
+                try:                     
+                    tmp = pickle.load(open(os.path.join(base_path, t), "rb"))
+                    if klass == type(tmp) or klass in tmp.__class__.__bases__:
+                        return tmp
                 except:
                     pass
         return None
@@ -172,6 +172,7 @@ class Entite(Base):
             Représentation sous forme de répertoire
 
     """
+    
     def countByType(self, klass):
         n = 0
         for root_path, folders, filenames in os.walk(self.id):
@@ -183,6 +184,8 @@ class Entite(Base):
                 except:
                     pass
         return n
+
+
 
     def mutate(self, klass):
         for e in Robot.items:
@@ -284,30 +287,27 @@ class Robot(object):
 
 #texas-picardie
 
-            Robot.items.append(Ville(name="Austin"))
+            Robot.items.append(Ville(name="Ville"))
             Robot.items.append(Champ(name="Champ1"))
-            Robot.items.append(Champ(name="Champ2"))
 
       #      m = Mer(name="Mer1")
       #      m.save()
       #      m.spawn(Anchois, path = m.id)
       #      Robot.items.append(m)
 
-            Robot.items.append(Chimie(name="Chimie"))
-            Robot.items.append(Bestiau(name="Vache"))
-            Robot.items.append(BTP(name="BTP"))
             Robot.items.append(Foret(name="Foret1"))
             Robot.items.append(Foret(name="Foret2"))
+            Robot.items.append(Foret(name="Foret3"))
+            Robot.items.append(Foret(name="Foret4"))
+            Robot.items.append(Foret(name="Foret5"))
+            Robot.items.append(Foret(name="Foret6"))
             Robot.items.append(Travailleur(name="Travailleur1"))
             Robot.items.append(Travailleur(name="Travailleur2"))
             Robot.items.append(Travailleur(name="Travailleur3"))
-            Robot.items.append(Acier(name="Acier1"))
-            Robot.items.append(Acier(name="Acier2"))
-            Robot.items.append(Acier(name="Acier3"))
-            Robot.items.append(Acier(name="Acier4"))
-            Robot.items.append(Cereale(name="miam"))
-            Robot.items.append(Cereale(name="miam2"))
-            Robot.items.append(Cereale(name="miam3"))
+            Robot.items.append(Cereale(name="Cereale1"))
+            Robot.items.append(Cereale(name="Cereale2"))
+            Robot.items.append(Cereale(name="Cereale3"))
+
 
 
             """
