@@ -25,8 +25,8 @@ from FSM import FSM, StackFSM
 
 """
 
-base_path = "/Users/samuel/Desktop"
-#base_path = "/home/jdpillon/Bureau/samuel"
+#base_path = "/Users/samuel/Desktop"
+base_path = "/home/jdpillon/Bureau/samuel"
 
 class FileIO(object):
     @staticmethod
@@ -86,7 +86,6 @@ class Base(object):
         pickle.dump(self, open(self.id, "wb"))
 
     def update_file(self):
-        
         for e in Robot.items:
             if e.id == self.id:
                 Robot.items.remove(e)
@@ -105,13 +104,21 @@ class Base(object):
     def findOneElement(self, klass):
         for root_path, folders, filenames in os.walk(base_path):
             for t in filenames:
-                try:                     
+                try:
                     tmp = pickle.load(open(os.path.join(base_path, t), "rb"))
                     if klass == type(tmp) or klass in tmp.__class__.__bases__:
                         return tmp
                 except:
                     pass
         return None
+
+
+    def find(self, klass):
+        for o in Robot.items:
+            if klass == type(o) or klass in o.__class__.__bases__:
+                return o
+        return None
+
 
     def spawn(self, klass = None, path = None):
         if path is None: path = base_path
@@ -121,15 +128,7 @@ class Base(object):
 
     def getCurrentState(self):
         return self.brain.getCurrentState().__name__
-    """
-    @classmethod
-    def findOne(self):
-        print("findOne", self.name)
 
-    @classmethod
-    def find(self):
-        print("find", self.name)
-    """
     def __str__(self):
         #return self.name + " : " + str(self.nbtravailleur) + " " + str(self.tracteur) + " " + str(self. travailleur) + " " + str(self.chimie)
         return self.name + " " + self.getCurrentState()
@@ -209,6 +208,13 @@ class Entite(Base):
                 except:
                     pass
         return None
+    # TODO :implémenter ces deux méthodes !
+    # Elles seront utiliser pour trouver un ou des éléments de type
+    # what à l'interrieur de l'entité.
+    def find(self, what):
+        pass
+    def findOne(self, what):
+        return self.find(what)[0]
 
 
     def save(self):
@@ -235,6 +241,7 @@ class Robot(object):
     """
     cycles = 0
     items = []
+    root_items = []
     def __init__(self, base_path = base_path, secondes = 5):
         self.path = base_path
         self.secondes = secondes
@@ -295,6 +302,7 @@ class Robot(object):
       #      m.spawn(Anchois, path = m.id)
       #      Robot.items.append(m)
 
+            """
             Robot.items.append(Foret(name="Foret1"))
             Robot.items.append(Foret(name="Foret2"))
             Robot.items.append(Foret(name="Foret3"))
@@ -307,7 +315,20 @@ class Robot(object):
             Robot.items.append(Cereale(name="Cereale1"))
             Robot.items.append(Cereale(name="Cereale2"))
             Robot.items.append(Cereale(name="Cereale3"))
+            """
 
+            self.addItem(Foret(name="Foret1"))
+            self.addItem(Foret(name="Foret2"))
+            self.addItem(Foret(name="Foret3"))
+            self.addItem(Foret(name="Foret4"))
+            self.addItem(Foret(name="Foret5"))
+            self.addItem(Foret(name="Foret6"))
+            self.addItem(Travailleur(name="Travailleur1"))
+            self.addItem(Travailleur(name="Travailleur2"))
+            self.addItem(Travailleur(name="Travailleur3"))
+            self.addItem(Cereale(name="Cereale1"))
+            self.addItem(Cereale(name="Cereale2"))
+            self.addItem(Cereale(name="Cereale3"))
 
 
             """
@@ -334,17 +355,72 @@ class Robot(object):
 
 
             self.save()
+    """
+        Ajouter un item à la liste du robot
+    """
+    def addItem(self, what, where = base_path):
+        if where == base_path:
+            Robot.root_items.append(what)
+        Robot.items.append(what)
 
-    def countByType(self, klass):
+    """
+        Méthode static qui permet de trouver un item de type klass
+        dans l'aire de jeu. Par défaut elle cherche uniquement dans
+        le répertoire racine (sans parcourir les sous dossiers)
+
+        Si anywhere = True lors de l'appel, la méthode cherchera partout
+
+        La méthode retourne un tableau d'éléments. Vide si pas de résultat
+    """
+
+    @staticmethod
+    def find(klass, anywhere = False):
+        r = []
+        source = Robot.root_items
+        if anywhere:
+            source = Robot.items
+
+
+        for o in source:
+            if klass == type(o) or klass in o.__class__.__bases__:
+                r.append(o)
+        return r
+
+    """
+        Trouve un élément de type klass.
+        cf find pour les paramètres
+    """
+    @staticmethod
+    def findOne(klass, anywhere = False):
+        res = Robot.find(klass, anywhere)
+        if len(res) > 0:
+            return random.choice(res)
+        else:
+            return None
+
+    """
+        Retourne le nombre d'items de type klass (dans tout le plateau)
+        Paramètre anywhere identique à find.
+        Par contre il est inverssé ici. (compte dans tout le plateau par défaut)
+    """
+
+    def countByType(self, klass, anywhere = True):
+        source = Robot.root_items
+        if anywhere:
+            source = Robot.items
         n = 0
-        for o in Robot.items:
+        for o in source:
             if klass == type(o) or klass in o.__class__.__bases__:
                 n += 1
         return n
 
+
+    """
+        Créer des instances d'objet à partir du système de fichier
+    """
     def loadFromFS(self):
         Robot.items = []
-
+        Robot.root_items = []
         for root_path, folders, filenames in os.walk(self.path):
             try:
                 filenames.remove('.DS_Store')
@@ -352,16 +428,15 @@ class Robot(object):
                 pass
             for f in filenames:
                 current_file = os.path.join(root_path, f)
-                if f != ".config":
+                try:
                     o = FileIO.load(current_file)
                     o.checkPath(root_path, f)
-                    Robot.items.append(o)
-                else:
-                    o = pickle.load(open(current_file, "rb"))
-                    o.checkPath(root_path, f)
-                    Robot.items.append(o)
-                    #pass
-
+                    self.addItem(o, root_path)
+                except Exception as e:
+                    pass
+    """
+        Sauvegarder le plateau
+    """
     def save(self):
         for o in Robot.items:
             o.save()
@@ -432,7 +507,7 @@ class Ville(Entite):
         if self.nbBois >= 8 and self.nbTravailleur >= 4 : self.brain.setState(self.newAcierie)
         if self.nbBois >= 5 and self.nbTravailleur >= 4 and self.nbAcier >= 1 : self.brain.setState(self.newGenieMecanique)
         if self.nbBois >= 5 and self.nbTravailleur >= 2 and self.nbCharbon >= 1 or self.nbPetrole >= 1 : self.brain.setState(self.newCentraleThermique)
-        if self.nbBeton >= 10 and self.nbVehicule >= 10 : 
+        if self.nbBeton >= 10 and self.nbVehicule >= 10 :
             for z in range(10):
                 self.remove(Beton)
             self.mutate(Megapole)
@@ -1315,7 +1390,6 @@ class Champ(Entite):
         self.nbBeton = 0
 
     def idle(self):
-
         if self.nbCereale < 1 and self.nbPollinisateur < 1:
             self.spawn(Pollinisateur, self.id)
         if self.nbCereale < 1:
@@ -1370,7 +1444,7 @@ class Champ(Entite):
 
         for i in range(2):
             self.spawn(Lait)
- 
+
         if Robot.cycles%12 == 0 : self.spawn(Pollinisateur, self.id)
 
     def elevageIntensif(self):
@@ -1509,7 +1583,7 @@ class Anchois(Poisson):
         self.age += 1
         super(Anchois, self).update()
 
-        if self.age == 2 : 
+        if self.age == 2 :
             self.spawn(Anchois)
 
         if self.age == 4 :
@@ -1626,20 +1700,17 @@ class Vivant(Base):
     def init(self):
         self.energy = 3
 
-
-class Travailleur(Vivant):
-    def update(self):
-        super(Travailleur, self).update()
-
+    def idle(self):
         self.energy -= 1
-        o = self.findOneElement(Nourriture)
+        o = Robot.findOne(Nourriture)
         if o:
             self.energy += 1
             o.energy -= 1
-            #o.update_file()
-            print(self.id, self.energy, o.energy)
+            o.update()
         if self.energy < 1:
             self.remove()
+
+class Travailleur(Vivant): pass
 
 # les travailleurs ne mangent qu'une seule céréale quel que soit leur nombre
 
@@ -1655,13 +1726,13 @@ class Nourriture(Base):
             - Lait
 
     """
-    def init(self):
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
         self.energy = 1
 
-    def update(self):
-        super(Nourriture, self).update()
+    def idle(self):
         if self.energy < 1:
-            self.remove()        
+            self.remove()
 
 
 class Cereale(Nourriture): pass
@@ -1669,6 +1740,8 @@ class Poisson(Nourriture): pass
 class Viande(Nourriture): pass
 class Lait(Nourriture): pass
 
+
 robot = Robot()
-# Robot(secondes=1)
-robot.run()
+if __name__ == "__main__":
+    # Robot(secondes=1)
+    robot.run()
