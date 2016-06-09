@@ -86,13 +86,13 @@ class Base(object):
         pickle.dump(self, open(self.id, "wb"))
 
     def update_file(self):
-        self.save()
+        
         for e in Robot.items:
             if e.id == self.id:
                 Robot.items.remove(e)
                 Robot.items.append(self)
-
-
+                self.update()
+                self.save()
     def remove(self):
         for e in Robot.items:
             if e.id == self.id:
@@ -338,7 +338,7 @@ class Robot(object):
     def countByType(self, klass):
         n = 0
         for o in Robot.items:
-            if klass == type(o) or klass in tmp.__class__.__bases__:
+            if klass == type(o) or klass in o.__class__.__bases__:
                 n += 1
         return n
 
@@ -380,6 +380,11 @@ class Robot(object):
         # Conditions de victoire...
         #if self.countByType(Ble):
         #    alert("Whouaou")
+
+        if self.countByType(Foret) < 1 or self.countByType(Travailleur) >= 15:
+            alert(text = "Ben bravo t'as gagné", title="Yeah", button = "Ok")
+
+
 
         self.loadFromFS()
         for item in Robot.items:
@@ -1624,18 +1629,19 @@ class Vivant(Base):
 
 class Travailleur(Vivant):
     def update(self):
+        super(Travailleur, self).update()
+
         self.energy -= 1
         o = self.findOneElement(Nourriture)
         if o:
             self.energy += 1
             o.energy -= 1
-            o.update_file()
-        super(Travailleur, self).update()
+            #o.update_file()
+            print(self.id, self.energy, o.energy)
         if self.energy < 1:
             self.remove()
 
-#il faut que la nourriture soit dans le même folder que le travailleur (ça va pas)
-
+# les travailleurs ne mangent qu'une seule céréale quel que soit leur nombre
 
 class Ingenieur(Vivant): pass
 class Soldat(Vivant): pass
@@ -1650,7 +1656,7 @@ class Nourriture(Base):
 
     """
     def init(self):
-        self.energy = 10
+        self.energy = 1
 
     def update(self):
         super(Nourriture, self).update()
@@ -1663,7 +1669,6 @@ class Poisson(Nourriture): pass
 class Viande(Nourriture): pass
 class Lait(Nourriture): pass
 
-alert(text = "Ready?", title="Fuck a duck and try to fly", button = "Ok")
 robot = Robot()
 # Robot(secondes=1)
 robot.run()
