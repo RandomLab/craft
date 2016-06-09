@@ -18,6 +18,7 @@ from FSM import FSM, StackFSM
     implémenter la classe d'anchois (et virer tout le bazar dans la mer)
 
     implémenter le craft de ville (champ->ville)
+        ok mais le self.remove ne marche pas
 
     ça serait bien que les anchois changent de nom quand ils sont vieux
 
@@ -287,13 +288,14 @@ class Robot(object):
             Robot.items.append(Champ(name="Champ1"))
             Robot.items.append(Champ(name="Champ2"))
 
-            m = Mer(name="Mer1")
-            m.spawn(Anchois, path = m.path)
-            Robot.items.append(m)
+      #      m = Mer(name="Mer1")
+      #      m.save()
+      #      m.spawn(Anchois, path = m.id)
+      #      Robot.items.append(m)
 
             Robot.items.append(Chimie(name="Chimie"))
             Robot.items.append(Bestiau(name="Vache"))
-            Robot.items.append(GisementUranium(name="MineU1"))
+            Robot.items.append(BTP(name="BTP"))
             Robot.items.append(Foret(name="Foret1"))
             Robot.items.append(Foret(name="Foret2"))
             Robot.items.append(Travailleur(name="Travailleur1"))
@@ -425,7 +427,10 @@ class Ville(Entite):
         if self.nbBois >= 8 and self.nbTravailleur >= 4 : self.brain.setState(self.newAcierie)
         if self.nbBois >= 5 and self.nbTravailleur >= 4 and self.nbAcier >= 1 : self.brain.setState(self.newGenieMecanique)
         if self.nbBois >= 5 and self.nbTravailleur >= 2 and self.nbCharbon >= 1 or self.nbPetrole >= 1 : self.brain.setState(self.newCentraleThermique)
-        if self.nbBeton >= 10 and self.nbVehicule >= 10 : self.mutate(Megapole)
+        if self.nbBeton >= 10 and self.nbVehicule >= 10 : 
+            for z in range(10):
+                self.remove(Beton)
+            self.mutate(Megapole)
 
     def pop(self):
         self.spawn(self.produit)
@@ -1300,6 +1305,7 @@ class Champ(Entite):
         self.nbCereale = 0
         self.nbBestiau = 0
         self.nbLait = 0
+        self.nbBeton = 0
 
     def idle(self):
 
@@ -1321,6 +1327,12 @@ class Champ(Entite):
 
         if self.nbTravailleur >= 1 and self.nbBestiau >= 1 and self.nbChimie >= 1 and self.nbCereale >= 10:
             self.brain.setState(self.elevageIntensif)
+
+        if self.nbBeton >= 10 :
+            for z in range(10):
+                self.remove(Beton)
+        #le self.remove ne marche pas
+            self.mutate(Ville)
 
     def culture(self):
 
@@ -1377,6 +1389,7 @@ class Champ(Entite):
         self.nbTracteur = self.countByType(Tracteur)
         self.nbChimie = self.countByType(Chimie)
         self.nbCereale = self.countByType(Cereale)
+        self.nbBeton = self.countByType(Beton)
         self.nbBestiau = self.countByType(Bestiau)
         self.nbLait = self.countByType(Lait)
         self.brain.update()
