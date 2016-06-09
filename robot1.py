@@ -17,6 +17,10 @@ from FSM import FSM, StackFSM
     sam:
     implémenter la classe d'anchois (et virer tout le bazar dans la mer)
 
+    implémenter le craft de ville (champ->ville)
+
+    ça serait bien que les anchois changent de nom quand ils sont vieux
+
 
 """
 
@@ -283,7 +287,11 @@ class Robot(object):
             Robot.items.append(Ville(name="Austin"))
             Robot.items.append(Champ(name="Champ1"))
             Robot.items.append(Champ(name="Champ2"))
-            Robot.items.append(Mer(name="Mer1"))
+
+            m = Mer(name="Mer1")
+            m.spawn(Anchois, path = m.path)
+            Robot.items.append(m)
+
             Robot.items.append(Chimie(name="Chimie"))
             Robot.items.append(Bestiau(name="Vache"))
             Robot.items.append(GisementUranium(name="MineU1"))
@@ -1309,58 +1317,25 @@ class Mer(Entite):
         self.nbTravailleur = 0
         self.nbBateauUsine = 0
         self.nbAnchois = 0
-        self.nbLarveAnchois = 0
-        self.nbAnchoisJeune = 0
-        self.nbAnchoisUnAn = 0
-        self.nbAnchoisVieux = 0
 
     def idle(self):
-
-        self.spawn(AnchoisJeune, self.id)
-        self.spawn(AnchoisJeune, self.id)
-        self.spawn(AnchoisJeune, self.id)
-
-        if self.nbAnchois >= 2 :
-            self.brain.setState(self.recrutement)
-
-    def recrutement(self):
-
-        for z in range(self.nbLarveAnchois):
-            self.remove(LarveAnchois)
-            self.spawn(AnchoisJeune, self.id)
-        for y in range(self.nbAnchoisJeune):
-            self.remove(AnchoisJeune)
-            self.spawn(AnchoisUnAn, self.id)
-        for u in range(self.nbAnchoisUnAn):
-            self.remove(AnchoisUnAn)
-            self.spawn(AnchoisVieux, self.id)
-
-        newlarves = random.randint(0,2)*self.nbAnchois
-        print("newlarves est égal à ", newlarves)
-
-        #for i in range(newlarves):
-        #    self.spawn(LarveAnchois)
 
         if self.nbTravailleur >= 2 :
             self.brain.setState(self.peche)
 
     def peche(self):
-        for i in range(5):
+        for i in range(3):
             self.spawn(Poisson)
-            self.remove(Anchois)
+            self.remove(Anchois, self.id)
 
-        if self.nbAnchois >= 2 :
-            self.brain.setState(self.recrutement)
-        else :
+        if self.nbAnchois < 1 :
             self.brain.setState(self.idle)
 
 
     def update(self):
         self.nbAnchois = self.countByType(Anchois)
-        self.nbLarveAnchois = self.countByType(LarveAnchois)
-        self.nbAnchoisJeune = self.countByType(AnchoisJeune)
-        self.nbAnchoisUnAn = self.countByType(AnchoisUnAn)
-        self.nbAnchoisVieux = self.countByType(AnchoisVieux)
+        self.nbTravailleur = self.countByType(Travailleur)
+        self.nbBateauUsine = self.countByType(BateauUsine)
         self.brain.update()
 
 
@@ -1549,19 +1524,22 @@ class Poisson(Bio) :
 pass
 
 class Anchois(Poisson):
-        """
-            Anchois
-                - AnchoisJeune
-                - AnchoisUnAn
-                - AnchoisVieux
-        """
-pass
 
-class LarveAnchois(Poisson): pass
+    def init(self):
+        self.age = 0
 
-class AnchoisJeune(Anchois): pass
-class AnchoisUnAn(Anchois): pass
-class AnchoisVieux(Anchois): pass
+    def update(self):
+
+        self.age += 1
+        super(Anchois, self).update()
+
+        if self.age == 2 : 
+            self.spawn(Anchois)
+
+        if self.age == 4 :
+            self.spawn(Anchois)
+            self.remove()
+
 
 class Anguille(Poisson): pass
 class Baleine(Poisson): pass
@@ -1697,6 +1675,7 @@ class Nourriture(Base):
             - Cereale
             - Poisson
             - Viande
+            - Lait
 
     """
     def init(self):
