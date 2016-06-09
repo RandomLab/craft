@@ -417,20 +417,15 @@ class Ville(Entite):
         self.produit = Travailleur
 
     def idle(self):
-        condition_pop = self.nbNourriture >= 1 and self.nbVivant >= 1
-        condition_newBTP = self.nbBois >= 5 and self.nbTravailleur >= 4
-        condition_newAcierie = self.nbBois >= 8 and self.nbTravailleur >= 4
-        condition_newGenieMecanique = self.nbBois >= 5 and self.nbTravailleur >= 4 and self.nbAcier >= 1
-        condition_newcentraleThermique= self.nbBois >= 5 and self.nbTravailleur >= 2 and self.nbCharbon >= 1 or self.nbPetrole >= 1
-        condition_newMegapole = self.nbBeton >= 10 and self.nbVehicule >= 10
 
 #il execute les if de manière séquentielle le mec
 #c'est le dernier IF VRAI qui a raison
-        if condition_pop : self.brain.setState(self.pop)
-        if condition_newBTP : self.brain.setState(self.newBTP)
-        if condition_newAcierie : self.brain.setState(self.newAcierie)
-        if condition_newGenieMecanique : self.brain.setState(self.newGenieMecanique)
-        if condition_newcentraleThermique: self.brain.setState(self.newCentraleThermique)
+        if self.nbNourriture >= 1 and self.nbVivant >= 1 : self.brain.setState(self.pop)
+        if self.nbBois >= 5 and self.nbTravailleur >= 4 : self.brain.setState(self.newBTP)
+        if self.nbBois >= 8 and self.nbTravailleur >= 4 : self.brain.setState(self.newAcierie)
+        if self.nbBois >= 5 and self.nbTravailleur >= 4 and self.nbAcier >= 1 : self.brain.setState(self.newGenieMecanique)
+        if self.nbBois >= 5 and self.nbTravailleur >= 2 and self.nbCharbon >= 1 or self.nbPetrole >= 1 : self.brain.setState(self.newCentraleThermique)
+        if self.nbBeton >= 10 and self.nbVehicule >= 10 : self.mutate(Megapole)
 
     def pop(self):
         self.spawn(self.produit)
