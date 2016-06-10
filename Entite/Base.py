@@ -4,6 +4,7 @@ from FSM.FSM import StackFSM
 import pickle
 import uuid
 from Robot import Robot
+from Robot.FileIO import FileIO
 class Base(object):
     """
         Permet de charger et de sauvegarder un object
@@ -36,18 +37,9 @@ class Base(object):
     def update(self):
         self.brain.update()
     def save(self):
-        pickle.dump(self, open(self.id, "wb"))
-    """
-    def update_file(self):
-        for e in Robot.items:
-            if e.id == self.id:
-                Robot.items.remove(e)
-                Robot.items.append(self)
-                self.update()
-                self.save()
-    """
+        FileIO.save(self)
+
     def remove(self):
-        print("REMOVE", self)
         for e in Robot.items:
             if e.id == self.id:
                 Robot.items.remove(e)
@@ -55,32 +47,8 @@ class Base(object):
                     os.remove(self.id)
                 except:
                     pass
-        for e in Robot.root_items:
-            if e.id == self.id:
-                Robot.root_items.remove(e)
-
 
     def idle(self): pass
-
-    #@classmethod
-    def findOneElement(self, klass):
-        for root_path, folders, filenames in os.walk(base_path):
-            for t in filenames:
-                try:
-                    tmp = pickle.load(open(os.path.join(base_path, t), "rb"))
-                    if klass == type(tmp) or klass in tmp.__class__.__bases__:
-                        return tmp
-                except:
-                    pass
-        return None
-
-
-    def find(self, klass):
-        for o in Robot.items:
-            if klass == type(o) or klass in o.__class__.__bases__:
-                return o
-        return None
-
 
     def spawn(self, klass = None, path = None):
         if path is None: path = base_path
@@ -155,21 +123,7 @@ class Entite(Base):
         self.__class__ = klass
         self.__init__(name = self.name)
         self.save()
-    # Peut etre fusionnée avec celle de Base. !?
-    def findOneElement(self, klass, local = False):
-        if local:
-            p = self.id
-        else:
-            p = self.path
-        for root_path, folders, filenames in os.walk(p):
-            for t in filenames:
-                try:
-                     tmp = pickle.load(open(os.path.join(p, t), "rb"))
-                     if klass == type(tmp) or klass in tmp.__class__.__bases__:
-                         return tmp
-                except:
-                    print("Oups")
-        return None
+
     # TODO :implémenter ces deux méthodes !
     # Elles seront utiliser pour trouver un ou des éléments de type
     # what à l'interrieur de l'entité.
@@ -188,7 +142,8 @@ class Entite(Base):
         pickle.dump(self, open(os.path.join(self.path, self.name, ".config"), "wb"))
 
     def remove(self, klass):
-        o = self.findOneElement(klass, local = True)
+        #o = self.findOneElement(klass, local = True)
+        o = Robot.findOne(klass, where = self.path)
         if o: o.remove()
 
     def __str__(self):

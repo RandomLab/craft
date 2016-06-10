@@ -223,15 +223,23 @@ def addItem(what):
     La méthode retourne un tableau d'éléments. Vide si pas de résultat
 """
 
-def find(klass, anywhere = False):
+
+def find(what, where = None, anywhere = False):
     r = []
+    #where = base_path + "/Champ1"
+    anywhere = True
     for o in items:
-        if anywhere:
-            if klass == type(o) or klass in o.__class__.__bases__:
+        if where:
+            if o.path == where and (what == type(o) or what in o.__class__.__bases__):
                 r.append(o)
         else:
-            if o.root and (klass == type(o) or klass in o.__class__.__bases__):
-                r.append(o)
+            if anywhere:
+                if what == type(o) or what in o.__class__.__bases__:
+                    r.append(o)
+            else:
+                if o.root and (what == type(o) or what in o.__class__.__bases__):
+                    r.append(o)
+    print(r)
     return r
 
 """

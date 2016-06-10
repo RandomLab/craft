@@ -1267,7 +1267,6 @@ class Vivant(Base):
     def idle(self):
         self.energy -= 1
         o = Robot.findOne(Nourriture)
-        print("Found object :", o)
         if o:
             self.energy += 1
             o.energy -= 1
@@ -1293,14 +1292,16 @@ class Nourriture(Base):
     """
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        self.energy = 100
+        self.energy = 2
 
     def idle(self):
         if self.energy < 1:
             self.remove()
 
 
-class Cereale(Nourriture): pass
+class Cereale(Nourriture):
+    def __repr__(self):
+        return ", ".join([self.name, self.path])
 class Poisson(Nourriture): pass
 class Viande(Nourriture): pass
 class Lait(Nourriture): pass
