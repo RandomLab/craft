@@ -60,12 +60,13 @@ class Ville(Entite):
         self.nbAcier = 0
         self.nbCharbon = 0
         self.nbPetrole = 0
-        self.produit = Travailleur
 
     def idle(self):
 
 #il execute les if de manière séquentielle le mec
 #c'est le dernier IF VRAI qui a raison
+
+        print(self, "bois egal a ", self.nbBois, " et travailleur egal a ", self.nbTravailleur)
         if self.nbNourriture >= 1 and self.nbVivant >= 1 : self.brain.setState(self.pop)
         if self.nbBois >= 5 and self.nbTravailleur >= 4 : self.brain.setState(self.newBTP)
         if self.nbBois >= 8 and self.nbTravailleur >= 4 : self.brain.setState(self.newAcierie)
@@ -77,7 +78,7 @@ class Ville(Entite):
             self.mutate(Megapole)
 
     def pop(self):
-        self.spawn(self.produit)
+        self.spawn(Travailleur)
         if self.nbNourriture <1 or self.nbVivant <1 :
             self.brain.setState(self.idle)
         self.idle()
@@ -1066,6 +1067,7 @@ class Foret(Entite):
                     self.spawn(Bois)
         if self.nbArbre < 1:
             self.mutate(Champ)
+            
 
     def update(self):
         self.nbTravailleur = self.countByType(Travailleur)

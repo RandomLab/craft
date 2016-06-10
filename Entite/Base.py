@@ -1,4 +1,4 @@
-import os
+import os, shutil
 from config import base_path
 from FSM.FSM import StackFSM
 import pickle
@@ -14,7 +14,7 @@ class Base(object):
     def __init__(self, name = None, path = base_path, icon = "default.png"):
         self.path = path
         if not name:
-            self.name = self.__class__.__name__
+            self.name = self.__class__.__name__ + "__" + str(uuid.uuid4())
         else:
             self.name = name
         self.id = os.path.join(self.path, self.name)
@@ -109,12 +109,15 @@ class Entite(Base):
         return n
 
     def mutate(self, klass):
-        for e in Robot.items:
-            if e.id == self.id:
-                Robot.items.remove(e)
+        #self.delete()
+        #name = self.id
+        #i = Robot.find(Base)
+        #for x in i :
+        #    i.checkPath
         self.__class__ = klass
-        self.__init__(name = self.name)
-        self.save()
+        self.__init__()
+        os.rename(name, self.id)
+        #self.save()
 
     def save(self):
         try:
@@ -128,6 +131,17 @@ class Entite(Base):
         #o = self.findOneElement(klass, local = True)
         o = Robot.findOne(klass, where = self.id)
         if o: o.remove()
+
+    """
+    def delete(self):
+
+        shutil.rmtree(self.id)
+        
+        for e in Robot.items:
+           if e.id == self.id:
+                Robot.items.remove(e)
+        print("delete de ", self.id)
+    """
 
     def __str__(self):
         return self.name + " " + self.getCurrentState()
