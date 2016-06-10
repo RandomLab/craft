@@ -227,7 +227,6 @@ def addItem(what):
 def find(what, where = None, anywhere = False):
     r = []
     #where = base_path + "/Champ1"
-    anywhere = True
     for o in items:
         if where:
             if o.path == where and (what == type(o) or what in o.__class__.__bases__):

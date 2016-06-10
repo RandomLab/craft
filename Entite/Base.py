@@ -63,6 +63,9 @@ class Base(object):
         #return self.name + " : " + str(self.nbtravailleur) + " " + str(self.tracteur) + " " + str(self. travailleur) + " " + str(self.chimie)
         return self.name + " " + self.getCurrentState()
 
+    def __repr__(self):
+        return ", ".join([self.name, self.path, self.getCurrentState()])
+
 class Entite(Base):
     """
         Entités

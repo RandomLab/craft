@@ -1299,9 +1299,7 @@ class Nourriture(Base):
             self.remove()
 
 
-class Cereale(Nourriture):
-    def __repr__(self):
-        return ", ".join([self.name, self.path])
+class Cereale(Nourriture): pass
 class Poisson(Nourriture): pass
 class Viande(Nourriture): pass
 class Lait(Nourriture): pass
