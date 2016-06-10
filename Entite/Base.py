@@ -27,6 +27,12 @@ class Base(object):
             self.path = new_path
             self.name = new_filename
             self.id = os.path.join(self.path, self.name)
+            if new_path == base_path:
+                self.root = True
+            else:
+                self.root = False
+        else:
+            self.root = True
     def update(self):
         self.brain.update()
     def save(self):

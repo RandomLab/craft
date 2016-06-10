@@ -21,9 +21,6 @@ class Robot(object):
             - sert un nouveau plateau au joueur au démarrage si son plateau (Bureau) est vide
             - met à jour le plateau toutes les 60 secondes
     """
-    items = []
-    root_items = []
-
     def __init__(self, base_path = base_path, secondes = 5):
         self.path = base_path
         self.secondes = secondes
@@ -111,7 +108,7 @@ class Robot(object):
             addItem(Cereale(name="Cereale1"))
             addItem(Cereale(name="Cereale2"))
             addItem(Cereale(name="Cereale3"))
-            for i in range(250):
+            for i in range(9):
                 addItem(Cereale(name="Cereale"+str(i)))
 
 
@@ -147,12 +144,9 @@ class Robot(object):
     """
 
     def countByType(self, klass, anywhere = True):
-        global root_items, items
-        source = root_items
-        if anywhere:
-            source = items
+        global items
         n = 0
-        for o in source:
+        for o in items:
             if klass == type(o) or klass in o.__class__.__bases__:
                 n += 1
         return n
@@ -162,7 +156,8 @@ class Robot(object):
         Créer des instances d'objet à partir du système de fichier
     """
     def loadFromFS(self):
-        global items, root_items
+        global items
+        items = []
         for root_path, folders, filenames in os.walk(self.path):
             try:
                 filenames.remove('.DS_Store')
@@ -173,7 +168,7 @@ class Robot(object):
                 try:
                     o = FileIO.load(current_file)
                     o.checkPath(root_path, f)
-                    addItem(o, root_path)
+                    addItem(o)
                 except Exception as e:
                     print("ERROR", e)
     """
@@ -192,7 +187,6 @@ class Robot(object):
             self.update()
             print("############################################")
             cycles += 1
-            #Robot.cycles = self.cycles
             time.sleep(self.secondes)
 
     def update(self):
@@ -215,9 +209,7 @@ class Robot(object):
 """
     Ajouter un item à la liste du robot
 """
-def addItem(what, where = base_path):
-    if where == base_path:
-        root_items.append(what)
+def addItem(what):
     items.append(what)
 
 
@@ -233,14 +225,13 @@ def addItem(what, where = base_path):
 
 def find(klass, anywhere = False):
     r = []
-    source = root_items
-    if anywhere:
-        source = items
-
-
-    for o in source:
-        if klass == type(o) or klass in o.__class__.__bases__:
-            r.append(o)
+    for o in items:
+        if anywhere:
+            if klass == type(o) or klass in o.__class__.__bases__:
+                r.append(o)
+        else:
+            if o.root and (klass == type(o) or klass in o.__class__.__bases__):
+                r.append(o)
     return r
 
 """

@@ -1293,7 +1293,7 @@ class Nourriture(Base):
     """
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        self.energy = 1
+        self.energy = 100
 
     def idle(self):
         if self.energy < 1:
