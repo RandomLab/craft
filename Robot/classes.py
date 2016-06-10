@@ -65,8 +65,6 @@ class Ville(Entite):
 
 #il execute les if de manière séquentielle le mec
 #c'est le dernier IF VRAI qui a raison
-
-        print(self, "bois egal a ", self.nbBois, " et travailleur egal a ", self.nbTravailleur)
         if self.nbNourriture >= 1 and self.nbVivant >= 1 : self.brain.setState(self.pop)
         if self.nbBois >= 5 and self.nbTravailleur >= 4 : self.brain.setState(self.newBTP)
         if self.nbBois >= 8 and self.nbTravailleur >= 4 : self.brain.setState(self.newAcierie)
@@ -1067,7 +1065,7 @@ class Foret(Entite):
                     self.spawn(Bois)
         if self.nbArbre < 1:
             self.mutate(Champ)
-            
+
 
     def update(self):
         self.nbTravailleur = self.countByType(Travailleur)

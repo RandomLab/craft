@@ -4,6 +4,7 @@ from FSM.FSM import StackFSM
 import pickle
 import uuid
 from Robot import Robot
+
 from Robot.FileIO import FileIO
 class Base(object):
     """
@@ -110,13 +111,15 @@ class Entite(Base):
 
     def mutate(self, klass):
         #self.delete()
-        #name = self.id
-        #i = Robot.find(Base)
-        #for x in i :
-        #    i.checkPath
+        name = self.id
         self.__class__ = klass
         self.__init__()
         os.rename(name, self.id)
+
+        for i in Robot.items:
+            if i.path == name:
+                i.checkPath(self.id, i.name)
+
         #self.save()
 
     def save(self):
