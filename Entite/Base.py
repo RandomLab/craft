@@ -104,20 +104,9 @@ class Entite(Base):
             Représentation sous forme de répertoire
 
     """
-
-    def countByType(self, klass):
-        n = 0
-        for root_path, folders, filenames in os.walk(self.id):
-            for t in filenames:
-                try:
-                    tmp = pickle.load(open(os.path.join(self.id, t), "rb"))
-                    if klass == type(tmp) or klass in tmp.__class__.__bases__:
-                        n += 1
-                except:
-                    pass
+    def countByType(self, klass, where = None, anywhere = False):
+        n = len(Robot.find(klass, where = self.id, anywhere = anywhere))
         return n
-
-
 
     def mutate(self, klass):
         for e in Robot.items:
@@ -126,15 +115,6 @@ class Entite(Base):
         self.__class__ = klass
         self.__init__(name = self.name)
         self.save()
-
-    # TODO :implémenter ces deux méthodes !
-    # Elles seront utiliser pour trouver un ou des éléments de type
-    # what à l'interrieur de l'entité.
-    def find(self, what):
-        pass
-    def findOne(self, what):
-        return self.find(what)[0]
-
 
     def save(self):
         try:

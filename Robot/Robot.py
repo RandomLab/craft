@@ -142,7 +142,7 @@ class Robot(object):
         Paramètre anywhere identique à find.
         Par contre il est inverssé ici. (compte dans tout le plateau par défaut)
     """
-
+    """
     def countByType(self, klass, anywhere = True):
         global items
         n = 0
@@ -150,7 +150,11 @@ class Robot(object):
             if klass == type(o) or klass in o.__class__.__bases__:
                 n += 1
         return n
+    """
 
+    def countByType(self, klass, anywhere = True):
+
+        return len(Robot.find(klass, anywhere = anywhere))
 
     """
         Créer des instances d'objet à partir du système de fichier
@@ -238,15 +242,14 @@ def find(what, where = None, anywhere = False):
             else:
                 if o.root and (what == type(o) or what in o.__class__.__bases__):
                     r.append(o)
-    print(r)
     return r
 
 """
     Trouve un élément de type klass.
     cf find pour les paramètres
 """
-def findOne(klass, anywhere = False):
-    res = find(klass, anywhere)
+def findOne(klass, where = None, anywhere = False):
+    res = find(klass, where, anywhere)
     if len(res) > 0:
         return random.choice(res)
     else:
