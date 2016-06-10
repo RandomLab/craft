@@ -126,7 +126,7 @@ class Entite(Base):
 
     def remove(self, klass):
         #o = self.findOneElement(klass, local = True)
-        o = Robot.findOne(klass, where = self.path)
+        o = Robot.findOne(klass, where = self.id)
         if o: o.remove()
 
     def __str__(self):
