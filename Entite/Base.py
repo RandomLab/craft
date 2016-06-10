@@ -19,6 +19,7 @@ class Base(object):
         self.id = os.path.join(self.path, self.name)
         self.brain = StackFSM(self.idle)
         self.icon = icon
+        self.root = True
         self.init()
     def init(self): pass
     def checkPath(self, new_path, new_filename):
@@ -30,7 +31,7 @@ class Base(object):
         self.brain.update()
     def save(self):
         pickle.dump(self, open(self.id, "wb"))
-
+    """
     def update_file(self):
         for e in Robot.items:
             if e.id == self.id:
@@ -38,6 +39,7 @@ class Base(object):
                 Robot.items.append(self)
                 self.update()
                 self.save()
+    """
     def remove(self):
         print("REMOVE", self)
         for e in Robot.items:
