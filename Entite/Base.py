@@ -11,7 +11,7 @@ class Base(object):
         sur le système de fichier de l'utilisateur sous forme de fichier
     """
     data = []
-    def __init__(self, name = None, path = base_path, icon = "default.png"):
+    def __init__(self, name = None, path = base_path, icon = "default.bmp"):
         self.path = path
         if not name:
             self.name = self.__class__.__name__
