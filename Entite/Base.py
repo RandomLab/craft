@@ -117,13 +117,17 @@ class Entite(Base):
         self.save()
 
     def save(self):
+        """
         try:
             os.mkdir(os.path.join(self.path, self.name))
         except Exception as e:
             # print(e)
             pass
         pickle.dump(self, open(os.path.join(self.path, self.name, ".config"), "wb"))
-
+        """
+        FileIO.saveEntite(self)
+    def load(self):
+        return FileIO.loadEntite(self.id)
     def remove(self, klass):
         #o = self.findOneElement(klass, local = True)
         o = Robot.findOne(klass, where = self.id)

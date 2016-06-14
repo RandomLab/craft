@@ -30,6 +30,7 @@ offset = 100
 class FileIO(object):
     @staticmethod
     def loadFromBinaryImage(f):
+        print("Try to load", f)
         with open(f, "rb") as input:
             input.seek(0)
             input.seek(offset)
@@ -72,10 +73,17 @@ class FileIO(object):
         secret = stepic.encode(im, s)
         secret.save(o.id + ".png")
     @staticmethod
-    def saveBinaryFile(o):
-        pickle.dump(o, open(o.id, "wb"))
+    def saveEntite(o):
+        #pickle.dump(o, open(o.id, "wb"))
+        try:
+            os.mkdir(os.path.join(o.path, o.name))
+        except Exception as e:
+            # print(e)
+            pass
+        pickle.dump(o, open(os.path.join(o.path, o.name, ".config"), "wb"))
+
     @staticmethod
-    def loadBinaryFile(f):
+    def loadEntite(f):
         try:
             return pickle.load(open(f, "rb"))
         except Exception as e:
@@ -84,8 +92,14 @@ class FileIO(object):
     @staticmethod
     def save(o):
         #FileIO.saveBinaryFile(o)
-        FileIO.writeToBinaryImage(o)
+        if "Entite" in o.__class__.__bases__:
+            FileIO.saveEntite(o)
+        else:
+            FileIO.writeToBinaryImage(o)
     @staticmethod
     def load(f):
         #return FileIO.loadBinaryFile(f)
-        return FileIO.loadFromBinaryImage(f)
+        if ".config" in f:
+            return FileIO.loadEntite(f)
+        else:
+            return FileIO.loadFromBinaryImage(f)
