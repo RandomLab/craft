@@ -65,7 +65,7 @@ class FileIO(object):
         o = stepic.decode(im)
         o = bytes(o, 'UTF-8')
         return pickle.loads(o)
-
+    """
     @staticmethod
     def saveStegano(o):
         s = str(pickle.dumps(o))
@@ -81,7 +81,7 @@ class FileIO(object):
             # print(e)
             pass
         pickle.dump(o, open(os.path.join(o.path, o.name, ".config"), "wb"))
-
+    """
     @staticmethod
     def loadEntite(f):
         try:

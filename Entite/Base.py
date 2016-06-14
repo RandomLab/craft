@@ -19,7 +19,12 @@ class Base(object):
             self.name = name
         self.id = os.path.join(self.path, self.name)
         self.brain = StackFSM(self.idle)
-        self.icon = icon
+        if icon == "default.bmp":
+            # Try to find an icon based on class name
+            if os.path.isfile(os.path.join("ressources", self.__class__.__name__) + ".bmp"):
+                self.icon = os.path.join("ressources", self.__class__.__name__) + ".bmp"
+            else:
+                self.icon = icon
         self.root = True
         self.init()
     def init(self): pass
