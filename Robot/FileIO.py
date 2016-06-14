@@ -30,7 +30,6 @@ offset = 100
 class FileIO(object):
     @staticmethod
     def loadFromBinaryImage(f):
-        print("Try to load", f)
         with open(f, "rb") as input:
             input.seek(0)
             input.seek(offset)
@@ -40,6 +39,7 @@ class FileIO(object):
     def writeToBinaryImage(o):
         p = pickle.dumps(o)
         nb = sys.getsizeof(p)
+        """
         try:
             # Try to open existing file
             destination = open(o.id, "r+b")
@@ -49,6 +49,12 @@ class FileIO(object):
             destination = open(o.id, "wb")
             with open(os.path.join("ressources",o.icon), "rb") as source:
                  destination.write(source.read())
+        """
+        # Pas de fichier, il faut copier depuis
+        # le dossier ressources
+        destination = open(o.id, "wb")
+        with open(os.path.join("ressources",o.icon), "rb") as source:
+             destination.write(source.read())
 
         destination.close()
         with open(o.id, "r+b") as input:
@@ -63,7 +69,7 @@ class FileIO(object):
         o = stepic.decode(im)
         o = bytes(o, 'UTF-8')
         return pickle.loads(o)
-    
+
     @staticmethod
     def saveStegano(o):
         s = str(pickle.dumps(o))

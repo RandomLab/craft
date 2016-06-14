@@ -162,6 +162,7 @@ class Robot(object):
     def loadFromFS(self):
         global items
         items = []
+        Base.counts = {}
         for root_path, folders, filenames in os.walk(self.path):
             try:
                 filenames.remove('.DS_Store')
@@ -172,6 +173,7 @@ class Robot(object):
                 try:
                     o = FileIO.load(current_file)
                     o.checkPath(root_path, f)
+                    Base.register(o)
                     addItem(o)
                 except Exception as e:
                     print("ERROR", e)
@@ -188,6 +190,7 @@ class Robot(object):
         while True:
             print("############################################")
             print("Cycle :", cycles)
+            print(Base.counts)
             self.update()
             print("############################################")
             cycles += 1

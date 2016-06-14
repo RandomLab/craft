@@ -10,11 +10,12 @@ class Base(object):
         Permet de charger et de sauvegarder un object
         sur le système de fichier de l'utilisateur sous forme de fichier
     """
-    data = []
+    counts = {}
     def __init__(self, name = None, path = base_path, icon = "default.bmp"):
         self.path = path
+        Base.register(self)
         if not name:
-            self.name = self.__class__.__name__
+            self.name = self.__class__.__name__ + "_" + str(Base.counts[self.__class__.__name__])
         else:
             self.name = name
         self.id = os.path.join(self.path, self.name)
@@ -58,6 +59,7 @@ class Base(object):
     def spawn(self, klass = None, path = None):
         if path is None: path = base_path
         o = klass(name = klass.__name__ + "__" + str(uuid.uuid4()) ,path = path)
+        #o = klass(path = path)
         o.save()
         return o
 
@@ -70,6 +72,20 @@ class Base(object):
 
     def __repr__(self):
         return ", ".join([self.name, self.path, self.getCurrentState()])
+
+    @staticmethod
+    def register(o):
+        try:
+            Base.counts[o.__class__.__name__] += 1
+        except Exception as e:
+            Base.counts[o.__class__.__name__] = 1
+        """
+        print(o.__class__.__name__, hasattr(Base.counts, o.__class__.__name__))
+        if hasattr(Base.counts, o.__class__.__name__):
+            Base.counts[o.__class__.__name__] += 1
+        else:
+            Base.counts[o.__class__.__name__] = 1
+        """
 
 class Entite(Base):
     """
