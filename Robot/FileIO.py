@@ -1,6 +1,12 @@
 import pickle
 import sys, os
 from struct import pack, unpack
+
+import PIL
+from shutil import copyfile
+
+
+
 """
 def writeToFile(o,f):
     o = pickle.dumps(o)
@@ -52,11 +58,14 @@ class FileIO(object):
         """
         # Pas de fichier, il faut copier depuis
         # le dossier ressources
+        # TODO : use copy instead...
+        """
         destination = open(o.id, "wb")
         with open(os.path.join("ressources",o.icon), "rb") as source:
              destination.write(source.read())
-
         destination.close()
+        """
+        copyfile(os.path.join("ressources",o.icon), o.id)
         with open(o.id, "r+b") as input:
             input.seek(0)
             input.seek(offset)
