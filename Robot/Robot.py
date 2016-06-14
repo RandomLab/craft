@@ -170,14 +170,10 @@ class Robot(object):
             for f in filenames:
                 current_file = os.path.join(root_path, f)
                 try:
-                    print("Before fileio")
                     o = FileIO.load(current_file)
-                    print("next")
                     o.checkPath(root_path, f)
-                    print("next1")
                     addItem(o)
                 except Exception as e:
-                    print("ici")
                     print("ERROR", e)
     """
         Sauvegarder le plateau

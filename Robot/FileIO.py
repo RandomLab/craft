@@ -40,9 +40,6 @@ class FileIO(object):
     def writeToBinaryImage(o):
         p = pickle.dumps(o)
         nb = sys.getsizeof(p)
-        print("Size :", nb)
-        #destination = open(o.id, "wb")
-        #source = open(os.path.join("ressources", o.icon))
         try:
             # Try to open existing file
             destination = open(o.id, "r+b")
@@ -59,19 +56,21 @@ class FileIO(object):
             input.seek(offset)
             input.write(pack(">i",nb))
             input.write(p)
+    """
     @staticmethod
     def loadStegano(f):
         im = Image.open(f)
         o = stepic.decode(im)
         o = bytes(o, 'UTF-8')
         return pickle.loads(o)
-    """
+    
     @staticmethod
     def saveStegano(o):
         s = str(pickle.dumps(o))
         im = Image.open(os.path.join("ressources",o.icon))
         secret = stepic.encode(im, s)
         secret.save(o.id + ".png")
+    """
     @staticmethod
     def saveEntite(o):
         #pickle.dump(o, open(o.id, "wb"))
@@ -81,7 +80,7 @@ class FileIO(object):
             # print(e)
             pass
         pickle.dump(o, open(os.path.join(o.path, o.name, ".config"), "wb"))
-    """
+
     @staticmethod
     def loadEntite(f):
         try:
@@ -91,14 +90,12 @@ class FileIO(object):
             return None
     @staticmethod
     def save(o):
-        #FileIO.saveBinaryFile(o)
         if "Entite" in o.__class__.__bases__:
             FileIO.saveEntite(o)
         else:
             FileIO.writeToBinaryImage(o)
     @staticmethod
     def load(f):
-        #return FileIO.loadBinaryFile(f)
         if ".config" in f:
             return FileIO.loadEntite(f)
         else:

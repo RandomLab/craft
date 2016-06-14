@@ -22,7 +22,7 @@ class Base(object):
         if icon == "default.bmp":
             # Try to find an icon based on class name
             if os.path.isfile(os.path.join("ressources", self.__class__.__name__) + ".bmp"):
-                self.icon = os.path.join("ressources", self.__class__.__name__) + ".bmp"
+                self.icon = self.__class__.__name__ + ".bmp"
             else:
                 self.icon = icon
         self.root = True
