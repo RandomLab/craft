@@ -70,22 +70,52 @@ class Ville(Entite):
                 self.remove(Petrole)
         if self.nbUranium >= 1 :
             self.remove(Uranium)
+
+        self.spawn(Centrale)
     
         self.brain.setState(self.idle)
         self.save()
 
+    def newCaserne(self):
+        for i in range(5):
+            self.remove(Beton)
+        for z in range(3):
+            self.remove(Arme)
+
+        self.spawn(Caserne)
+
+        self.brain.setState(self.idle)
+        self.save()
+
+    def newUniversite(self):
+        for i in range(8):
+            self.remove(Beton)
+
+        self.spawn(Universite)
+
+        self.brain.setState(self.idle)
+        self.save()
+
+    def newMarche(self):
+        for i in range(5):
+            self.remove(Beton)
+        for z in range(3):
+            self.remove(Vehicule)
+
+        self.spawn(Marche)
+
+        self.brain.setState(self.idle)
+        self.save()
 
 
     def update(self):
         # update Ville here
-        self.nbTravailleur = self.countByType(Travailleur)
-        self.nbNourriture = self.countByType(Nourriture)
         self.nbBeton = self.countByType(Beton)
-        self.nbAcier = self.countByType(Acier)
+        self.nbArme = self.countByType(Arme)
         self.nbCharbon = self.countByType(Charbon)
         self.nbPetrole = self.countByType(Petrole)
-        self.nbVivant = self.countByType(Vivant)
-
+        self.nbUranium = self.countByType(Uranium)
+        self.nbVehicule = self.countByType(Vehicule)
         self.brain.update()
 
 class Centrale(Entite):
@@ -131,7 +161,6 @@ class Usine(Entite):
         self.nbTravailleur = self.countByType(Travailleur)
         self.nbPetrole = self.countByType(Petrole)
         self.nbAcier = self.countByType(Acier)
-        self.nbMetalPrecieux = self.countByType(MetalPrecieux)
         self.brain.update()
 
 class Universite(Entite):
@@ -174,6 +203,8 @@ class Caserne(Entite):
         self.nbArme = self.countByType(Arme)
         self.nbTravailleur = self.countByType(Travailleur)
         self.brain.update()
+
+class Marche(Entite): pass
 
 
 class GisementMetal(Entite):
