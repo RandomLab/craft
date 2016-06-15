@@ -75,62 +75,30 @@ class Robot(object):
 
             addItem(Ville(name="Ville"))
             addItem(Champ(name="Champ1"))
-
-      #      m = Mer(name="Mer1")
-      #      m.save()
-      #      m.spawn(Anchois, path = m.id)
-      #      Robot.items.append(m)
-
-            """
-            Robot.items.append(Foret(name="Foret1"))
-            Robot.items.append(Foret(name="Foret2"))
-            Robot.items.append(Foret(name="Foret3"))
-            Robot.items.append(Foret(name="Foret4"))
-            Robot.items.append(Foret(name="Foret5"))
-            Robot.items.append(Foret(name="Foret6"))
-            Robot.items.append(Travailleur(name="Travailleur1"))
-            Robot.items.append(Travailleur(name="Travailleur2"))
-            Robot.items.append(Travailleur(name="Travailleur3"))
-            Robot.items.append(Cereale(name="Cereale1"))
-            Robot.items.append(Cereale(name="Cereale2"))
-            Robot.items.append(Cereale(name="Cereale3"))
-            """
-
-            addItem(Foret(name="Foret0"))
             addItem(Foret(name="Foret1"))
             addItem(Foret(name="Foret2"))
-            addItem(Beton(name="Beton3"))
-            addItem(Beton(name="Beton4"))
-            addItem(Beton(name="Beton5"))
-            addItem(Beton(name="Beton6"))
-            addItem(Beton(name="Beton7"))
-            addItem(Beton(name="Beton8"))
-            addItem(Beton(name="Beton9"))
-            addItem(Beton(name="Beton10"))
-            addItem(Beton(name="Beton11"))
-            addItem(Beton(name="Beton12"))
-            addItem(Beton(name="Beton13"))
-            addItem(Charbon(name="Charbon1"))
-            addItem(Charbon(name="Charbon2"))
-            addItem(Charbon(name="Charbon3"))
-            addItem(Vehicule(name="Vehicule1"))
-            addItem(Vehicule(name="Vehicule2"))
-            addItem(Vehicule(name="Vehicule3"))
-            addItem(Arme(name="Arme1"))
-            addItem(Arme(name="Arme2"))
-            addItem(Arme(name="Arme3"))
+            addItem(Foret(name="Foret3"))
+            addItem(Colline(name="Colline1"))
+
+            addItem(GisementCharbon(name="GisementCharbon"))
+            addItem(GisementPetrole(name="GisementPetrole"))
+            addItem(GisementMetal(name="GisementMetal"))
+            addItem(GisementUranium(name="GisementUranium"))
+            addItem(GisementPhosphate(name="GisementPhosphate"))
+
+            addItem(Usine(name="Usine1"))
+
             addItem(Travailleur(name="Travailleur1"))
             addItem(Travailleur(name="Travailleur2"))
             addItem(Travailleur(name="Travailleur3"))
+            addItem(Travailleur(name="Travailleur4"))
+            addItem(Travailleur(name="Travailleur5"))
             addItem(Cereale(name="Cereale0"))
             addItem(Cereale(name="Cereale1"))
             addItem(Cereale(name="Cereale2"))
             addItem(Cereale(name="Cereale3"))
             addItem(Cereale(name="Cereale4"))
             addItem(Cereale(name="Cereale5"))
-            for i in range(9):
-                addItem(Cereale(name="Cereale"+str(i)))
-
 
             """
 

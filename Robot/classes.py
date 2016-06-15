@@ -293,11 +293,7 @@ class GisementMetal(Entite):
         self.nbAcier = 0
 
     def idle(self):
-        if  self.nbTravailleur >= 3 and self.nbAcier >= 2 :
-            self.brain.setState(self.production)
-
-    def unmanned(self):
-        if self.nbTravailleur >= 3 :
+        if  self.nbTravailleur >= 3 :
             self.brain.setState(self.production)
 
     def production(self):
@@ -305,7 +301,7 @@ class GisementMetal(Entite):
             self.spawn(Metal)
 
         if self.nbTravailleur < 3 :
-            self.brain.setState(self.unmanned)
+            self.brain.setState(self.idle)
 
     def update(self):
         self.nbTravailleur = self.countByType(Travailleur)
@@ -322,16 +318,12 @@ class GisementCharbon(Entite):
         if  self.nbTravailleur >= 3 and self.nbAcier >= 2 :
             self.brain.setState(self.production)
 
-    def unmanned(self):
-        if self.nbTravailleur >= 3 :
-            self.brain.setState(self.production)
-
     def production(self):
         for z in range(3):
             self.spawn(Charbon)
 
         if self.nbTravailleur < 3 :
-            self.brain.setState(self.unmanned)
+            self.brain.setState(self.idle)
 
     def update(self):
         self.nbTravailleur = self.countByType(Travailleur)
@@ -397,7 +389,7 @@ class GisementUranium(Entite):
         self.nbAcier = self.countByType(Acier)
         self.brain.update()
 
-class GisementPhosphates(Entite):
+class GisementPhosphate(Entite):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self.nbTravailleur = 0
@@ -476,17 +468,17 @@ class Champ(Entite):
 
         if Robot.cycles%12 == 0 : self.spawn(Pollinisateur, self.id)
 
-        if self.nbTravailleur >= 2 and self.nbPollinisateur >= 1 and self.nbCereale >= 1:
-            self.brain.setState(self.cultureC)
-
         if self.nbTravailleur >= 2 and self.nbPollinisateur >= 1 and self.nbSoja >= 1:
             self.brain.setState(self.cultureS)
 
-        if self.nbTravailleur >= 1 and self.nbTracteur >= 1 and self.nbPesticide >= 1 and self.nbCereale >= 1:
-            self.brain.setState(self.monocultureC)
+        if self.nbTravailleur >= 2 and self.nbPollinisateur >= 1 and self.nbCereale >= 1:
+            self.brain.setState(self.cultureC)
 
         if self.nbTravailleur >= 1 and self.nbTracteur >= 1 and self.nbPesticide >= 1 and self.nbSoja >= 1:
             self.brain.setState(self.monocultureS)
+
+        if self.nbTravailleur >= 1 and self.nbTracteur >= 1 and self.nbPesticide >= 1 and self.nbCereale >= 1:
+            self.brain.setState(self.monocultureC)
 
         if self.nbBeton >= 10 and self.nbVehicule >= 5 :
             for z in range(10):
@@ -528,8 +520,8 @@ class Champ(Entite):
         for i in range(8):
             self.spawn(Cereale)
 
-        # self.remove(Pollinisateur, self.id)
-        # self.remove(Pesticide, self.id)
+        self.remove(Pollinisateur)
+        self.remove(Pesticide)
 
     def monocultureS(self):
 
@@ -539,8 +531,8 @@ class Champ(Entite):
         for i in range(8):
             self.spawn(Soja)
 
-        # self.remove(Pollinisateur, self.id)
-        # self.remove(Pesticide, self.id)
+        self.remove(Pollinisateur)
+        self.remove(Pesticide)
 
 
     def update(self):
