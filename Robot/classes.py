@@ -170,11 +170,12 @@ class Usine(Entite):
 
     def idle(self):
 
-        if self.nbPetrole >= 1 and self.nbAcier >= 2 and self.nbTravailleur >= 4 and self.nbIngenieur >= 1 : self.brain.setState(self.newVehicule)
-        if self.nbAcier >= 1 and self.nbTravailleur >= 4 and self.nbIngenieur >= 1 : self.brain.setState(self.newArme)
-        if self.nbMetal >= 1 and self.nbCharbon >= 1 and self.nbTravailleur >= 4 : self.brain.setState(self.newAcier)
-        if self.nbCalcaire >= 1 and self.nbTravailleur >= 4 : self.brain.setState(self.newBeton)
         if self.nbPhosphate >= 1 and self.nbIngenieur >= 1 : self.brain.setState(self.newPesticide)
+        if self.nbCalcaire >= 1 and self.nbTravailleur >= 4 : self.brain.setState(self.newBeton)
+        if self.nbMetal >= 1 and self.nbCharbon >= 1 and self.nbTravailleur >= 4 : self.brain.setState(self.newAcier)
+        if self.nbAcier >= 1 and self.nbTravailleur >= 4 and self.nbIngenieur >= 1 : self.brain.setState(self.newArme)
+        if self.nbPetrole >= 1 and self.nbAcier >= 2 and self.nbTravailleur >= 4 and self.nbIngenieur >= 1 : self.brain.setState(self.newVehicule)
+
 
     def newVehicule(self):
         self.spawn(Vehicule)
@@ -315,7 +316,7 @@ class GisementCharbon(Entite):
         self.nbAcier = 0
 
     def idle(self):
-        if  self.nbTravailleur >= 3 and self.nbAcier >= 2 :
+        if  self.nbTravailleur >= 3 :
             self.brain.setState(self.production)
 
     def production(self):
@@ -498,7 +499,7 @@ class Champ(Entite):
 
         if Robot.cycles%8 == 0 : self.spawn(Pollinisateur, self.id)
 
-        for i in range(4):
+        for i in range(3):
             self.spawn(Cereale)
     
     def cultureS(self):
@@ -509,7 +510,7 @@ class Champ(Entite):
 
         if Robot.cycles%12 == 0 : self.spawn(Pollinisateur, self.id)
 
-        for i in range(4):
+        for i in range(3):
             self.spawn(Soja)
 
     def monocultureC(self):
@@ -517,7 +518,7 @@ class Champ(Entite):
         if self.nbTravailleur < 1 or self.nbTracteur < 1 or self.nbPesticide < 1 or self.nbPollinisateur < 1 or self.nbCereale < 1:
             self.brain.setState(self.idle)
 
-        for i in range(8):
+        for i in range(6):
             self.spawn(Cereale)
 
         self.remove(Pollinisateur)
@@ -528,7 +529,7 @@ class Champ(Entite):
         if self.nbTravailleur < 1 or self.nbTracteur < 1 or self.nbPesticide < 1 or self.nbPollinisateur < 1 or self.nbSoja < 1:
             self.brain.setState(self.idle)
 
-        for i in range(8):
+        for i in range(6):
             self.spawn(Soja)
 
         self.remove(Pollinisateur)
