@@ -30,13 +30,12 @@ class Ville(Entite):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self.nbTravailleur = 0
-        self.nbVivant = 0
-        self.nbNourriture = 0
         self.nbBeton = 0
         self.nbVehicule = 0
-        self.nbAcier = 0
+        self.nbArme = 0
         self.nbCharbon = 0
         self.nbPetrole = 0
+        self.nbUranium = 0
 
     def idle(self):
 
@@ -44,80 +43,37 @@ class Ville(Entite):
 #c'est le dernier IF VRAI qui a raison
 
 #les conditions ne sont pas a jour
-        if self.nbBeton >= 5 and self.nbTravailleur >= 4 : self.brain.setState(self.newCimenterie)
-        if self.nbBeton >= 5 and self.nbTravailleur >= 4 : self.brain.setState(self.newLaboratoire)
-        if self.nbBeton >= 8 and self.nbTravailleur >= 4 : self.brain.setState(self.newCaserne)
-        if self.nbBeton >= 8 and self.nbTravailleur >= 4 : self.brain.setState(self.newArsenal)
-        if self.nbBeton >= 8 and self.nbTravailleur >= 4 : self.brain.setState(self.newAcierie)
-        if self.nbBeton >= 8 and self.nbTravailleur >= 4 : self.brain.setState(self.newUsine)
-        if self.nbBeton >= 8 and self.nbTravailleur >= 4 : self.brain.setState(self.newCentrale)
-        if self.nbBeton >= 8 and self.nbTravailleur >= 4 : self.brain.setState(self.newUniversite)
-
-    def newCimenterie(self):
-
-        newcimenterie = self.spawn(Cimenterie)
-
-        for i in range(5):
-            self.remove(Beton)
-            self.nbBeton -= 1
-        for u in range(4):
-            self.remove(Travailleur)
-            self.nbTravailleur -= 1
-            self.spawn(Travailleur, newcimenterie.id)
-
-        if self.nbBeton < 5 or self.nbTravailleur < 4:
-            self.brain.setState(self.idle)
-            self.save()
-
-
-    def newAcierie(self):
-        newacierie = self.spawn(Acierie)
-        for i in range(8):
-            self.remove(Beton)
-        for u in range(4):
-            self.remove(Travailleur)
-            self.spawn(Travailleur, newacierie.id)
-
-        if self.nbBeton < 8 or self.nbTravailleur < 4:
-            self.brain.setState(self.idle)
-            self.save()
-
-        self.idle()
+        if self.nbBeton >= 5 : self.brain.setState(self.newUsine)
+        if self.nbBeton >= 5 and self.nbArme >= 3 : self.brain.setState(self.newCaserne)
+        if self.nbBeton >= 5 and self.nbVehicule >= 3 : self.brain.setState(self.newMarche)
+        if self.nbBeton >= 5 and (self.nbCharbon >= 2 or self.nbPetrole >= 2 or self.nbUranium >= 1) : self.brain.setState(self.newCentrale)
+        if self.nbBeton >= 8 : self.brain.setState(self.newUniversite)
 
     def newUsine(self):
-        newusine = self.spawn(Usine)
         for i in range(5):
             self.remove(Beton)
-        for u in range(4):
-            self.remove(Travailleur)
-            self.spawn(Travailleur, newusine.id)
 
-        self.remove(Acier)
+        self.spawn(Usine)
 
-        if self.nbBeton < 5 or self.nbTravailleur < 4 or self.nbAcier < 1 :
-            self.brain.setState(self.idle)
-            self.save()
+        self.brain.setState(self.idle)
+        self.save()
 
-        self.idle()
 
     def newCentrale(self):
-        newcentrale= self.spawn(Centrale)
         for i in range(5):
             self.remove(Beton)
-        for u in range(2):
-            self.remove(Travailleur)
-            self.spawn(Travailleur, newcentrale.id)
+        if self.nbCharbon >= 2 :
+            for u in range(2):
+               self.remove(Charbon)
+        if self.nbPetrole >= 2 :
+            for z in range(2):
+                self.remove(Petrole)
+        if self.nbUranium >= 1 :
+            self.remove(Uranium)
+    
+        self.brain.setState(self.idle)
+        self.save()
 
-        self.remove(Acier)
-
-        if self.nbBeton < 5 or self.nbTravailleur < 2 or self.nbPetrole < 1 and self.nbCharbon < 1 :
-            self.brain.setState(self.idle)
-            self.save()
-
-        if self.nbPetrole >= 1 :
-            self.remove(Petrole)
-        else :
-            self.remove(Charbon)
 
 
     def update(self):
@@ -130,23 +86,6 @@ class Ville(Entite):
         self.nbPetrole = self.countByType(Petrole)
         self.nbVivant = self.countByType(Vivant)
 
-        self.brain.update()
-
-class Cimenterie(Entite):
-    def __init__(self, **kwargs):
-        super().__init__(**kwargs)
-        self.nbTravailleur = 0
-        self.produit = Beton
-    def idle(self):
-        if self.nbTravailleur >= 2:
-            self.brain.setState(self.production)
-    def production(self):
-        self.spawn(self.produit)
-        if self.nbTravailleur < 2:
-            self.brain.setState(self.idle)
-
-    def update(self):
-        self.nbTravailleur = self.countByType(Travailleur)
         self.brain.update()
 
 class Centrale(Entite):
@@ -166,27 +105,6 @@ class Centrale(Entite):
     def update(self):
         self.nbIngenieur = self.countByType(Ingenieur)
         self.nbFossile = self.countByType(Fossile)
-        self.brain.update()
-
-class Acierie(Entite):
-    def __init__(self, **kwargs):
-        super().__init__(**kwargs)
-        self.nbTravailleur = 0
-        self.nbCharbon = 0
-        self.nbMetal = 0
-        self.produit = Acier
-    def idle(self):
-        if self.nbTravailleur >= 4 and self.nbCharbon >= 1 and self.nbMetal >= 1:
-            self.brain.setState(self.production)
-    def production(self):
-        self.spawn(self.produit)
-        if self.nbTravailleur < 4 or self.nbCharbon < 1 or self.nbMetal < 1:
-            self.brain.setState(self.idle)
-
-    def update(self):
-        self.nbTravailleur = self.countByType(Travailleur)
-        self.nbCharbon = self.countByType(Charbon)
-        self.nbMetal = self.countByType(Metal)
         self.brain.update()
 
 class Usine(Entite):
@@ -216,109 +134,6 @@ class Usine(Entite):
         self.nbMetalPrecieux = self.countByType(MetalPrecieux)
         self.brain.update()
 
-    def newLaboratoire(self):
-        newlaboratoire = self.spawn(Laboratoire)
-        for i in range(5):
-            self.remove(Beton)
-        for z in range(3):
-            self.remove(Petrole)
-        for u in range(4):
-            self.remove(Travailleur)
-            self.spawn(Travailleur, newlaboratoire.id)
-
-        if self.nbBeton < 5 or self.nbTravailleur < 4 or self.nbAcier < 3 :
-            self.brain.setState(self.idle)
-            self.save()
-
-        self.idle()
-
-    def newArsenal(self):
-        newarsenal = self.spawn(Arsenal)
-        for i in range(5):
-            self.remove(Beton)
-        for z in range(3):
-            self.remove(Acier)
-        for u in range(4):
-            self.remove(Travailleur)
-            self.spawn(Travailleur, newarsenal.id)
-
-        if self.nbBeton < 5 or self.nbTravailleur < 4 or self.nbAcier < 3:
-            self.brain.setState(self.idle)
-            self.save()
-
-        self.idle()
-
-    def newUniversite(self):
-        newuniversite = self.spawn(Universite)
-        for i in range(5):
-            self.remove(Beton)
-        for u in range(3):
-            self.remove(Ingenieur)
-            self.spawn(Ingenieur, newuniversite.id)
-        self.remove(Travailleur)
-        self.spawn(Travailleur, newuniversite.id)
-
-        if self.nbBeton < 5 or self.nbTravailleur < 1 or self.nbIngenieur < 3 :
-            self.brain.setState(self.idle)
-            self.save()
-
-        self.idle()
-
-    def newCaserne(self):
-        newcaserne = self.spawn(Caserne)
-        for i in range(5):
-            self.remove(Beton)
-        for u in range(2):
-            self.remove(Soldat)
-            self.spawn(Soldat, newcaserne.id)
-        self.remove(Travailleur)
-        self.spawn(Travailleur, newcaserne.id)
-
-        if self.nbBeton < 5 or self.nbTravailleur < 1 or self.nbSoldat < 2 :
-            self.brain.setState(self.idle)
-            self.save()
-
-        self.idle()
-
-
-    def update(self):
-        # update Ville here
-        self.nbTravailleur = self.countByType(Travailleur)
-        self.nbNourriture = self.countByType(Nourriture)
-        self.nbBeton = self.countByType(Beton)
-        self.nbVehicule = self.countByType(Vehicule)
-        self.nbAcier = self.countByType(Acier)
-        self.nbCharbon = self.countByType(Charbon)
-        self.nbPetrole = self.countByType(Petrole)
-        self.nbVivant = self.countByType(Vivant)
-
-        self.brain.update()
-
-class Arsenal(Entite):
-    def __init__(self, **kwargs):
-        super().__init__(**kwargs)
-        self.nbTravailleur = 0
-        self.nbAcier = 0
-        self.nbVehicule = 0
-
-    def idle(self):
-
-        if self.nbAcier >= 1 and self.nbTravailleur >= 4 : self.brain.setState(self.newFusil)
-
-    def newFusil(self):
-        self.spawn(Arme)
-        self.remove(Acier)
-
-        if self.nbTravailleur < 4 or self.nbAcier < 1 :
-            self.brain.setState(self.idle)
-        self.idle()
-
-
-    def update(self):
-        self.nbTravailleur = self.countByType(Travailleur)
-        self.nbAcier = self.countByType(Acier)
-        self.brain.update()
-
 class Universite(Entite):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
@@ -336,27 +151,6 @@ class Universite(Entite):
     def update(self):
         self.nbIngenieur = self.countByType(Ingenieur)
         self.nbTravailleur = self.countByType(Travailleur)
-        self.brain.update()
-
-class Laboratoire(Entite):
-    def __init__(self, **kwargs):
-        super().__init__(**kwargs)
-        self.nbIngenieur = 0
-        self.nbPetrole = 0
-        self.produit = Chimie
-    def idle(self):
-        if self.nbIngenieur >= 4 and self.nbPetrole >= 1:
-            self.brain.setState(self.production)
-    def production(self):
-        for z in range(3):
-            self.spawn(self.produit)
-
-        if self.nbIngenieur < 4 or self.nbPetrole < 1:
-            self.brain.setState(self.idle)
-
-    def update(self):
-        self.nbIngenieur = self.countByType(Ingenieur)
-        self.nbTravailleur = self.countByType(Petrole)
         self.brain.update()
 
 class Caserne(Entite):
@@ -653,8 +447,12 @@ class Foret(Entite):
         self.nbTravailleur = 0
 
     def idle(self):
-        self.spawn(Arbre, self.id)
-        if Robot.cycles%3 == 0: self.spawn(Arbre, self.id)
+
+        if self.nbArbre <= 8:
+          self.spawn(Arbre, self.id)
+
+        if Robot.cycles%4 == 0: self.spawn(Arbre, self.id)
+
         if self.nbTravailleur >= 2:
             self.brain.setState(self.production)
 
@@ -664,12 +462,13 @@ class Foret(Entite):
         else:
             if self.nbArbre >= self.nbTravailleur :
                 for z in range(self.nbTravailleur):
-                    self.spawn(Beton)
                     self.remove(Arbre)
             else:
                 for u in range(self.nbArbre):
                     self.remove(Arbre)
-                    self.spawn(Beton)
+
+        if Robot.cycles%4 == 0: self.spawn(Arbre, self.id)
+
         if self.nbArbre < 1:
             self.mutate(Champ)
 
