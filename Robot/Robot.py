@@ -194,6 +194,7 @@ class Robot(object):
             time.sleep(self.secondes)
 
     def update(self):
+        global items
         # Conditions de victoire...
         #if self.countByType(Ble):
         #    alert("Whouaou")
@@ -214,6 +215,7 @@ class Robot(object):
     Ajouter un item à la liste du robot
 """
 def addItem(what):
+    global items
     items.append(what)
 
 
@@ -229,6 +231,7 @@ def addItem(what):
 
 
 def find(what, where = None, anywhere = False):
+    global items
     r = []
     #where = base_path + "/Champ1"
     for o in items:
@@ -249,6 +252,7 @@ def find(what, where = None, anywhere = False):
     cf find pour les paramètres
 """
 def findOne(klass, where = None, anywhere = False):
+    global items
     res = find(klass, where, anywhere)
     if len(res) > 0:
         return random.choice(res)
