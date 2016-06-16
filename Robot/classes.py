@@ -265,7 +265,9 @@ class Universite(Entite):
 
     def production(self):
 
-        if Robot.cycles%3 == 0 : self.spawn(Ingenieur)
+        if Robot.cycles%3 == 0 : 
+            self.spawn(Ingenieur)
+            self.remove(Travailleur)
 
         if self.nbIngenieur < 2 or self.nbTravailleur < 1:
             self.brain.setState(self.idle)

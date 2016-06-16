@@ -92,15 +92,6 @@ class Robot(object):
 
             addItem(Ingenieur())
             addItem(Ingenieur())
-            addItem(Ingenieur())
-            addItem(Ingenieur())
-
-            addItem(Phosphate())
-            addItem(Phosphate())
-            addItem(Phosphate())
-
-            addItem(Petrole())
-            addItem(Petrole())
 
             addItem(GisementCharbon(name="GisementCharbon"))
             addItem(GisementPetrole(name="GisementPetrole"))
@@ -111,8 +102,6 @@ class Robot(object):
             addItem(Usine(name="Usine1"))
 
             addItem(Marche())
-
-            addItem(Vehicule())
 
             addItem(Mer(name="Mer_Adriatique"))
 
