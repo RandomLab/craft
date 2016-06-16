@@ -11,16 +11,22 @@ class Base(object):
         Permet de charger et de sauvegarder un object
         sur le système de fichier de l'utilisateur sous forme de fichier
     """
-    data = []
-    def __init__(self, name = None, path = base_path, icon = "default.png"):
+    counts = {}
+    def __init__(self, name = None, path = base_path, icon = "default.bmp"):
         self.path = path
+        Base.register(self)
         if not name:
             self.name = self.__class__.__name__ + "__" + str(uuid.uuid4())
         else:
             self.name = name
         self.id = os.path.join(self.path, self.name)
         self.brain = StackFSM(self.idle)
-        self.icon = icon
+        if icon == "default.bmp":
+            # Try to find an icon based on class name
+            if os.path.isfile(os.path.join("ressources", self.__class__.__name__) + ".bmp"):
+                self.icon = self.__class__.__name__ + ".bmp"
+            else:
+                self.icon = icon
         self.root = True
         self.init()
     def init(self): pass
@@ -54,6 +60,7 @@ class Base(object):
     def spawn(self, klass = None, path = None):
         if path is None: path = base_path
         o = klass(name = klass.__name__ + "__" + str(uuid.uuid4()) ,path = path)
+        #o = klass(path = path)
         o.save()
         return o
 
@@ -66,6 +73,20 @@ class Base(object):
 
     def __repr__(self):
         return ", ".join([self.name, self.path, self.getCurrentState()])
+
+    @staticmethod
+    def register(o):
+        try:
+            Base.counts[o.__class__.__name__] += 1
+        except Exception as e:
+            Base.counts[o.__class__.__name__] = 1
+        """
+        print(o.__class__.__name__, hasattr(Base.counts, o.__class__.__name__))
+        if hasattr(Base.counts, o.__class__.__name__):
+            Base.counts[o.__class__.__name__] += 1
+        else:
+            Base.counts[o.__class__.__name__] = 1
+        """
 
 class Entite(Base):
     """
@@ -123,13 +144,17 @@ class Entite(Base):
         #self.save()
 
     def save(self):
+        """
         try:
             os.mkdir(os.path.join(self.path, self.name))
         except Exception as e:
             # print(e)
             pass
         pickle.dump(self, open(os.path.join(self.path, self.name, ".config"), "wb"))
-
+        """
+        FileIO.saveEntite(self)
+    def load(self):
+        return FileIO.loadEntite(self.id)
     def remove(self, klass):
         #o = self.findOneElement(klass, local = True)
         o = Robot.findOne(klass, where = self.id)

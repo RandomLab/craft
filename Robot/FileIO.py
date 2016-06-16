@@ -1,6 +1,77 @@
 import pickle
+import sys, os
+from struct import pack, unpack
+
+import PIL
+from shutil import copyfile
+
+
+
+"""
+def writeToFile(o,f):
+    o = pickle.dumps(o)
+    nb = sys.getsizeof(o)
+    print("Size :", nb)
+    with open(f, "r+b") as input:
+        input.seek(0)
+        input.seek(offset)
+        input.write(pack(">i",nb))
+        input.write(o)
+
+def readFromFile(f):
+    with open(f, "rb") as input:
+        input.seek(0)
+        input.seek(offset)
+        s, = unpack(">i", input.read(4))
+        o = input.read(s)
+    return pickle.loads(o)
+
+
+"""
+
+
+
+offset = 100
 
 class FileIO(object):
+    @staticmethod
+    def loadFromBinaryImage(f):
+        with open(f, "rb") as input:
+            input.seek(0)
+            input.seek(offset)
+            s, = unpack(">i", input.read(4))
+            o = input.read(s)
+        return pickle.loads(o)
+    def writeToBinaryImage(o):
+        p = pickle.dumps(o)
+        nb = sys.getsizeof(p)
+        """
+        try:
+            # Try to open existing file
+            destination = open(o.id, "r+b")
+        except Exception as e:
+            # Pas de fichier, il faut copier depuis
+            # le dossier ressources
+            destination = open(o.id, "wb")
+            with open(os.path.join("ressources",o.icon), "rb") as source:
+                 destination.write(source.read())
+        """
+        # Pas de fichier, il faut copier depuis
+        # le dossier ressources
+        # TODO : use copy instead...
+        """
+        destination = open(o.id, "wb")
+        with open(os.path.join("ressources",o.icon), "rb") as source:
+             destination.write(source.read())
+        destination.close()
+        """
+        copyfile(os.path.join("ressources",o.icon), o.id)
+        with open(o.id, "r+b") as input:
+            input.seek(0)
+            input.seek(offset)
+            input.write(pack(">i",nb))
+            input.write(p)
+    """
     @staticmethod
     def loadStegano(f):
         im = Image.open(f)
@@ -14,11 +85,19 @@ class FileIO(object):
         im = Image.open(os.path.join("ressources",o.icon))
         secret = stepic.encode(im, s)
         secret.save(o.id + ".png")
+    """
     @staticmethod
-    def saveBinaryFile(o):
-        pickle.dump(o, open(o.id, "wb"))
+    def saveEntite(o):
+        #pickle.dump(o, open(o.id, "wb"))
+        try:
+            os.mkdir(os.path.join(o.path, o.name))
+        except Exception as e:
+            # print(e)
+            pass
+        pickle.dump(o, open(os.path.join(o.path, o.name, ".config"), "wb"))
+
     @staticmethod
-    def loadBinaryFile(f):
+    def loadEntite(f):
         try:
             return pickle.load(open(f, "rb"))
         except Exception as e:
@@ -26,7 +105,13 @@ class FileIO(object):
             return None
     @staticmethod
     def save(o):
-        FileIO.saveBinaryFile(o)
+        if "Entite" in o.__class__.__bases__:
+            FileIO.saveEntite(o)
+        else:
+            FileIO.writeToBinaryImage(o)
     @staticmethod
     def load(f):
-        return FileIO.loadBinaryFile(f)
+        if ".config" in f:
+            return FileIO.loadEntite(f)
+        else:
+            return FileIO.loadFromBinaryImage(f)
