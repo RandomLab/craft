@@ -19,6 +19,7 @@ class Base(object):
             self.name = self.__class__.__name__ + "__" + str(uuid.uuid4())
         else:
             self.name = name
+        self.name = self.name + ".bmp"
         self.id = os.path.join(self.path, self.name)
         self.brain = StackFSM(self.idle)
         if icon == "default.bmp":
@@ -126,6 +127,24 @@ class Entite(Base):
             Représentation sous forme de répertoire
 
     """
+    def __init__(self, name = None, path = base_path, icon = "default.bmp"):
+        self.path = path
+        Base.register(self)
+        if not name:
+            self.name = self.__class__.__name__ + "__" + str(uuid.uuid4())
+        else:
+            self.name = name
+        self.id = os.path.join(self.path, self.name)
+        self.brain = StackFSM(self.idle)
+        if icon == "default.bmp":
+            # Try to find an icon based on class name
+            if os.path.isfile(os.path.join("ressources", self.__class__.__name__) + ".bmp"):
+                self.icon = self.__class__.__name__ + ".bmp"
+            else:
+                self.icon = icon
+        self.root = True
+        self.init()
+
     def countByType(self, klass, where = None, anywhere = False):
         n = len(Robot.find(klass, where = self.id, anywhere = anywhere))
         return n
