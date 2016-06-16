@@ -47,18 +47,15 @@ class Base(object):
     def save(self):
         FileIO.save(self)
 
-    def mutate(self, klass):
-        #self.delete()
+    def mutate(self, klass, path = base_path):
         name = self.id
         self.__class__ = klass
-        self.__init__()
+        self.__init__(path=path)
         os.rename(name, self.id)
 
         for i in Robot.items:
             if i.path == name:
                 i.checkPath(self.id, i.name)
-
-        #self.save()
 
     def remove(self):
         for e in Robot.items:
@@ -161,29 +158,9 @@ class Entite(Base):
     def countByType(self, klass, where = None, anywhere = False):
         n = len(Robot.find(klass, where = self.id, anywhere = anywhere))
         return n
-    """
-    def mutate(self, klass):
-        #self.delete()
-        name = self.id
-        self.__class__ = klass
-        self.__init__()
-        os.rename(name, self.id)
 
-        for i in Robot.items:
-            if i.path == name:
-                i.checkPath(self.id, i.name)
-
-        #self.save()
-    """
     def save(self):
-        """
-        try:
-            os.mkdir(os.path.join(self.path, self.name))
-        except Exception as e:
-            # print(e)
-            pass
-        pickle.dump(self, open(os.path.join(self.path, self.name, ".config"), "wb"))
-        """
+
         FileIO.saveEntite(self)
     def load(self):
         return FileIO.loadEntite(self.id)

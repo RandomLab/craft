@@ -454,7 +454,7 @@ class Mer(Entite):
         if self.nbVehicule >= 1 :
             v = Robot.find(Vehicule, self.id)
             for z in v :
-                z.mutate(BateauUsine)
+                z.mutate(BateauUsine, path = self.id)
 
         self.brain.update()
 
