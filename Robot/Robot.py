@@ -27,6 +27,7 @@ class Robot(object):
         self.path = base_path
         self.secondes = secondes
         self.cycles = 0
+        self.win = False
 
 
         self.createOrLoadGame()
@@ -84,6 +85,20 @@ class Robot(object):
             addItem(Foret(name="Foret3"))
             addItem(Colline(name="Colline1"))
 
+            addItem(Centrale())
+
+            addItem(Acier())
+            addItem(Acier())
+
+            addItem(Ingenieur())
+            addItem(Ingenieur())
+            addItem(Ingenieur())
+            addItem(Ingenieur())
+
+            addItem(Phosphate())
+            addItem(Phosphate())
+            addItem(Phosphate())
+
             addItem(Petrole())
             addItem(Petrole())
 
@@ -112,6 +127,10 @@ class Robot(object):
             addItem(Cereale(name="Cereale3"))
             addItem(Cereale(name="Cereale4"))
             addItem(Cereale(name="Cereale5"))
+            addItem(Cereale())
+            addItem(Cereale())
+            addItem(Cereale())
+            addItem(Cereale())
 
             """
 
@@ -188,14 +207,22 @@ class Robot(object):
 
     def run(self):
         global cycles
-        while True:
+        while not self.win :
             print("############################################")
             print("Cycle :", cycles)
+            """
             print(Base.counts)
+            """
             self.update()
             print("############################################")
             cycles += 1
             time.sleep(self.secondes)
+        """
+        self.loadFromFS()
+        for item in items:
+            print(item)
+        """
+        alert(text = "Ben bravo t'as gagné", title="Yeah", button = "Ok")
 
     def update(self):
         global items
@@ -212,6 +239,9 @@ class Robot(object):
         for item in items:
             item.update()
         self.save()
+
+        if len(find(Centrale)) >= 1 and len(find(Uranium)) >= 1 and len(find(Soldat)) >= 10 :
+            win = True
 
 
 

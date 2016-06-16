@@ -133,6 +133,9 @@ class Centrale(Entite):
     def production(self):
         for i in range(3) :
             self.spawn(Electricite)
+
+        for z in range(2) :
+            self.remove(Fossile)
         
         if self.nbIngenieur < 2 or self.nbCharbon or self.nbPetrole < 1:
             self.brain.setState(self.idle)
@@ -143,6 +146,7 @@ class Centrale(Entite):
         for i in range(6) :
             self.spawn(Electricite)
         self.spawn(DechetRadioactif)
+        self.remove(Uranium)
        
         if self.nbIngenieur < 2 or self.nbUranium < 1:
             self.brain.setState(self.idle)
@@ -170,11 +174,11 @@ class Usine(Entite):
 
     def idle(self):
 
-        if self.nbPhosphate >= 1 and self.nbIngenieur >= 1 and self.nbElectricite >= 1 : self.brain.setState(self.newPesticide)
-        if self.nbCalcaire >= 1 and self.nbTravailleur >= 4 : self.brain.setState(self.newBeton)
-        if self.nbMetal >= 1 and self.nbCharbon >= 1 and self.nbTravailleur >= 4 : self.brain.setState(self.newAcier)
-        if self.nbAcier >= 1 and self.nbTravailleur >= 4 and self.nbIngenieur >= 1 : self.brain.setState(self.newArme)
-        if self.nbPetrole >= 1 and self.nbAcier >= 2 and self.nbTravailleur >= 4 and self.nbIngenieur >= 1 : self.brain.setState(self.newVehicule)
+        if self.nbPhosphate >= 1 and self.nbIngenieur >= 1 and self.nbElectricite >= 1 and self.nbElectricite >= 1 : self.brain.setState(self.newPesticide)
+        if self.nbCalcaire >= 1 and self.nbTravailleur >= 4 and self.nbElectricite >= 1 : self.brain.setState(self.newBeton)
+        if self.nbMetal >= 1 and self.nbCharbon >= 1 and self.nbTravailleur >= 4 and self.nbElectricite >= 1 : self.brain.setState(self.newAcier)
+        if self.nbAcier >= 1 and self.nbTravailleur >= 4 and self.nbIngenieur >= 1 and self.nbElectricite >= 1 : self.brain.setState(self.newArme)
+        if self.nbPetrole >= 1 and self.nbAcier >= 2 and self.nbTravailleur >= 4 and self.nbIngenieur >= 1 and self.nbElectricite >= 1 : self.brain.setState(self.newVehicule)
 
 
     def newVehicule(self):
@@ -183,8 +187,9 @@ class Usine(Entite):
         self.remove(Petrole)
         self.remove(Acier)
         self.remove(Acier)
+        self.remove(Electricite)
 
-        if self.nbTravailleur < 4 or self.nbPetrole < 1 or self.nbAcier < 2 or self.nbIngenieur < 1 :
+        if self.nbTravailleur < 4 or self.nbPetrole < 1 or self.nbAcier < 2 or self.nbIngenieur < 1 or self.nbElectricite < 1 :
             self.brain.setState(self.idle)
 
         self.idle()
@@ -193,8 +198,10 @@ class Usine(Entite):
         self.spawn(Arme)
         
         self.remove(Acier)
+        self.remove(Electricite)
 
-        if self.nbTravailleur < 4 or self.nbAcier < 1 or self.nbIngenieur < 1 :
+
+        if self.nbTravailleur < 4 or self.nbAcier < 1 or self.nbIngenieur < 1 or self.nbElectricite < 1 :
             self.brain.setState(self.idle)
 
         self.idle()
@@ -203,8 +210,9 @@ class Usine(Entite):
         self.spawn(Beton)
         
         self.remove(Calcaire)
+        self.remove(Electricite)
 
-        if self.nbTravailleur < 4 or self.nbCalcaire < 1 :
+        if self.nbTravailleur < 4 or self.nbCalcaire < 1 or self.nbElectricite < 1 :
             self.brain.setState(self.idle)
 
         self.idle()
@@ -214,8 +222,9 @@ class Usine(Entite):
         
         self.remove(Metal)
         self.remove(Charbon)
+        self.remove(Electricite)
 
-        if self.nbTravailleur < 4 or self.nbMetal < 1 or self.nbCharbon < 1 :
+        if self.nbTravailleur < 4 or self.nbMetal < 1 or self.nbCharbon < 1 or self.nbElectricite < 1 :
             self.brain.setState(self.idle)
 
         self.idle()
@@ -225,8 +234,9 @@ class Usine(Entite):
         self.spawn(Pesticide)
         
         self.remove(Phosphate)
+        self.remove(Electricite)
 
-        if self.nbPhosphate < 1 or self.nbIngenieur < 1 :
+        if self.nbPhosphate < 1 or self.nbIngenieur < 1 or self.nbElectricite < 1 :
             self.brain.setState(self.idle)
 
         self.idle()
@@ -240,6 +250,7 @@ class Usine(Entite):
         self.nbPhosphate = self.countByType(Phosphate)
         self.nbMetal = self.countByType(Metal)
         self.nbCalcaire = self.countByType(Calcaire)
+        self.nbElectricite = self.countByType(Electricite)
         self.brain.update()
 
 class Universite(Entite):
@@ -316,14 +327,14 @@ class GisementMetal(Entite):
         self.nbAcier = 0
 
     def idle(self):
-        if  self.nbTravailleur >= 3 :
+        if  self.nbTravailleur >= 2 :
             self.brain.setState(self.production)
 
     def production(self):
-        for z in range(3):
+        for z in range(2):
             self.spawn(Metal)
 
-        if self.nbTravailleur < 3 :
+        if self.nbTravailleur < 2 :
             self.brain.setState(self.idle)
 
     def update(self):
@@ -338,14 +349,14 @@ class GisementCharbon(Entite):
         self.nbAcier = 0
 
     def idle(self):
-        if  self.nbTravailleur >= 3 :
+        if  self.nbTravailleur >= 2 :
             self.brain.setState(self.production)
 
     def production(self):
-        for z in range(3):
+        for z in range(2):
             self.spawn(Charbon)
 
-        if self.nbTravailleur < 3 :
+        if self.nbTravailleur < 2 :
             self.brain.setState(self.idle)
 
     def update(self):
@@ -360,18 +371,20 @@ class GisementPetrole(Entite):
         self.nbAcier = 0
 
     def idle(self):
-        if  self.nbTravailleur >= 3 and self.nbAcier >= 2 :
+        if  self.nbTravailleur >= 2 and self.nbAcier >= 2 :
+            for y in range(2):
+                self.remove(Acier)
             self.brain.setState(self.production)
 
     def unmanned(self):
-        if self.nbTravailleur >= 3 :
+        if self.nbTravailleur >= 2 :
             self.brain.setState(self.production)
 
     def production(self):
-        for z in range(3):
+        for z in range(2):
             self.spawn(Petrole)
 
-        if self.nbTravailleur < 3 :
+        if self.nbTravailleur < 2 :
             self.brain.setState(self.unmanned)
 
     def update(self):
@@ -379,38 +392,39 @@ class GisementPetrole(Entite):
         self.nbAcier = self.countByType(Acier)
         self.brain.update()
 
-class GisementUranium(Entite):
+class GisementUranium(Entite): 
+
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self.nbTravailleur = 0
         self.nbAcier = 0
-        self.energy = 3
+        self.energy = random.randint(5, 10)
 
     def idle(self):
-        if  self.nbTravailleur >= 3 and self.nbAcier >= 2 and self.energy >= 1 :
+        if self.nbTravailleur >= 2 and self.nbAcier >= 2 and self.energy >= 1 :
+            for y in range(2):
+                self.remove(Acier)
             self.brain.setState(self.production)
 
     def unmanned(self):
-        if self.nbTravailleur >= 3 :
+        if self.nbTravailleur >= 2 :
             self.brain.setState(self.production)
 
     def production(self):
-        for z in range(2):
-            self.spawn(Uranium)
+        self.spawn(Uranium)
+        self.energy -= 1
 
-        if self.nbTravailleur < 3 :
+        if self.nbTravailleur < 2 :
             self.brain.setState(self.unmanned)
 
         if self.energy < 1 :
             self.brain.setState(self.idle)
 
-        self.energy =- 1
-
-
     def update(self):
         self.nbTravailleur = self.countByType(Travailleur)
         self.nbAcier = self.countByType(Acier)
         self.brain.update()
+
 
 class GisementPhosphate(Entite):
     def __init__(self, **kwargs):
@@ -697,6 +711,11 @@ class Beton(Produit): pass
 class Pesticide(Produit): pass
 class DechetRadioactif(Produit): pass
 class Electricite(Produit): pass
+class Metal(Produit): pass
+class Phosphate(Produit): pass
+class Calcaire(Produit): pass
+
+
 class Vehicule(Produit): 
     """
         Vehicule
@@ -725,12 +744,9 @@ class Fossile(Base):
     """
     pass
 
-class Calcaire(Fossile): pass
 class Petrole(Fossile): pass
 class Charbon(Fossile): pass
 class Uranium(Fossile): pass
-class Metal(Fossile): pass
-class Phosphate(Fossile): pass
 
 class Vivant(Base):
     """
