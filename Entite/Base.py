@@ -47,6 +47,19 @@ class Base(object):
     def save(self):
         FileIO.save(self)
 
+    def mutate(self, klass):
+        #self.delete()
+        name = self.id
+        self.__class__ = klass
+        self.__init__()
+        os.rename(name, self.id)
+
+        for i in Robot.items:
+            if i.path == name:
+                i.checkPath(self.id, i.name)
+
+        #self.save()
+
     def remove(self):
         for e in Robot.items:
             if e.id == self.id:
@@ -148,7 +161,7 @@ class Entite(Base):
     def countByType(self, klass, where = None, anywhere = False):
         n = len(Robot.find(klass, where = self.id, anywhere = anywhere))
         return n
-
+    """
     def mutate(self, klass):
         #self.delete()
         name = self.id
@@ -161,7 +174,7 @@ class Entite(Base):
                 i.checkPath(self.id, i.name)
 
         #self.save()
-
+    """
     def save(self):
         """
         try:

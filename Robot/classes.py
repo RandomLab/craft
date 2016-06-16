@@ -427,6 +427,7 @@ class Mer(Entite):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self.nbTravailleur = 0
+        self.nbVehicule = 0
         self.nbBateauUsine = 0
         self.nbAnchois = 0
 
@@ -448,6 +449,13 @@ class Mer(Entite):
         self.nbAnchois = self.countByType(Anchois)
         self.nbTravailleur = self.countByType(Travailleur)
         self.nbBateauUsine = self.countByType(BateauUsine)
+        self.nbVehicule = self.countByType(Vehicule)
+
+        if self.nbVehicule >= 1 :
+            v = Robot.find(Vehicule, self.id)
+            for z in v :
+                z.mutate(BateauUsine)
+
         self.brain.update()
 
 
@@ -663,13 +671,21 @@ class Produit(Base):
 
 class Acier(Produit): pass
 class Arme(Produit): pass
-class BateauUsine(Produit): pass
 class Beton(Produit): pass
 class Pesticide(Produit): pass
 class DechetRadioactif(Produit): pass
 class Electricite(Produit): pass
-class Tracteur(Produit): pass
-class Vehicule(Produit): pass
+class Vehicule(Produit): 
+    """
+        Vehicule
+            -Tracteur
+            -BateauUsine
+    """
+
+class Tracteur(Vehicule): pass
+class BateauUsine(Vehicule): pass
+
+
 class Soja(Produit): pass
 
 class Fossile(Base):
@@ -729,7 +745,7 @@ class Nourriture(Base):
     """
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        self.energy = 2
+        self.energy = 4
 
     def idle(self):
         if self.energy < 1:

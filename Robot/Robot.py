@@ -88,6 +88,10 @@ class Robot(object):
 
             addItem(Usine(name="Usine1"))
 
+            addItem(Vehicule())
+
+            addItem(Mer(name="Mer_Adriatique"))
+
             addItem(Travailleur(name="Travailleur1"))
             addItem(Travailleur(name="Travailleur2"))
             addItem(Travailleur(name="Travailleur3"))
