@@ -6,6 +6,8 @@ import uuid
 from Robot import Robot
 
 from Robot.FileIO import FileIO
+
+
 class Base(object):
     """
         Permet de charger et de sauvegarder un object
@@ -103,36 +105,11 @@ class Entite(Base):
     """
         Entités
             - Ville
-            - Megapole
-            - Megalopole
-            - CentraleThermique
-            - CentraleAtom
-            - CentraleSol
+            - Centrale
             - Caserne
-            - BTP
-            - Acierie
-            - GenieMecanique
-            - Arsenal
-            - IndustrieChimique
+            - Usine
             - Universite
-            - Hopital
-            - Aeronautique
-            - Electronique
-            - Assurance
-            - Banque
-            - GisementCharbon
-            - GisementPetrole
-            - GisementUranium
-            - GisementMetaux
-            - GisementMetauxPrecieux
-            - MineCharbon
-            - PuitsPetrole
-            - MineUranium
-            - MineMetaux
-            - MineMetauxPrecieux
-            - DechargeAtomique
-            - Frontiere
-            - Mer
+            - Marche - Mer
 
             Représentation sous forme de répertoire
 

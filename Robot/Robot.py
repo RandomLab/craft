@@ -12,8 +12,10 @@ from .classes import *
 from .FileIO import FileIO
 
 items = []
+listeBase = [Cereale, Soja, Beton, Acier, Travailleur, Ingenieur, Soldat, Poisson, Metal, Phosphate, Uranium, Charbon, Petrole, Calcaire, Arme, Vehicule, Pesticide, Electricite]
 root_items = []
 cycles = 0
+
 class Robot(object):
     """
         Robot :
@@ -45,6 +47,8 @@ class Robot(object):
             print("Create new game")
 
 # patrimoine de départ ici
+
+
             """
 #mato grosso
 
@@ -80,6 +84,9 @@ class Robot(object):
             addItem(Foret(name="Foret3"))
             addItem(Colline(name="Colline1"))
 
+            addItem(Petrole())
+            addItem(Petrole())
+
             addItem(GisementCharbon(name="GisementCharbon"))
             addItem(GisementPetrole(name="GisementPetrole"))
             addItem(GisementMetal(name="GisementMetal"))
@@ -87,6 +94,8 @@ class Robot(object):
             addItem(GisementPhosphate(name="GisementPhosphate"))
 
             addItem(Usine(name="Usine1"))
+
+            addItem(Marche())
 
             addItem(Vehicule())
 
