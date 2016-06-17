@@ -545,7 +545,7 @@ class Champ(Entite):
 
         if Robot.cycles%8 == 0 : self.spawn(Pollinisateur, self.id)
 
-        for i in range(1):
+        for i in range(2):
             self.spawn(Cereale)
     
     def cultureS(self):
@@ -556,7 +556,7 @@ class Champ(Entite):
 
         if Robot.cycles%12 == 0 : self.spawn(Pollinisateur, self.id)
 
-        for i in range(1):
+        for i in range(2):
             self.spawn(Soja)
 
     def monocultureC(self):
@@ -564,7 +564,7 @@ class Champ(Entite):
         if self.nbTravailleur < 1 or self.nbTracteur < 1 or self.nbPesticide < 1 or self.nbPollinisateur < 1 or self.nbCereale < 1:
             self.brain.setState(self.idle)
 
-        for i in range(3):
+        for i in range(5):
             self.spawn(Cereale)
 
         self.remove(Pollinisateur)
@@ -575,7 +575,7 @@ class Champ(Entite):
         if self.nbTravailleur < 1 or self.nbTracteur < 1 or self.nbPesticide < 1 or self.nbPollinisateur < 1 or self.nbSoja < 1:
             self.brain.setState(self.idle)
 
-        for i in range(3):
+        for i in range(5):
             self.spawn(Soja)
 
         self.remove(Pollinisateur)
