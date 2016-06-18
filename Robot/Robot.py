@@ -49,100 +49,30 @@ class Robot(object):
 
 # patrimoine de départ ici
 
+# game n°1
+            addItem(Ville())
+            
+            addItem(Champ())
 
-            """
-#mato grosso
+            addItem(Foret())
+            addItem(Foret())
+            addItem(Foret())
+            addItem(Foret())
+            addItem(Foret())
+            addItem(Foret())
+            addItem(Foret())
+            addItem(Foret())
 
-            Robot.items.append(Ville(name="Sao Polo"))
-            Robot.items.append(Champ(name="Champ1"))
-            Robot.items.append(Champ(name="Champ2"))
-            Robot.items.append(Champ(name="Champ3"))
-            Robot.items.append(Foret(name="Foret1"))
-            Robot.items.append(Foret(name="Foret2"))
-            Robot.items.append(Foret(name="Foret3"))
-            Robot.items.append(Foret(name="Foret4"))
-            Robot.items.append(Foret(name="Foret5"))
-            Robot.items.append(Foret(name="Foret6"))
-            Robot.items.append(Foret(name="Foret7"))
-            Robot.items.append(Foret(name="Foret8"))
-            Robot.items.append(Foret(name="Foret9"))
-            Robot.items.append(Foret(name="Foret10"))
-            Robot.items.append(PuitsPetrole(name="Petrole"))
-            Robot.items.append(MineCharbon(name="Charbon"))
-            Robot.items.append(Mer(name="mer1"))
-            Robot.items.append(Mer(name="mer2"))
-            Robot.items.append(Travailleur(name="Travailleur1"))
-            Robot.items.append(Travailleur(name="Travailleur2"))
+            addItem(Travailleur())
+            addItem(Travailleur())
+            addItem(Travailleur())
+            addItem(Travailleur())
+            addItem(Travailleur())
 
-            """
-
-#texas-picardie
-
-            addItem(Ville(name="Ville"))
-            addItem(Champ(name="Champ1"))
-            addItem(Foret(name="Foret1"))
-            addItem(Foret(name="Foret2"))
-            addItem(Foret(name="Foret3"))
-            addItem(Colline(name="Colline1"))
-
-            addItem(Centrale())
-
-            addItem(Acier())
-            addItem(Acier())
-
-            addItem(Ingenieur())
-            addItem(Ingenieur())
-
-            addItem(GisementCharbon(name="GisementCharbon"))
-            addItem(GisementPetrole(name="GisementPetrole"))
-            addItem(GisementMetal(name="GisementMetal"))
-            addItem(GisementUranium(name="GisementUranium"))
-            addItem(GisementPhosphate(name="GisementPhosphate"))
-
-            addItem(Usine(name="Usine1"))
-
-            addItem(Marche())
-
-            addItem(Mer(name="Mer_Adriatique"))
-
-            addItem(Travailleur(name="Travailleur1"))
-            addItem(Travailleur(name="Travailleur2"))
-            addItem(Travailleur(name="Travailleur3"))
-            addItem(Travailleur(name="Travailleur4"))
-            addItem(Travailleur(name="Travailleur5"))
-            addItem(Cereale(name="Cereale0"))
-            addItem(Cereale(name="Cereale1"))
-            addItem(Cereale(name="Cereale2"))
-            addItem(Cereale(name="Cereale3"))
-            addItem(Cereale(name="Cereale4"))
-            addItem(Cereale(name="Cereale5"))
             addItem(Cereale())
             addItem(Cereale())
             addItem(Cereale())
             addItem(Cereale())
-
-            """
-
-#Nord-pas-de-calais Groningen
-
-            Robot.items.append(Ville(name="Groningen"))
-            Robot.items.append(Champ(name="Champ1"))
-            Robot.items.append(Champ(name="Champ2"))
-            Robot.items.append(Champ(name="Champ3"))
-            Robot.items.append(Foret(name="Foret1"))
-            Robot.items.append(Foret(name="Foret2"))
-            Robot.items.append(Foret(name="Foret3"))
-            Robot.items.append(Mer(name="mer1"))
-            Robot.items.append(Mer(name="mer2"))
-            Robot.items.append(Mer(name="mer3"))
-            Robot.items.append(Mer(name="mer4"))
-            Robot.items.append(Mer(name="mer5"))
-            Robot.items.append(Mer(name="mer6"))
-            Robot.items.append(Travailleur(name="Travailleur1"))
-            Robot.items.append(Travailleur(name="Travailleur2"))
-
-            """
-
 
             self.save()
 

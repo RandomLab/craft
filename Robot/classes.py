@@ -29,13 +29,14 @@ from . import Robot
 class Ville(Entite):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        self.nbTravailleur = 0
+        self.nbVivant = 0
         self.nbBeton = 0
         self.nbVehicule = 0
         self.nbArme = 0
         self.nbCharbon = 0
         self.nbPetrole = 0
         self.nbUranium = 0
+        self.nbCereale = 0
 
     def idle(self):
 
@@ -43,11 +44,23 @@ class Ville(Entite):
 #c'est le dernier IF VRAI qui a raison
 
 #les conditions ne sont pas a jour
+        if self.nbCereale >= 1 and self.nbVivant >= 1 : self.brain.setState(self.pop)
         if self.nbBeton >= 5 : self.brain.setState(self.newUsine)
         if self.nbBeton >= 5 and self.nbArme >= 3 : self.brain.setState(self.newCaserne)
         if self.nbBeton >= 5 and self.nbVehicule >= 3 : self.brain.setState(self.newMarche)
         if self.nbBeton >= 5 and (self.nbCharbon >= 2 or self.nbPetrole >= 2 or self.nbUranium >= 1) : self.brain.setState(self.newCentrale)
         if self.nbBeton >= 8 : self.brain.setState(self.newUniversite)
+
+    def pop(self):
+
+        if self.nbVivant < 1 or self.nbCereale < 1 :
+            self.brain.setState(self.idle)
+
+        self.spawn(Travailleur)
+        self.remove(Cereale)
+
+        self.save()
+
 
     def newUsine(self):
         for i in range(5):
@@ -114,6 +127,8 @@ class Ville(Entite):
         self.nbPetrole = self.countByType(Petrole)
         self.nbUranium = self.countByType(Uranium)
         self.nbVehicule = self.countByType(Vehicule)
+        self.nbCereale = self.countByType(Cereale)
+        self.nbVivant = self.countByType(Vivant)
         self.brain.update()
 
 class Centrale(Entite):
@@ -545,7 +560,7 @@ class Champ(Entite):
 
         if Robot.cycles%8 == 0 : self.spawn(Pollinisateur, self.id)
 
-        for i in range(2):
+        for i in range(1):
             self.spawn(Cereale)
     
     def cultureS(self):
@@ -556,7 +571,7 @@ class Champ(Entite):
 
         if Robot.cycles%12 == 0 : self.spawn(Pollinisateur, self.id)
 
-        for i in range(2):
+        for i in range(1):
             self.spawn(Soja)
 
     def monocultureC(self):
