@@ -51,11 +51,9 @@ class Robot(object):
 
 # game n°1
             addItem(Ville())
-            
+
             addItem(Champ())
 
-            addItem(Foret())
-            addItem(Foret())
             addItem(Foret())
             addItem(Foret())
             addItem(Foret())

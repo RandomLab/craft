@@ -58,7 +58,6 @@ class Ville(Entite):
 
         self.spawn(Travailleur)
         self.remove(Cereale)
-
         self.save()
 
 
