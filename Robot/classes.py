@@ -524,9 +524,10 @@ class Champ(Entite):
         self.nbSoja = 0
 
     def idle(self):
-        if self.nbPollinisateur < 1 and self.nbCereale < 1:
+        if self.nbPollinisateur < 1 and self.nbCereale < 1 and self.nbSoja < 1:
             self.spawn(Cereale, self.id)
             self.spawn(Soja, self.id)
+            self.spawn(Pollinisateur, self.id)
 
         if Robot.cycles%12 == 0 : self.spawn(Pollinisateur, self.id)
 
