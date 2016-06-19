@@ -43,7 +43,6 @@ class Ville(Entite):
 #il execute les if de manière séquentielle le mec
 #c'est le dernier IF VRAI qui a raison
 
-#les conditions ne sont pas a jour
         if self.nbCereale >= 1 and self.nbVivant >= 1 : self.brain.setState(self.pop)
         if self.nbBeton >= 5 : self.brain.setState(self.newUsine)
         if self.nbBeton >= 5 and self.nbArme >= 3 : self.brain.setState(self.newCaserne)
@@ -56,8 +55,11 @@ class Ville(Entite):
         if self.nbVivant < 1 or self.nbCereale < 1 :
             self.brain.setState(self.idle)
 
-        self.spawn(Travailleur)
-        self.remove(Cereale)
+        if self.nbVivant >= 1 and self.nbCereale >= 1 :
+            self.spawn(Travailleur)
+            self.remove(Cereale)
+            self.nbCereale -= 1
+       
         self.save()
 
 
@@ -129,6 +131,8 @@ class Ville(Entite):
         self.nbCereale = self.countByType(Cereale)
         self.nbVivant = self.countByType(Vivant)
         self.brain.update()
+        print(self.nbCereale)
+
 
 class Centrale(Entite):
     def __init__(self, **kwargs):
