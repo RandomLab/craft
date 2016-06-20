@@ -50,8 +50,8 @@ class Robot(object):
 # patrimoine de départ ici
 
 # game n°1
+            """
             addItem(Ville())
-
             addItem(Champ())
 
             addItem(Foret())
@@ -71,6 +71,74 @@ class Robot(object):
             addItem(Cereale())
             addItem(Cereale())
             addItem(Cereale())
+            """
+            """
+#game n°2 : nords
+
+            addItem(Ville())
+            addItem(Ville())
+            addItem(Ville())
+
+            addItem(Champ())
+            addItem(Champ())
+            addItem(Champ())
+
+            addItem(Usine())
+            addItem(Usine())
+            addItem(Usine())
+
+            addItem(Travailleur())
+            addItem(Travailleur())
+            addItem(Travailleur())
+            addItem(Ingenieur())
+            addItem(Ingenieur())
+
+            addItem(Cereale())
+            addItem(Cereale())
+            addItem(Cereale())
+            addItem(Cereale())
+
+            addItem(Vehicule())
+            addItem(Vehicule())
+            addItem(Vehicule())
+
+            addItem(Petrole())        
+            addItem(Petrole())        
+            addItem(Petrole())        
+            """
+#game n°2 : suds
+
+            addItem(Ville())
+
+            addItem(Champ())
+            addItem(Champ())
+            addItem(Champ())
+
+            addItem(Caserne())
+
+            addItem(Marche())
+
+            addItem(GisementPetrole())
+            addItem(GisementPetrole())
+            addItem(GisementPetrole())
+            addItem(GisementPetrole())
+
+            addItem(Travailleur())
+            addItem(Travailleur())
+            addItem(Travailleur())
+            addItem(Travailleur())
+            addItem(Travailleur())
+            addItem(Travailleur())
+            addItem(Soldat())
+            addItem(Soldat())
+
+            addItem(Arme())
+
+            addItem(Cereale())
+            addItem(Cereale())
+            addItem(Cereale())
+            addItem(Cereale())
+
 
             self.save()
 
