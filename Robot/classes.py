@@ -541,7 +541,6 @@ class Champ(Entite):
         self.nbPollinisateur = 0
         self.nbTracteur = 0
         self.nbTravailleur = 0
-        self.nbPesticide = 0
         self.nbCereale = 0
         self.nbBeton = 0
         self.nbSoja = 0
@@ -560,12 +559,13 @@ class Champ(Entite):
         if self.nbTravailleur >= 2 and self.nbPollinisateur >= 1 and self.nbCereale >= 1:
             self.brain.setState(self.cultureC)
 
-        if self.nbTravailleur >= 1 and self.nbTracteur >= 1 and self.nbPesticide >= 1 and self.nbSoja >= 1:
+        if self.nbTracteur >= 1 and self.nbSoja >= 1:
             self.brain.setState(self.monocultureS)
 
-        if self.nbTravailleur >= 1 and self.nbTracteur >= 1 and self.nbPesticide >= 1 and self.nbCereale >= 1:
+        if self.nbTracteur >= 1 and self.nbCereale >= 1:
             self.brain.setState(self.monocultureC)
 
+        """
         if self.nbBeton >= 10 and self.nbVehicule >= 5 :
             for z in range(10):
                 self.remove(Beton)
@@ -575,6 +575,7 @@ class Champ(Entite):
                 self.spawn(Travailleur, self.id)
 
             self.mutate(Ville)
+        """
 
     def cultureC(self):
 
@@ -600,26 +601,19 @@ class Champ(Entite):
 
     def monocultureC(self):
 
-        if self.nbTravailleur < 1 or self.nbTracteur < 1 or self.nbPesticide < 1 or self.nbPollinisateur < 1 or self.nbCereale < 1:
+        if self.nbTravailleur < 1 or self.nbPollinisateur < 1 or self.nbCereale < 1:
             self.brain.setState(self.idle)
 
-        for i in range(5):
+        for i in range(3):
             self.spawn(Cereale)
-
-        self.remove(Pollinisateur)
-        self.remove(Pesticide)
 
     def monocultureS(self):
 
-        if self.nbTravailleur < 1 or self.nbTracteur < 1 or self.nbPesticide < 1 or self.nbPollinisateur < 1 or self.nbSoja < 1:
+        if self.nbTracteur < 1 or self.nbPollinisateur < 1 or self.nbSoja < 1:
             self.brain.setState(self.idle)
 
-        for i in range(5):
+        for i in range(3):
             self.spawn(Soja)
-
-        self.remove(Pollinisateur)
-        self.remove(Pesticide)
-
 
     def update(self):
         self.nbPollinisateur = self.countByType(Pollinisateur)
