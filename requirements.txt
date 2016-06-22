@@ -1,2 +1,2 @@
-pickleshare==0.5
+Pillow==2.3.0
 PyMsgBox==1.0.3

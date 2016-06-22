@@ -50,7 +50,6 @@ class Robot(object):
 # patrimoine de départ ici
 
 # game n°1
-            """
             addItem(Ville())
             addItem(Champ())
 
@@ -71,76 +70,6 @@ class Robot(object):
             addItem(Cereale())
             addItem(Cereale())
             addItem(Cereale())
-            """
-            
-#game n°2 : nords
-
-            addItem(Ville())
-            addItem(Ville())
-            addItem(Ville())
-
-            addItem(Champ())
-            addItem(Champ())
-            addItem(Champ())
-
-            addItem(Usine())
-            addItem(Usine())
-            addItem(Usine())
-
-            addItem(Travailleur())
-            addItem(Travailleur())
-            addItem(Travailleur())
-            addItem(Ingenieur())
-            addItem(Ingenieur())
-
-            addItem(Cereale())
-            addItem(Cereale())
-            addItem(Cereale())
-            addItem(Cereale())
-
-            addItem(Vehicule())
-            addItem(Vehicule())
-            addItem(Vehicule())
-
-            addItem(Tracteur())
-
-            addItem(Petrole())        
-            addItem(Petrole())        
-            addItem(Petrole())        
-            
-#game n°2 : suds
-            """
-            addItem(Ville())
-
-            addItem(Champ())
-            addItem(Champ())
-            addItem(Champ())
-
-            addItem(Caserne())
-
-            addItem(Marche())
-
-            addItem(GisementPetrole())
-            addItem(GisementPetrole())
-            addItem(GisementPetrole())
-            addItem(GisementPetrole())
-
-            addItem(Travailleur())
-            addItem(Travailleur())
-            addItem(Travailleur())
-            addItem(Travailleur())
-            addItem(Travailleur())
-            addItem(Travailleur())
-            addItem(Soldat())
-            addItem(Soldat())
-
-            addItem(Arme())
-
-            addItem(Cereale())
-            addItem(Cereale())
-            addItem(Cereale())
-            addItem(Cereale())
-            """
 
             self.save()
 
@@ -194,22 +123,19 @@ class Robot(object):
 
     def run(self):
         global cycles
-        while not self.win :
-            print("############################################")
-            print("Cycle :", cycles)
-            """
-            print(Base.counts)
-            """
-            self.update()
-            print("############################################")
-            cycles += 1
-            time.sleep(self.secondes)
+        #while not self.win :
+        print("############################################")
+        print("Cycle :", cycles)
+        self.update()
+        print("############################################")
+        cycles += 1
+        #time.sleep(self.secondes)
         """
         self.loadFromFS()
         for item in items:
             print(item)
         """
-        alert(text = "Ben bravo t'as gagné", title="Yeah", button = "Ok")
+        #alert(text = "Ben bravo t'as gagné", title="Yeah", button = "Ok")
 
     def update(self):
         global items
