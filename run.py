@@ -30,6 +30,7 @@ class App():
     def update_robot(self):
         print("update robot")
         self.robot.run()
+        print(Robot.items)
         self.root.after(self.robot.secondes * 1000, self.update_robot)
 
 
