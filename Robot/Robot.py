@@ -102,9 +102,9 @@ class Robot(object):
             addItem(Vehicule())
             addItem(Vehicule())
 
-            addItem(Petrole())        
-            addItem(Petrole())        
-            addItem(Petrole())        
+            addItem(Petrole())
+            addItem(Petrole())
+            addItem(Petrole())
             """
 #game n°2 : suds
 
@@ -192,22 +192,19 @@ class Robot(object):
 
     def run(self):
         global cycles
-        while not self.win :
-            print("############################################")
-            print("Cycle :", cycles)
-            """
-            print(Base.counts)
-            """
-            self.update()
-            print("############################################")
-            cycles += 1
-            time.sleep(self.secondes)
+        #while not self.win :
+        print("############################################")
+        print("Cycle :", cycles)
+        self.update()
+        print("############################################")
+        cycles += 1
+        #time.sleep(self.secondes)
         """
         self.loadFromFS()
         for item in items:
             print(item)
         """
-        alert(text = "Ben bravo t'as gagné", title="Yeah", button = "Ok")
+        #alert(text = "Ben bravo t'as gagné", title="Yeah", button = "Ok")
 
     def update(self):
         global items
