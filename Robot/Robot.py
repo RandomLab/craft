@@ -72,7 +72,7 @@ class Robot(object):
             addItem(Cereale())
             addItem(Cereale())
             """
-            """
+            
 #game n°2 : nords
 
             addItem(Ville())
@@ -102,12 +102,14 @@ class Robot(object):
             addItem(Vehicule())
             addItem(Vehicule())
 
-            addItem(Petrole())        
-            addItem(Petrole())        
-            addItem(Petrole())        
-            """
-#game n°2 : suds
+            addItem(Tracteur())
 
+            addItem(Petrole())        
+            addItem(Petrole())        
+            addItem(Petrole())        
+            
+#game n°2 : suds
+            """
             addItem(Ville())
 
             addItem(Champ())
@@ -138,7 +140,7 @@ class Robot(object):
             addItem(Cereale())
             addItem(Cereale())
             addItem(Cereale())
-
+            """
 
             self.save()
 

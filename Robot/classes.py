@@ -758,6 +758,20 @@ class Vehicule(Produit):
             -BateauUsine
     """
 
+    def init(self):
+        self.energy = 3
+
+    def idle(self):
+        self.energy -= 1
+        o = Robot.findOne(Petrole)
+        if o:
+            self.energy += 1
+            o.energy -= 1
+            o.update()
+        if self.energy < 1:
+            self.remove()
+
+
 class Tracteur(Vehicule): pass
 class BateauUsine(Vehicule): pass
 
@@ -779,7 +793,16 @@ class Fossile(Base):
     """
     pass
 
-class Petrole(Fossile): pass
+class Petrole(Fossile): 
+
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        self.energy = 3
+
+    def idle(self):
+        if self.energy < 1:
+            self.remove()
+
 class Charbon(Fossile): pass
 class Uranium(Fossile): pass
 
