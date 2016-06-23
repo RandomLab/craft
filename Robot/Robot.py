@@ -166,8 +166,8 @@ class Robot(object):
         #if self.countByType(Ble):
         #    alert("Whouaou")
 
-        #if self.countByType(Foret) < 1 or self.countByType(Travailleur) >= 15:
-        #    alert(text = "Ben bravo t'as gagné", title="Yeah", button = "Ok")
+        if len(find(Foret)) < 1 :
+            alert(text = "Ben bravo t'as gagné", title="Yeah", button = "Ok")
 
 
 
