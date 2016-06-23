@@ -18,6 +18,8 @@ class App():
     def __init__(self):
         self.robot = Robot.Robot(secondes=ROBOT_UPDATE_TIME)
         self.root = tk.Tk()
+
+        self.root.geometry('{}x{}'.format(200, 500))
         self.root.protocol("WM_DELETE_WINDOW", self.on_closing)
         #self.canvas = tk.Canvas(width = WIDTH, height = HEIGHT)
         #self.canvas.pack()
