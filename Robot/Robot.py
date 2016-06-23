@@ -1,4 +1,27 @@
 # -*- coding: utf-8 -*-
+
+"""
+    TODO:
+
+    afficher le score en Soja de chaque joueur via la fenetre TK
+    
+    fichier config a éditer par chaque joueur
+   
+    conditions de victoire :
+        le jeu stoppe quand Foret(entite) < 1
+            confère deux points de victoire
+        le robot compte alors le nombre de Soja(base)
+            le joueur qui en a le plus gagne un point de victoire
+        puis le robot compte le nombre de TigresDeSumatra(bio)
+            chaque joueur qui en a plus de 5 gagne un point de victoire
+
+    lancement du jeu via signal MIDI
+
+
+"""
+
+
+
 from config import base_path
 
 import time, os, sys
