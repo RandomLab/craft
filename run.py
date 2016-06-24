@@ -21,7 +21,7 @@ WIDTH = 200
 HEIGHT = 500
 
 player = os.getenv("USERNAME")
-
+my_ip = socket.gethostbyname(socket.gethostname())
 class App():
     def __init__(self):
         self.registered = False
@@ -42,7 +42,7 @@ class App():
         print("Registering to server...")
         msg = osc_message_builder.OscMessageBuilder(address="/register")
         msg.add_arg(player)
-        msg.add_arg("172.17.24.225") #
+        msg.add_arg(my_ip) #
         msg = msg.build()
         self.client.send(msg)
         print("Waiting for server")
