@@ -40,10 +40,9 @@ class Robot(object):
         #    if f == ".DS_Store":
         #        os.remove(os.path.join(self.path, f))
         filenames = os.listdir(self.path)
-        try:
-            filenames.remove('.DS_Store')
-        except:
-            pass
+        for filename in filenames:
+            if filename.startswith( '.' ) and filename != ".config":
+                filenames.remove(filename)
 
         if not filenames:
             print("Create new game")
@@ -175,14 +174,15 @@ class Robot(object):
             except Exception as e:
                 pass
             for f in filenames:
-                current_file = os.path.join(root_path, f)
-                try:
-                    o = FileIO.load(current_file)
-                    o.checkPath(root_path, f)
-                    Base.register(o)
-                    addItem(o)
-                except Exception as e:
-                    print("ERROR", e)
+                if not f.startswith( '.' ) or f == ".config":
+                    current_file = os.path.join(root_path, f)
+                    try:
+                        o = FileIO.load(current_file)
+                        o.checkPath(root_path, f)
+                        Base.register(o)
+                        addItem(o)
+                    except Exception as e:
+                        print("ERROR", e)
     """
         Sauvegarder le plateau
     """

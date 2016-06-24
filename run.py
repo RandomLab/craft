@@ -30,7 +30,7 @@ class App():
         self.dispatcher = dispatcher.Dispatcher()
         self.dispatcher.map("/clock", self.update_robot, "TEST")
         self.dispatcher.map("/hack", self.server_hack, "Hack")
-
+        self.dispatcher.map("/player", self.get_player, "Player")
 
         self.server = osc_server.ThreadingOSCUDPServer(("0.0.0.0", 5005), self.dispatcher)
         self.server_thread = threading.Thread(target=self.server.serve_forever)
@@ -52,17 +52,25 @@ class App():
         self.root.protocol("WM_DELETE_WINDOW", self.on_closing)
         #self.canvas = tk.Canvas(width = WIDTH, height = HEIGHT)
         #self.canvas.pack()
-        i = tk.PhotoImage(file = "ressources/Ingenieur.png")
-        logo = tk.Label(image = i)
-        logo.image = i
-        logo.pack(side="top")
+        #i = tk.PhotoImage(file = "ressources/Ingenieur.png")
+        #logo = tk.Label(image = i)
+        #logo.image = i
+        #logo.pack(side="top")
 
         self.label = List(player, 0)
         self.label.pack()
+        self.players_label = []
 
         self.root.mainloop()
+    def get_player(self, unused_addr, args, player, score):
+        if player not in self.players_label:
+            tmp = List(player, score)
+            tmp.pack()
+            self.players_label[player].append(tmp)
+        else:
+            self.players_label[player].configure(score = score)
 
-    def server_hack(self, unused_addr, args):
+    def server_hack(self, unused_addr, args, user_name):
         print("Got hack from server")
     def on_closing(self):
         print("Closing")
@@ -71,9 +79,13 @@ class App():
     def update_robot(self, unused_addr, args):
         print("update robot")
         self.robot.run()
-        self.label.configure(score = Robot.count("Travailleur"))
-
-
+        score = Robot.count("Soja")
+        self.label.configure(score = score)
+        msg = osc_message_builder.OscMessageBuilder(address="/player")
+        msg.add_arg(player)
+        msg.add_arg(score) #
+        msg = msg.build()
+        self.client.send(msg)
         #self.root.after(self.robot.secondes * 1000, self.update_robot)
 
 
