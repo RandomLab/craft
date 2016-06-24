@@ -816,7 +816,7 @@ class Vivant(Base):
 
     """
     def init(self):
-        self.energy = 3
+        self.energy = 1000
 
     def idle(self):
         self.energy -= 1

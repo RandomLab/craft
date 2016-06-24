@@ -5,7 +5,7 @@ import random
 
 class App():
     def __init__(self):
-        self.robot = Robot.Robot(secondes=10)
+        self.robot = Robot.Robot(secondes=5)
         self.root = tk.Tk()
         #self.label = tk.Label(text="")
         #self.label.pack()
