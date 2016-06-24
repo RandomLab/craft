@@ -10,6 +10,7 @@ from FSM.FSM import StackFSM
 
 from .classes import *
 from .FileIO import FileIO
+from Entite.Base import Base
 
 items = []
 listeBase = [Cereale, Soja, Beton, Acier, Travailleur, Ingenieur, Soldat, Poisson, Metal, Phosphate, Uranium, Charbon, Petrole, Calcaire, Arme, Vehicule, Pesticide, Electricite]
@@ -222,7 +223,7 @@ class Robot(object):
             item.update()
         self.save()
 
-        if len(find(Centrale)) >= 1 and len(find(Uranium)) >= 1 and len(find(Soldat)) >= 10 :
+        if count("Centrale") >= 1 and count("Uranium") >= 1 and count("Soldat") >= 10 :
             win = True
 
 
@@ -233,6 +234,17 @@ class Robot(object):
 def addItem(what):
     global items
     items.append(what)
+
+
+"""
+    Retourne le nombre d'éléments
+"""
+
+def count(what):
+    try:
+        return Base.counts[what]
+    except Exception as e:
+        return 0
 
 
 """

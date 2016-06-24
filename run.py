@@ -12,6 +12,9 @@ from pythonosc import udp_client
 
 import threading
 import socket
+
+from Entite.Base import Base
+
 # Mise à jour du robit (en secondes)
 ROBOT_UPDATE_TIME = 5
 WIDTH = 200
@@ -68,9 +71,7 @@ class App():
     def update_robot(self, unused_addr, args):
         print("update robot")
         self.robot.run()
-        print(len(Robot.find(Arme)))
-
-        self.label.configure(score = len(Robot.find(Arme)))
+        self.label.configure(score = Robot.count("Travailleur"))
 
 
         #self.root.after(self.robot.secondes * 1000, self.update_robot)
