@@ -73,6 +73,7 @@ class Robot(object):
 # patrimoine de départ ici
 
 # game n°1
+            """
             addItem(Ville())
             addItem(Champ())
 
@@ -93,6 +94,11 @@ class Robot(object):
             addItem(Cereale())
             addItem(Cereale())
             addItem(Cereale())
+            """
+
+# tutos
+            
+            addItem(Foret(name="Foret1"))
 
             self.save()
 
@@ -165,10 +171,10 @@ class Robot(object):
         # Conditions de victoire...
         #if self.countByType(Ble):
         #    alert("Whouaou")
-
+        """
         if len(find(Foret)) < 1 :
             alert(text = "Ben bravo t'as gagné", title="Yeah", button = "Ok")
-
+        """
 
 
         self.loadFromFS()

@@ -36,14 +36,14 @@ class Ville(Entite):
         self.nbCharbon = 0
         self.nbPetrole = 0
         self.nbUranium = 0
-        self.nbCereale = 0
+        self.nbPain = 0
 
     def idle(self):
 
 #il execute les if de manière séquentielle le mec
 #c'est le dernier IF VRAI qui a raison
 
-        if self.nbCereale >= 1 and self.nbVivant >= 1 : self.brain.setState(self.pop)
+        if self.nbPain >= 1 and self.nbVivant >= 1 : self.brain.setState(self.pop)
         if self.nbBeton >= 5 : self.brain.setState(self.newUsine)
         if self.nbBeton >= 5 and self.nbArme >= 3 : self.brain.setState(self.newCaserne)
         if self.nbBeton >= 5 and self.nbVehicule >= 3 : self.brain.setState(self.newMarche)
@@ -52,13 +52,13 @@ class Ville(Entite):
 
     def pop(self):
 
-        if self.nbVivant < 1 or self.nbCereale < 1 :
+        if self.nbVivant < 1 or self.nbPain < 1 :
             self.brain.setState(self.idle)
 
-        if self.nbVivant >= 1 and self.nbCereale >= 1 :
+        if self.nbVivant >= 1 and self.nbPain >= 1 :
             self.spawn(Travailleur)
-            self.remove(Cereale)
-            self.nbCereale -= 1
+            self.remove(Pain)
+            self.nbPain -= 1
        
         self.save()
 
@@ -128,11 +128,9 @@ class Ville(Entite):
         self.nbPetrole = self.countByType(Petrole)
         self.nbUranium = self.countByType(Uranium)
         self.nbVehicule = self.countByType(Vehicule)
-        self.nbCereale = self.countByType(Cereale)
+        self.nbPain = self.countByType(Pain)
         self.nbVivant = self.countByType(Vivant)
         self.brain.update()
-        print(self.nbCereale)
-
 
 class Centrale(Entite):
     def __init__(self, **kwargs):
@@ -538,7 +536,7 @@ class Mer(Entite):
 class Champ(Entite):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        self.nbPollinisateur = 0
+        self.nbBiodiversite = 0
         self.nbTracteur = 0
         self.nbTravailleur = 0
         self.nbCereale = 0
@@ -546,17 +544,17 @@ class Champ(Entite):
         self.nbSoja = 0
 
     def idle(self):
-        if self.nbPollinisateur < 1 and self.nbCereale < 1 and self.nbSoja < 1:
+        if self.nbBiodiversite < 1 and self.nbCereale < 1 and self.nbSoja < 1:
             self.spawn(Cereale, self.id)
             self.spawn(Soja, self.id)
-            self.spawn(Pollinisateur, self.id)
+            self.spawn(Biodiversite, self.id)
 
-        if Robot.cycles%12 == 0 : self.spawn(Pollinisateur, self.id)
+        if Robot.cycles%12 == 0 : self.spawn(Biodiversite, self.id)
 
-        if self.nbTravailleur >= 2 and self.nbPollinisateur >= 1 and self.nbSoja >= 1:
+        if self.nbTravailleur >= 2 and self.nbBiodiversite >= 1 and self.nbSoja >= 1:
             self.brain.setState(self.cultureS)
 
-        if self.nbTravailleur >= 2 and self.nbPollinisateur >= 1 and self.nbCereale >= 1:
+        if self.nbTravailleur >= 2 and self.nbBiodiversite >= 1 and self.nbCereale >= 1:
             self.brain.setState(self.cultureC)
 
         if self.nbTracteur >= 1 and self.nbSoja >= 1:
@@ -579,44 +577,44 @@ class Champ(Entite):
 
     def cultureC(self):
 
-        if self.nbTravailleur < 2 or self.nbCereale < 1 or self.nbPollinisateur < 1 :
+        if self.nbTravailleur < 2 or self.nbCereale < 1 or self.nbBiodiversite < 1 :
             self.brain.setState(self.idle)
         self.idle()
 
-        if Robot.cycles%8 == 0 : self.spawn(Pollinisateur, self.id)
+        if Robot.cycles%8 == 0 : self.spawn(Biodiversite, self.id)
 
         for i in range(1):
-            self.spawn(Cereale)
+            self.spawn(Pain)
     
     def cultureS(self):
 
-        if self.nbTravailleur < 2 or self.nbSoja < 1 or self.nbPollinisateur < 1 :
+        if self.nbTravailleur < 2 or self.nbSoja < 1 or self.nbBiodiversite < 1 :
             self.brain.setState(self.idle)
         self.idle()
 
-        if Robot.cycles%12 == 0 : self.spawn(Pollinisateur, self.id)
+        if Robot.cycles%12 == 0 : self.spawn(Biodiversite, self.id)
 
         for i in range(1):
             self.spawn(Soja)
 
     def monocultureC(self):
 
-        if self.nbTravailleur < 1 or self.nbPollinisateur < 1 or self.nbCereale < 1:
+        if self.nbTravailleur < 1 or self.nbBiodiversite < 1 or self.nbCereale < 1:
             self.brain.setState(self.idle)
 
         for i in range(3):
-            self.spawn(Cereale)
+            self.spawn(Pain)
 
     def monocultureS(self):
 
-        if self.nbTracteur < 1 or self.nbPollinisateur < 1 or self.nbSoja < 1:
+        if self.nbTracteur < 1 or self.nbBiodiversite < 1 or self.nbSoja < 1:
             self.brain.setState(self.idle)
 
         for i in range(3):
             self.spawn(Soja)
 
     def update(self):
-        self.nbPollinisateur = self.countByType(Pollinisateur)
+        self.nbBiodiversite = self.countByType(Biodiversite)
         self.nbTravailleur = self.countByType(Travailleur)
         self.nbTracteur = self.countByType(Tracteur)
         self.nbPesticide = self.countByType(Pesticide)
@@ -691,7 +689,7 @@ class Bio(Base):
         bio
             - Arbre
             - TigreDeSumatra
-            - Pollinisateur
+            - Biodiversite
             - Anchois
 
             Représentation sous forme de fichier
@@ -701,7 +699,7 @@ class Bio(Base):
 
 class Arbre(Bio): pass
 class TigreDeSumatra(Bio): pass
-class Pollinisateur(Bio): pass
+class Biodiversite(Bio): pass
 
 class Anchois(Bio):
 
@@ -734,6 +732,7 @@ class Produit(Base):
         - Tracteur
         - Vehicule
         - Soja
+        - Cereale
 
     Représentation sous forme de fichier
 
@@ -777,6 +776,7 @@ class BateauUsine(Vehicule): pass
 
 
 class Soja(Produit): pass
+class Cereale(Produit): pass
 
 class Fossile(Base):
     """
@@ -835,7 +835,7 @@ class Soldat(Vivant): pass
 class Nourriture(Base):
     """
         Nourritures
-            - Cereale
+            - Pain
             - Poisson
 
     """
@@ -848,5 +848,5 @@ class Nourriture(Base):
             self.remove()
 
 
-class Cereale(Nourriture): pass
+class Pain(Nourriture): pass
 class Poisson(Nourriture): pass
