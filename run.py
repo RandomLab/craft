@@ -57,18 +57,20 @@ class App():
         #logo.image = i
         #logo.pack(side="top")
 
-        self.label = List(player, 0)
-        self.label.pack()
+        #self.label = List(player, 0)
+        #self.label.pack()
         self.players_label = []
-
+        self.playerListBox = tk.Listbox()
+        self.playerListBox.pack()
+        self.playerListBox.insert(tk.END, player + " 0")
         self.root.mainloop()
     def get_player(self, unused_addr, args, player, score):
+        print("Got player msg")
         if player not in self.players_label:
-            tmp = List(player, score)
-            tmp.pack()
+            self.playerListBox.insert(tk.END, player + " " + str(score))
+            #tmp = List(player, score)
+            #tmp.pack()
             self.players_label[player].append(tmp)
-        else:
-            self.players_label[player].configure(score = score)
 
     def server_hack(self, unused_addr, args, user_name):
         print("Got hack from server")
@@ -80,7 +82,11 @@ class App():
         print("update robot")
         self.robot.run()
         score = Robot.count("Soja")
-        self.label.configure(score = score)
+        self.playerListBox.delete(0, tk.END)
+        self.playerListBox.insert(tk.END, player + " " + str(0))
+
+
+
         msg = osc_message_builder.OscMessageBuilder(address="/player")
         msg.add_arg(player)
         msg.add_arg(score) #
