@@ -72,7 +72,7 @@ class App():
             #tmp.pack()
             self.players_label[player].append(tmp)
 
-    def server_hack(self, unused_addr, args, user_name):
+    def server_hack(self, unused_addr, args, user_name, bob):
         print("Got hack from server")
     def on_closing(self):
         print("Closing")
