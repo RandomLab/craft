@@ -152,10 +152,10 @@ class Robot(object):
             item.update()
             if count("Pain") <= 2:
                 self.win = True
-            item.save()
+            #item.save()
         #if count("Centrale") >= 1 and count("Uranium") >= 1 and count("Soldat") >= 10 :
         #    self.win = True
-        #self.save()
+        self.save()
 
 
 
