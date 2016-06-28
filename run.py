@@ -20,7 +20,7 @@ ROBOT_UPDATE_TIME = 5
 WIDTH = 200
 HEIGHT = 500
 
-player_name = os.getenv("USERNAME")
+player_name = "samuel"
 my_ip = socket.gethostbyname(socket.gethostname())
 class App():
     def __init__(self):
