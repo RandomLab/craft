@@ -661,7 +661,7 @@ class Foret(Entite):
         if Robot.cycles%4 == 0: self.spawn(Arbre, self.id)
 
         if self.nbArbre < 1:
-            for x in range(nbTigreDeSumatra):
+            for x in range(self.nbTigreDeSumatra):
                 self.remove(TigreDeSumatra)
 
             self.mutate(Champ)
