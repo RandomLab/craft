@@ -629,16 +629,23 @@ class Foret(Entite):
         super().__init__(**kwargs)
         self.nbArbre = 0
         self.nbTravailleur = 0
+        self.nbTigreDeSumatra = 0
+        self.probatigre = [True, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False]
 
     def idle(self):
 
-        if self.nbArbre <= 8:
+        if self.nbArbre <= 16:
           self.spawn(Arbre, self.id)
 
         if Robot.cycles%4 == 0: self.spawn(Arbre, self.id)
 
         if self.nbTravailleur >= 2:
             self.brain.setState(self.production)
+
+        bob = random.choice(self.probatigre)
+        if bob : self.spawn(TigreDeSumatra, self.id)  
+        # chaine de markov des pauvres
+
 
     def production(self):
         if  self.nbTravailleur < 2:
@@ -654,12 +661,16 @@ class Foret(Entite):
         if Robot.cycles%4 == 0: self.spawn(Arbre, self.id)
 
         if self.nbArbre < 1:
+            for x in range(nbTigreDeSumatra):
+                self.remove(TigreDeSumatra)
+
             self.mutate(Champ)
 
 
     def update(self):
         self.nbTravailleur = self.countByType(Travailleur)
         self.nbArbre = self.countByType(Arbre)
+        self.nbTigreDeSumatra = self.countByType(TigreDeSumatra)
         self.brain.update()
 
 class Colline(Entite):
@@ -816,7 +827,7 @@ class Vivant(Base):
 
     """
     def init(self):
-        self.energy = 1000
+        self.energy = 4
 
     def idle(self):
         self.energy -= 1

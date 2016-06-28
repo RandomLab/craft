@@ -73,7 +73,7 @@ class Robot(object):
 # patrimoine de départ ici
 
 # game n°1
-            """
+            
             addItem(Ville())
             addItem(Champ())
 
@@ -87,18 +87,11 @@ class Robot(object):
             addItem(Travailleur())
             addItem(Travailleur())
             addItem(Travailleur())
-            addItem(Travailleur())
-            addItem(Travailleur())
 
-            addItem(Cereale())
-            addItem(Cereale())
-            addItem(Cereale())
-            addItem(Cereale())
-            """
-
-# tutos
+            addItem(Pain())
+            addItem(Pain())
+            addItem(Pain())
             
-            addItem(Foret(name="Foret1"))
 
             self.save()
 
