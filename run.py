@@ -98,8 +98,8 @@ class App():
             msg = msg.build()
             #self.to_client_client.send(msg)
             self.to_server_client.send(msg)
-            alert(text = "Vous avez gagné la partie !")
-
+            rep = alert(text = "Vous avez gagné la partie !")
+            self.on_closing()
 
         #self.root.after(self.robot.secondes * 1000, self.update_robot)
 
