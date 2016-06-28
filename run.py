@@ -79,7 +79,7 @@ class App():
         self.robot.run()
         score = Robot.count("Soja")
         self.playerListBox.delete(0, tk.END)
-        self.playerListBox.insert(tk.END, player_name + " " + str(score))
+        #self.playerListBox.insert(tk.END, player_name + " " + str(score))
         print(self.players_list)
         for p in self.players_list:
             self.playerListBox.insert(tk.END, p + " " + str(self.players_list[p]))
