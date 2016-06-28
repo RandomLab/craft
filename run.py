@@ -63,9 +63,9 @@ class App():
         self.playerListBox.insert(tk.END, player_name + " 0")
         self.root.mainloop()
     def get_player(self, unused_addr, args, player, score):
-        print("Got player msg")
+        print("Got player msg", player, score)
         if player not in self.players_list and player != player_name:
-            self.playerListBox.insert(tk.END, player + " " + str(score))
+            #self.playerListBox.insert(tk.END, player + " " + str(score))
             self.players_list[player] = score
 
     def server_hack(self, unused_addr, args):
