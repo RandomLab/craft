@@ -150,10 +150,12 @@ class Robot(object):
         self.loadFromFS()
         for item in items:
             item.update()
-        self.save()
-
-        if count("Centrale") >= 1 and count("Uranium") >= 1 and count("Soldat") >= 10 :
-            win = True
+            if count("Pain") <= 2:
+                self.win = True
+            item.save()
+        #if count("Centrale") >= 1 and count("Uranium") >= 1 and count("Soldat") >= 10 :
+        #    self.win = True
+        #self.save()
 
 
 

@@ -12,6 +12,7 @@ from pythonosc import udp_client
 
 import threading
 import socket
+from pymsgbox import alert
 
 from Entite.Base import Base
 
@@ -80,15 +81,24 @@ class App():
         for p in self.players_list:
             self.playerListBox.insert(tk.END, p + " " + str(self.players_list[p]))
 
-
-
         msg = osc_message_builder.OscMessageBuilder(address="/player")
         msg.add_arg(player_name)
         msg.add_arg(score) #
         msg = msg.build()
-        print("Sending", msg)
-        print(self.players_list)
         self.to_client_client.send(msg)
+
+        if self.robot.win:
+            # I am the winner
+            # lets tel that to ohters
+            msg = osc_message_builder.OscMessageBuilder(address="/winner")
+            msg.add_arg(player_name)
+            msg.add_arg(score)
+            msg = msg.build()
+            #self.to_client_client.send(msg)
+            self.to_server_client.send(msg)
+            alert(text = "Vous avez gagné la partie !")
+
+
         #self.root.after(self.robot.secondes * 1000, self.update_robot)
 
 
