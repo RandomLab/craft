@@ -1,27 +1,4 @@
 # -*- coding: utf-8 -*-
-
-"""
-    TODO:
-
-    afficher le score en Soja de chaque joueur via la fenetre TK
-    
-    fichier config a éditer par chaque joueur
-   
-    conditions de victoire :
-        le jeu stoppe quand Foret(entite) < 1
-            confère deux points de victoire
-        le robot compte alors le nombre de Soja(base)
-            le joueur qui en a le plus gagne un point de victoire
-        puis le robot compte le nombre de TigresDeSumatra(bio)
-            chaque joueur qui en a plus de 5 gagne un point de victoire
-
-    lancement du jeu via signal MIDI
-
-
-"""
-
-
-
 from config import base_path
 
 import time, os, sys
@@ -33,6 +10,7 @@ from FSM.FSM import StackFSM
 
 from .classes import *
 from .FileIO import FileIO
+from Entite.Base import Base
 
 items = []
 listeBase = [Cereale, Soja, Beton, Acier, Travailleur, Ingenieur, Soldat, Poisson, Metal, Phosphate, Uranium, Charbon, Petrole, Calcaire, Arme, Vehicule, Pesticide, Electricite]
@@ -62,10 +40,9 @@ class Robot(object):
         #    if f == ".DS_Store":
         #        os.remove(os.path.join(self.path, f))
         filenames = os.listdir(self.path)
-        try:
-            filenames.remove('.DS_Store')
-        except:
-            pass
+        for filename in filenames:
+            if filename.startswith( '.' ) and filename != ".config":
+                filenames.remove(filename)
 
         if not filenames:
             print("Create new game")
@@ -73,7 +50,6 @@ class Robot(object):
 # patrimoine de départ ici
 
 # game n°1
-            
             addItem(Ville())
             addItem(Champ())
 
@@ -91,7 +67,7 @@ class Robot(object):
             addItem(Pain())
             addItem(Pain())
             addItem(Pain())
-            
+
 
             self.save()
 
@@ -127,14 +103,15 @@ class Robot(object):
             except Exception as e:
                 pass
             for f in filenames:
-                current_file = os.path.join(root_path, f)
-                try:
-                    o = FileIO.load(current_file)
-                    o.checkPath(root_path, f)
-                    Base.register(o)
-                    addItem(o)
-                except Exception as e:
-                    print("ERROR", e)
+                if not f.startswith( '.' ) or f == ".config":
+                    current_file = os.path.join(root_path, f)
+                    try:
+                        o = FileIO.load(current_file)
+                        o.checkPath(root_path, f)
+                        Base.register(o)
+                        addItem(o)
+                    except Exception as e:
+                        print("ERROR", e)
     """
         Sauvegarder le plateau
     """
@@ -164,19 +141,21 @@ class Robot(object):
         # Conditions de victoire...
         #if self.countByType(Ble):
         #    alert("Whouaou")
-        """
-        if len(find(Foret)) < 1 :
-            alert(text = "Ben bravo t'as gagné", title="Yeah", button = "Ok")
-        """
+
+        #if self.countByType(Foret) < 1 or self.countByType(Travailleur) >= 15:
+        #    alert(text = "Ben bravo t'as gagné", title="Yeah", button = "Ok")
+
 
 
         self.loadFromFS()
         for item in items:
             item.update()
+            if count("Pain") <= 2:
+                self.win = True
+            #item.save()
+        #if count("Centrale") >= 1 and count("Uranium") >= 1 and count("Soldat") >= 10 :
+        #    self.win = True
         self.save()
-
-        if len(find(Centrale)) >= 1 and len(find(Uranium)) >= 1 and len(find(Soldat)) >= 10 :
-            win = True
 
 
 
@@ -186,6 +165,17 @@ class Robot(object):
 def addItem(what):
     global items
     items.append(what)
+
+
+"""
+    Retourne le nombre d'éléments
+"""
+
+def count(what):
+    try:
+        return Base.counts[what]
+    except Exception as e:
+        return 0
 
 
 """
