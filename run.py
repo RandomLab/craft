@@ -20,7 +20,7 @@ ROBOT_UPDATE_TIME = 5
 WIDTH = 200
 HEIGHT = 500
 
-player = os.getenv("USERNAME")
+player_name = os.getenv("USERNAME")
 my_ip = socket.gethostbyname(socket.gethostname())
 class App():
     def __init__(self):
@@ -32,45 +32,38 @@ class App():
         self.dispatcher.map("/hack", self.server_hack, "Hack")
         self.dispatcher.map("/player", self.get_player, "Player")
 
-        self.server = osc_server.ThreadingOSCUDPServer(("0.0.0.0", 5005), self.dispatcher)
+        self.server = osc_server.ThreadingOSCUDPServer(("0.0.0.0", 5006), self.dispatcher)
         self.server_thread = threading.Thread(target=self.server.serve_forever)
         self.server_thread.start()
-        self.client = udp_client.UDPClient("255.255.255.255", 5006)
+        self.to_server_client = udp_client.UDPClient("255.255.255.255", 5005)
+        self.to_client_client = udp_client.UDPClient("255.255.255.255", 5006)
+
         if hasattr(socket,'SO_BROADCAST'):
-            self.client._sock.setsockopt(socket.SOL_SOCKET, socket.SO_BROADCAST, 1)
+            self.to_server_client._sock.setsockopt(socket.SOL_SOCKET, socket.SO_BROADCAST, 1)
+        if hasattr(socket,'SO_BROADCAST'):
+            self.to_client_client._sock.setsockopt(socket.SOL_SOCKET, socket.SO_BROADCAST, 1)
 
         print("Registering to server...")
         msg = osc_message_builder.OscMessageBuilder(address="/register")
-        msg.add_arg(player)
+        msg.add_arg(player_name)
         msg.add_arg(my_ip) #
         msg = msg.build()
-        self.client.send(msg)
+        self.to_server_client.send(msg)
         print("Waiting for server")
         self.root = tk.Tk()
 
         self.root.geometry('{}x{}'.format(200, 500))
         self.root.protocol("WM_DELETE_WINDOW", self.on_closing)
-        #self.canvas = tk.Canvas(width = WIDTH, height = HEIGHT)
-        #self.canvas.pack()
-        #i = tk.PhotoImage(file = "ressources/Ingenieur.png")
-        #logo = tk.Label(image = i)
-        #logo.image = i
-        #logo.pack(side="top")
-
-        #self.label = List(player, 0)
-        #self.label.pack()
-        self.players_label = []
+        self.players_list = {}
         self.playerListBox = tk.Listbox()
         self.playerListBox.pack()
-        self.playerListBox.insert(tk.END, player + " 0")
+        self.playerListBox.insert(tk.END, player_name + " 0")
         self.root.mainloop()
     def get_player(self, unused_addr, args, player, score):
         print("Got player msg")
-        if player not in self.players_label:
+        if player not in self.players_list and player != player_name:
             self.playerListBox.insert(tk.END, player + " " + str(score))
-            #tmp = List(player, score)
-            #tmp.pack()
-            self.players_label[player].append(tmp)
+            self.players_list[player] = score
 
     def server_hack(self, unused_addr, args):
         print("Got hack from server")
@@ -83,15 +76,19 @@ class App():
         self.robot.run()
         score = Robot.count("Soja")
         self.playerListBox.delete(0, tk.END)
-        self.playerListBox.insert(tk.END, player + " " + str(0))
+        self.playerListBox.insert(tk.END, player_name + " " + str(score))
+        for p in self.players_list:
+            self.playerListBox.insert(tk.END, p + " " + str(self.players_list[p]))
 
 
 
         msg = osc_message_builder.OscMessageBuilder(address="/player")
-        msg.add_arg(player)
+        msg.add_arg(player_name)
         msg.add_arg(score) #
         msg = msg.build()
-        self.client.send(msg)
+        print("Sending", msg)
+        print(self.players_list)
+        self.to_client_client.send(msg)
         #self.root.after(self.robot.secondes * 1000, self.update_robot)
 
 
