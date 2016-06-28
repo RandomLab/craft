@@ -16,12 +16,14 @@ from pymsgbox import alert
 
 from Entite.Base import Base
 
+from config import player_name
+
 # Mise à jour du robit (en secondes)
 ROBOT_UPDATE_TIME = 5
 WIDTH = 200
 HEIGHT = 500
 
-player_name = "samuel"
+
 my_ip = socket.gethostbyname(socket.gethostname())
 class App():
     def __init__(self):
